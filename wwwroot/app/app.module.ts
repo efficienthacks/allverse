@@ -5,6 +5,14 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { ArticleComponent } from './article/article.component';
+import { SubverseComponent } from './subverse/subverse.component'; 
+
+import {RouterModule, Routes} from '@angular/router'
+
+const routes: Routes = [
+    { path: '', redirectTo: '/r/home', pathMatch:'full' },
+    { path: 'r/:id', component : SubverseComponent }
+];
 
 @NgModule({
   declarations: [
@@ -14,7 +22,8 @@ import { ArticleComponent } from './article/article.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
