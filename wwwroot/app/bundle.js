@@ -48252,14 +48252,16 @@
 	};
 	var core_1 = __webpack_require__(258);
 	var article_model_1 = __webpack_require__(285);
+	var common_1 = __webpack_require__(277);
 	var SubverseComponent = (function () {
-	    function SubverseComponent() {
+	    function SubverseComponent(location) {
+	        this.location = location;
 	        this.articles = [
 	            new article_model_1.Article('Angular 2', 'http://angular.io', 'sub', 3),
 	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'sub', 2),
 	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'sub', 1),
 	        ];
-	        this.subverseStr = "undefined";
+	        this.subverseStr = location.path().split('/')[2];
 	        //based off of subverse load articles from the DB
 	    }
 	    SubverseComponent.prototype.ngOnInit = function () {
@@ -48279,7 +48281,7 @@
 	                class: 'row'
 	            }
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [common_1.Location])
 	    ], SubverseComponent);
 	    return SubverseComponent;
 	}());

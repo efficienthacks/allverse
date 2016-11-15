@@ -5,6 +5,8 @@ import {
 } from '@angular/core';
 import { Article } from '../article/article.model';
 
+import {Location} from '@angular/common'; 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app/subverse/subverse.component.html',
@@ -17,7 +19,7 @@ export class SubverseComponent implements OnInit {
     articles : Article[]; 
     subverseStr : string; 
 
-constructor()
+constructor(private location:Location)
 {
     this.articles = [
       new Article('Angular 2', 'http://angular.io', 'sub', 3),
@@ -25,7 +27,7 @@ constructor()
       new Article('Angular Homepage', 'http://angular.io', 'sub', 1),
     ];
 
-    this.subverseStr = "undefined"; 
+    this.subverseStr = location.path().split('/')[2]; 
 
     //based off of subverse load articles from the DB
 }
