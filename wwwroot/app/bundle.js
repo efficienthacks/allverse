@@ -48127,10 +48127,7 @@
 	        this.articles = [
 	            new article_model_1.Article('Angular 2', 'http://angular.io', 'home', 3),
 	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'home', 2),
-	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'home', 1),
-	            new article_model_1.Article('Angular 2', 'http://angular.io', 'test', 3),
-	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'test', 2),
-	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'test', 1),
+	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'home', 1)
 	        ];
 	    }
 	    AppComponent.prototype.addArticle = function (title, link) {
@@ -48146,7 +48143,7 @@
 	    AppComponent = __decorate([
 	        core_1.Component({
 	            selector: 'app-root',
-	            templateUrl: './app/app.component.html',
+	            template: '<router-outlet></router-outlet>',
 	            styleUrls: ['./app/app.component.css']
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -48276,7 +48273,7 @@
 	    };
 	    SubverseComponent = __decorate([
 	        core_1.Component({
-	            selector: 'app-subverse',
+	            selector: 'app-root',
 	            templateUrl: './app/subverse/subverse.component.html',
 	            styleUrls: ['./app/subverse/subverse.component.css'],
 	            host: {

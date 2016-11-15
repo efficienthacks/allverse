@@ -6,7 +6,7 @@ import {
 import { Article } from '../article/article.model';
 
 @Component({
-  selector: 'app-subverse',
+  selector: 'app-root',
   templateUrl: './app/subverse/subverse.component.html',
   styleUrls: ['./app/subverse/subverse.component.css'],
   host: {

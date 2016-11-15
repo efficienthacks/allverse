@@ -56,7 +56,7 @@ namespace WebApplication
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -84,8 +84,8 @@ namespace WebApplication
 
             app.UseIdentity();
 
-            //app.UseMvc(); 
-            app.UseMvc(routes =>
+            app.UseMvc(); 
+            /*app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
@@ -99,10 +99,6 @@ namespace WebApplication
                     template: "{*url}",
                     defaults: new { controller = "Home", action = "Index" }
                 );
-            });
-            /*app.UseMvc(routes =>
-            {
-                routes.MapRoute("Default", "{*url}",  new { @controller = "App", @action = "Index" });
             });*/
         }
     }

@@ -3,7 +3,7 @@ import { Article } from './article/article.model';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app/app.component.html',
+  template: '<router-outlet></router-outlet>',
   styleUrls: ['./app/app.component.css']
 })
 export class AppComponent {
@@ -13,10 +13,7 @@ export class AppComponent {
     this.articles = [
       new Article('Angular 2', 'http://angular.io', 'home', 3),
       new Article('Fullstack', 'http://fullstack.io', 'home', 2),
-      new Article('Angular Homepage', 'http://angular.io', 'home', 1),
-      new Article('Angular 2', 'http://angular.io', 'test', 3),
-      new Article('Fullstack', 'http://fullstack.io', 'test', 2),
-      new Article('Angular Homepage', 'http://angular.io', 'test', 1),
+      new Article('Angular Homepage', 'http://angular.io', 'home', 1)
     ];
   }
 
