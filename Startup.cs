@@ -84,7 +84,26 @@ namespace WebApplication
 
             app.UseIdentity();
 
-            app.UseMvc();
+            //app.UseMvc(); 
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                // when the user types in a link handled by client side routing to the address bar 
+                // or refreshes the page, that triggers the server routing. The server should pass 
+                // that onto the client, so Angular can handle the route
+                routes.MapRoute(
+                    name: "spa-fallback",
+                    template: "{*url}",
+                    defaults: new { controller = "Home", action = "Index" }
+                );
+            });
+            /*app.UseMvc(routes =>
+            {
+                routes.MapRoute("Default", "{*url}",  new { @controller = "App", @action = "Index" });
+            });*/
         }
     }
 }

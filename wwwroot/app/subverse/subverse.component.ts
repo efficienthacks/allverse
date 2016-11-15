@@ -4,7 +4,6 @@ import {
   Input
 } from '@angular/core';
 import { Article } from '../article/article.model';
-import {router} from '@angular/router';
 
 @Component({
   selector: 'app-subverse',
@@ -18,14 +17,8 @@ export class SubverseComponent implements OnInit {
     articles : Article[]; 
     subverseStr : string; 
 
-constructor(route: router)
+constructor()
 {
-    var RouteStr : string; 
-
-    route.subscribe((url) => RouteStr = url); 
-
-    var subverse = RouteStr.split("/")[1]; 
-
     this.articles = [
       new Article('Angular 2', 'http://angular.io', 'home', 3),
       new Article('Fullstack', 'http://fullstack.io', 'home', 2),
@@ -34,6 +27,8 @@ constructor(route: router)
       new Article('Fullstack', 'http://fullstack.io', 'test', 2),
       new Article('Angular Homepage', 'http://angular.io', 'test', 1),
     ];
+
+    this.subverseStr = "undefined"; 
 
     //based off of subverse load articles from the DB
 }
