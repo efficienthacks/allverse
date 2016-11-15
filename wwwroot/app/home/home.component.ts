@@ -7,22 +7,22 @@ import { Article } from '../article/article.model';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app/subverse/subverse.component.html',
-  styleUrls: ['./app/subverse/subverse.component.css'],
+  templateUrl: './app/home/home.component.html',
+  styleUrls: ['./app/home/home.component.css'],
   host: {
     class: 'row'
   }
 })
-export class SubverseComponent implements OnInit {
+export class HomeComponent implements OnInit {
     articles : Article[]; 
     subverseStr : string; 
 
 constructor()
 {
     this.articles = [
-      new Article('Angular 2', 'http://angular.io', 'sub', 3),
-      new Article('Fullstack', 'http://fullstack.io', 'sub', 2),
-      new Article('Angular Homepage', 'http://angular.io', 'sub', 1),
+      new Article('Angular 2', 'http://angular.io', 'home', 3),
+      new Article('Fullstack', 'http://fullstack.io', 'home', 2),
+      new Article('Angular Homepage', 'http://angular.io', 'home', 1),
     ];
 
     this.subverseStr = "undefined"; 

@@ -41600,9 +41600,10 @@
 	var app_component_1 = __webpack_require__(284);
 	var article_component_1 = __webpack_require__(286);
 	var subverse_component_1 = __webpack_require__(287);
-	var router_1 = __webpack_require__(288);
+	var home_component_1 = __webpack_require__(288);
+	var router_1 = __webpack_require__(289);
 	var routes = [
-	    { path: '', redirectTo: '/r/home', pathMatch: 'full' },
+	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 'r/:id', component: subverse_component_1.SubverseComponent }
 	];
 	var AppModule = (function () {
@@ -41613,7 +41614,8 @@
 	            declarations: [
 	                app_component_1.AppComponent,
 	                article_component_1.ArticleComponent,
-	                subverse_component_1.SubverseComponent // <-- added this
+	                subverse_component_1.SubverseComponent,
+	                home_component_1.HomeComponent
 	            ],
 	            imports: [
 	                platform_browser_1.BrowserModule,
@@ -48253,12 +48255,9 @@
 	var SubverseComponent = (function () {
 	    function SubverseComponent() {
 	        this.articles = [
-	            new article_model_1.Article('Angular 2', 'http://angular.io', 'home', 3),
-	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'home', 2),
-	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'home', 1),
-	            new article_model_1.Article('Angular 2', 'http://angular.io', 'test', 3),
-	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'test', 2),
-	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'test', 1),
+	            new article_model_1.Article('Angular 2', 'http://angular.io', 'sub', 3),
+	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'sub', 2),
+	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'sub', 1),
 	        ];
 	        this.subverseStr = "undefined";
 	        //based off of subverse load articles from the DB
@@ -48291,13 +48290,63 @@
 /* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(258);
+	var article_model_1 = __webpack_require__(285);
+	var HomeComponent = (function () {
+	    function HomeComponent() {
+	        this.articles = [
+	            new article_model_1.Article('Angular 2', 'http://angular.io', 'home', 3),
+	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'home', 2),
+	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'home', 1),
+	        ];
+	        this.subverseStr = "undefined";
+	        //based off of subverse load articles from the DB
+	    }
+	    HomeComponent.prototype.ngOnInit = function () {
+	        //load articles based off of subverse 
+	        var RouteStr;
+	        console.log("Subverse is: " + this.subverseStr);
+	    };
+	    HomeComponent.prototype.sortedArticles = function () {
+	        return this.articles.sort(function (a, b) { return b.votes - a.votes; });
+	    };
+	    HomeComponent = __decorate([
+	        core_1.Component({
+	            selector: 'app-root',
+	            templateUrl: './app/home/home.component.html',
+	            styleUrls: ['./app/home/home.component.css'],
+	            host: {
+	                class: 'row'
+	            }
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], HomeComponent);
+	    return HomeComponent;
+	}());
+	exports.HomeComponent = HomeComponent;
+
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * @license Angular v3.2.0
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
 	(function (global, factory) {
-	     true ? factory(exports, __webpack_require__(277), __webpack_require__(258), __webpack_require__(289), __webpack_require__(259), __webpack_require__(290), __webpack_require__(302), __webpack_require__(303), __webpack_require__(308), __webpack_require__(309), __webpack_require__(311), __webpack_require__(304), __webpack_require__(312), __webpack_require__(260), __webpack_require__(313), __webpack_require__(314), __webpack_require__(310), __webpack_require__(281), __webpack_require__(316), __webpack_require__(315), __webpack_require__(276), __webpack_require__(317)) :
+	     true ? factory(exports, __webpack_require__(277), __webpack_require__(258), __webpack_require__(290), __webpack_require__(259), __webpack_require__(291), __webpack_require__(303), __webpack_require__(304), __webpack_require__(309), __webpack_require__(310), __webpack_require__(312), __webpack_require__(305), __webpack_require__(313), __webpack_require__(260), __webpack_require__(314), __webpack_require__(315), __webpack_require__(311), __webpack_require__(281), __webpack_require__(317), __webpack_require__(316), __webpack_require__(276), __webpack_require__(318)) :
 	    typeof define === 'function' && define.amd ? define(['exports', '@angular/common', '@angular/core', 'rxjs/BehaviorSubject', 'rxjs/Subject', 'rxjs/observable/from', 'rxjs/observable/of', 'rxjs/operator/concatMap', 'rxjs/operator/every', 'rxjs/operator/first', 'rxjs/operator/map', 'rxjs/operator/mergeMap', 'rxjs/operator/reduce', 'rxjs/Observable', 'rxjs/operator/catch', 'rxjs/operator/concatAll', 'rxjs/util/EmptyError', 'rxjs/observable/fromPromise', 'rxjs/operator/last', 'rxjs/operator/mergeAll', '@angular/platform-browser', 'rxjs/operator/filter'], factory) :
 	    (factory((global.ng = global.ng || {}, global.ng.router = global.ng.router || {}),global.ng.common,global.ng.core,global.Rx,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.platformBrowser,global.Rx.Observable.prototype));
 	}(this, function (exports,_angular_common,_angular_core,rxjs_BehaviorSubject,rxjs_Subject,rxjs_observable_from,rxjs_observable_of,rxjs_operator_concatMap,rxjs_operator_every,rxjs_operator_first,rxjs_operator_map,rxjs_operator_mergeMap,rxjs_operator_reduce,rxjs_Observable,rxjs_operator_catch,rxjs_operator_concatAll,rxjs_util_EmptyError,rxjs_observable_fromPromise,l,rxjs_operator_mergeAll,_angular_platformBrowser,rxjs_operator_filter) { 'use strict';
@@ -52375,7 +52424,7 @@
 	}));
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52429,16 +52478,16 @@
 	//# sourceMappingURL=BehaviorSubject.js.map
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var FromObservable_1 = __webpack_require__(291);
+	var FromObservable_1 = __webpack_require__(292);
 	exports.from = FromObservable_1.FromObservable.create;
 	//# sourceMappingURL=from.js.map
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52448,14 +52497,14 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var isArray_1 = __webpack_require__(266);
-	var isPromise_1 = __webpack_require__(292);
+	var isPromise_1 = __webpack_require__(293);
 	var PromiseObservable_1 = __webpack_require__(282);
-	var IteratorObservable_1 = __webpack_require__(293);
-	var ArrayObservable_1 = __webpack_require__(295);
-	var ArrayLikeObservable_1 = __webpack_require__(299);
-	var iterator_1 = __webpack_require__(294);
+	var IteratorObservable_1 = __webpack_require__(294);
+	var ArrayObservable_1 = __webpack_require__(296);
+	var ArrayLikeObservable_1 = __webpack_require__(300);
+	var iterator_1 = __webpack_require__(295);
 	var Observable_1 = __webpack_require__(260);
-	var observeOn_1 = __webpack_require__(300);
+	var observeOn_1 = __webpack_require__(301);
 	var observable_1 = __webpack_require__(273);
 	var isArrayLike = (function (x) { return x && typeof x.length === 'number'; });
 	/**
@@ -52559,7 +52608,7 @@
 	//# sourceMappingURL=FromObservable.js.map
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -52570,7 +52619,7 @@
 	//# sourceMappingURL=isPromise.js.map
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52581,7 +52630,7 @@
 	};
 	var root_1 = __webpack_require__(261);
 	var Observable_1 = __webpack_require__(260);
-	var iterator_1 = __webpack_require__(294);
+	var iterator_1 = __webpack_require__(295);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -52732,7 +52781,7 @@
 	//# sourceMappingURL=IteratorObservable.js.map
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52769,7 +52818,7 @@
 	//# sourceMappingURL=iterator.js.map
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52779,9 +52828,9 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(260);
-	var ScalarObservable_1 = __webpack_require__(296);
-	var EmptyObservable_1 = __webpack_require__(297);
-	var isScheduler_1 = __webpack_require__(298);
+	var ScalarObservable_1 = __webpack_require__(297);
+	var EmptyObservable_1 = __webpack_require__(298);
+	var isScheduler_1 = __webpack_require__(299);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -52896,7 +52945,7 @@
 	//# sourceMappingURL=ArrayObservable.js.map
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52959,7 +53008,7 @@
 	//# sourceMappingURL=ScalarObservable.js.map
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53039,7 +53088,7 @@
 	//# sourceMappingURL=EmptyObservable.js.map
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53050,7 +53099,7 @@
 	//# sourceMappingURL=isScheduler.js.map
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53060,8 +53109,8 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(260);
-	var ScalarObservable_1 = __webpack_require__(296);
-	var EmptyObservable_1 = __webpack_require__(297);
+	var ScalarObservable_1 = __webpack_require__(297);
+	var EmptyObservable_1 = __webpack_require__(298);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -53125,7 +53174,7 @@
 	//# sourceMappingURL=ArrayLikeObservable.js.map
 
 /***/ },
-/* 300 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53135,7 +53184,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(263);
-	var Notification_1 = __webpack_require__(301);
+	var Notification_1 = __webpack_require__(302);
 	/**
 	 * @see {@link Notification}
 	 *
@@ -53205,7 +53254,7 @@
 	//# sourceMappingURL=observeOn.js.map
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53337,20 +53386,20 @@
 	//# sourceMappingURL=Notification.js.map
 
 /***/ },
-/* 302 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var ArrayObservable_1 = __webpack_require__(295);
-	exports.of = ArrayObservable_1.ArrayObservable.of;
-	//# sourceMappingURL=of.js.map
-
-/***/ },
 /* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMap_1 = __webpack_require__(304);
+	var ArrayObservable_1 = __webpack_require__(296);
+	exports.of = ArrayObservable_1.ArrayObservable.of;
+	//# sourceMappingURL=of.js.map
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var mergeMap_1 = __webpack_require__(305);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, in a serialized fashion waiting for each one to complete before
@@ -53414,7 +53463,7 @@
 	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53423,8 +53472,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var subscribeToResult_1 = __webpack_require__(305);
-	var OuterSubscriber_1 = __webpack_require__(307);
+	var subscribeToResult_1 = __webpack_require__(306);
+	var OuterSubscriber_1 = __webpack_require__(308);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable.
@@ -53580,16 +53629,16 @@
 	//# sourceMappingURL=mergeMap.js.map
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var root_1 = __webpack_require__(261);
 	var isArray_1 = __webpack_require__(266);
-	var isPromise_1 = __webpack_require__(292);
+	var isPromise_1 = __webpack_require__(293);
 	var Observable_1 = __webpack_require__(260);
-	var iterator_1 = __webpack_require__(294);
-	var InnerSubscriber_1 = __webpack_require__(306);
+	var iterator_1 = __webpack_require__(295);
+	var InnerSubscriber_1 = __webpack_require__(307);
 	var observable_1 = __webpack_require__(273);
 	function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
 	    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
@@ -53659,7 +53708,7 @@
 	//# sourceMappingURL=subscribeToResult.js.map
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53700,7 +53749,7 @@
 	//# sourceMappingURL=InnerSubscriber.js.map
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53735,7 +53784,7 @@
 	//# sourceMappingURL=OuterSubscriber.js.map
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53808,7 +53857,7 @@
 	//# sourceMappingURL=every.js.map
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -53818,7 +53867,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(263);
-	var EmptyError_1 = __webpack_require__(310);
+	var EmptyError_1 = __webpack_require__(311);
 	/**
 	 * Emits only the first value (or the first value that meets some condition)
 	 * emitted by the source Observable.
@@ -53961,7 +54010,7 @@
 	//# sourceMappingURL=first.js.map
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53994,7 +54043,7 @@
 	//# sourceMappingURL=EmptyError.js.map
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54086,7 +54135,7 @@
 	//# sourceMappingURL=map.js.map
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54203,7 +54252,7 @@
 	//# sourceMappingURL=reduce.js.map
 
 /***/ },
-/* 313 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54212,8 +54261,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(307);
-	var subscribeToResult_1 = __webpack_require__(305);
+	var OuterSubscriber_1 = __webpack_require__(308);
+	var subscribeToResult_1 = __webpack_require__(306);
 	/**
 	 * Catches errors on the observable to be handled by returning a new observable or throwing an error.
 	 * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
@@ -54273,11 +54322,11 @@
 	//# sourceMappingURL=catch.js.map
 
 /***/ },
-/* 314 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeAll_1 = __webpack_require__(315);
+	var mergeAll_1 = __webpack_require__(316);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * concatenating the inner Observables in order.
@@ -54327,7 +54376,7 @@
 	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54336,8 +54385,8 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(307);
-	var subscribeToResult_1 = __webpack_require__(305);
+	var OuterSubscriber_1 = __webpack_require__(308);
+	var subscribeToResult_1 = __webpack_require__(306);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable which
 	 * concurrently delivers all values that are emitted on the inner Observables.
@@ -54443,7 +54492,7 @@
 	//# sourceMappingURL=mergeAll.js.map
 
 /***/ },
-/* 316 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -54453,7 +54502,7 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(263);
-	var EmptyError_1 = __webpack_require__(310);
+	var EmptyError_1 = __webpack_require__(311);
 	/**
 	 * Returns an Observable that emits only the last item emitted by the source Observable.
 	 * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -54566,7 +54615,7 @@
 	//# sourceMappingURL=last.js.map
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

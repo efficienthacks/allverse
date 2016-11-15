@@ -6,11 +6,12 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { ArticleComponent } from './article/article.component';
 import { SubverseComponent } from './subverse/subverse.component'; 
+import { HomeComponent } from './home/home.component';
 
 import {RouterModule, Routes} from '@angular/router'
 
 const routes: Routes = [
-    { path: '', redirectTo: '/r/home', pathMatch:'full' },
+    { path: '', component : HomeComponent },
     { path: 'r/:id', component : SubverseComponent }
 ];
 
@@ -18,7 +19,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     ArticleComponent,
-    SubverseComponent // <-- added this
+    SubverseComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
