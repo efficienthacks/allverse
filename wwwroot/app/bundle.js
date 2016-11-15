@@ -41622,6 +41622,9 @@
 	                router_1.RouterModule.forRoot(routes)
 	            ],
 	            providers: [],
+	            exports: [
+	                router_1.RouterModule
+	            ],
 	            bootstrap: [app_component_1.AppComponent]
 	        }), 
 	        __metadata('design:paramtypes', [])
