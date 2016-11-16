@@ -3,9 +3,10 @@
 
   "dependencies": {
     "Microsoft.NETCore.App": {
-      "version": "1.0.1",
+      "version": "1.1.0",
       "type": "platform"
     },
+    
     "Npgsql" : "3.1.5",
     "Npgsql.EntityFrameworkCore.PostgreSQL": "1.0.0",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
