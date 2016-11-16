@@ -48269,6 +48269,13 @@
 	        var RouteStr;
 	        console.log("Subverse is: " + this.subverseStr);
 	    };
+	    SubverseComponent.prototype.addArticle = function (title, link) {
+	        console.log("Adding article title: " + title.value + " and link: " + link.value);
+	        this.articles.push(new article_model_1.Article(title.value, link.value, 'home', 0));
+	        title.value = '';
+	        link.value = '';
+	        return false;
+	    };
 	    SubverseComponent.prototype.sortedArticles = function () {
 	        return this.articles.sort(function (a, b) { return b.votes - a.votes; });
 	    };
@@ -48311,13 +48318,20 @@
 	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'home', 2),
 	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'home', 1),
 	        ];
-	        this.subverseStr = "undefined";
+	        this.subverseStr = "home";
 	        //based off of subverse load articles from the DB
 	    }
 	    HomeComponent.prototype.ngOnInit = function () {
 	        //load articles based off of subverse 
 	        var RouteStr;
-	        console.log("Subverse is: " + this.subverseStr);
+	        console.log("Homeverse");
+	    };
+	    HomeComponent.prototype.addArticle = function (title, link) {
+	        console.log("Adding article title: " + title.value + " and link: " + link.value);
+	        this.articles.push(new article_model_1.Article(title.value, link.value, 'home', 0));
+	        title.value = '';
+	        link.value = '';
+	        return false;
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {
 	        return this.articles.sort(function (a, b) { return b.votes - a.votes; });

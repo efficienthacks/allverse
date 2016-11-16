@@ -25,7 +25,7 @@ constructor()
       new Article('Angular Homepage', 'http://angular.io', 'home', 1),
     ];
 
-    this.subverseStr = "undefined"; 
+    this.subverseStr = "home"; 
 
     //based off of subverse load articles from the DB
 }
@@ -34,7 +34,7 @@ constructor()
       //load articles based off of subverse 
       var RouteStr : string; 
 
-      console.log("Subverse is: " + this.subverseStr); 
+      console.log("Homeverse");
   }
 
   addArticle(title: HTMLInputElement, link: HTMLInputElement): boolean {
@@ -44,7 +44,7 @@ constructor()
     link.value = '';
     return false;
   }
-  
+
     sortedArticles(): Article[] {
     return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
   }
