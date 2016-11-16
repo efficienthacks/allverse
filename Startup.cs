@@ -36,9 +36,13 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets
+            string pgsqlConnStr = Configuration["PostgresConn"];
+
             // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddEntityFrameworkNpgsql()
+                .AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString(pgsqlConnStr)));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -84,8 +88,8 @@ namespace WebApplication
 
             app.UseIdentity();
 
-            app.UseMvc(); 
-            /*app.UseMvc(routes =>
+            //app.UseMvc(); 
+            app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
@@ -99,7 +103,7 @@ namespace WebApplication
                     template: "{*url}",
                     defaults: new { controller = "Home", action = "Index" }
                 );
-            });*/
+            });
         }
     }
 }
