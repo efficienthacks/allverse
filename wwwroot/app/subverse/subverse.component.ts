@@ -7,7 +7,7 @@ import {
 import { Article } from '../article/article.model';
 
 import {Location} from '@angular/common'; 
-import {Http} from 'angular/http';
+import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 
 @Component({
@@ -36,9 +36,6 @@ constructor(private location:Location)
 }
 
   ngOnInit() {
-      //load articles based off of subverse 
-      var RouteStr : string; 
-
       console.log("Subverse is: " + this.subverseStr); 
   }
 

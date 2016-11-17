@@ -18,15 +18,24 @@ namespace WebApplication.Controllers
             return db; 
         }
 
-
-        public void Post(ArticleModel article)
+        public Int64 Post(ArticleModel article)
         {
             using(IDatabase db = GetDB())
             {
                 db.Insert(article); 
             }
+            return article.id; 
         }
 
+        public List<ArticleModel> Get(string subverse)
+        {
+            using(IDatabase db = GetDB())
+            {
+                List<ArticleModel> articles = db.Fetch<ArticleModel>("select * from article where subverse='"+subverse+"'"); 
+            }
+
+            return articles; 
+        }
 
     }
 }
