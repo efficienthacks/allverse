@@ -8,14 +8,14 @@ namespace WebApplication.Models.app
     [TableName("subverse")]
     [PrimaryKey("id")]   
     [ExplicitColumns]  
-    class SubverseModel
+    public class SubverseModel
     {
         [Column] 
-        Int64 id;
+        public Int64 id;
         [Column]  
-        string name;
+        public string name;
         [Column] 
-        bool isdefault=false; 
+        public bool isdefault=false; 
 
     }
 }

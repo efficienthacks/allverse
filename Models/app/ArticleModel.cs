@@ -8,24 +8,24 @@ namespace WebApplication.Models.app
     [TableName("article")]
     [PrimaryKey("id")]   
     [ExplicitColumns]  
-    class ArticleModel
+    public class ArticleModel
     {
         [Column] 
-        Int64 id;
+        public Int64 id;
         [Column]  
-        string userID;
+        public string userID;
         [Column]  
-        string title;
+        public string title;
         [Column] 
-        string link;
+        public string link;
         [Column]  
-        string text;
+        public string text;
         [Column]  
-        string subverse; 
+        public string subverse; 
         [Column]
-        int votes; 
+        public int votes; 
         [Column] 
-        bool isanon=false; 
+        public bool isanon=false; 
 
     }
 }

@@ -8,22 +8,22 @@ namespace WebApplication.Models.app
     [TableName("comment")]
     [PrimaryKey("id")]   
     [ExplicitColumns]  
-    class CommentModel
+    public class CommentModel
     {
         [Column] 
-        Int64 id;
+        public Int64 id;
         [Column]  
-        Int64 articleID;
+        public Int64 articleID;
         [Column]  
-        Int64 parentCommentID;
+        public Int64 parentCommentID;
         [Column]  
-        string text;
+        public string text;
         [Column] 
-        string userID;
+        public string userID;
         [Column]  
-        int votes;
+        public int votes;
         [Column] 
-        bool isanon=false; 
+        public bool isanon=false; 
 
     }
 }

@@ -8,16 +8,16 @@ namespace WebApplication.Models.app
     [TableName("usersubs")]
     [PrimaryKey("id")]   
     [ExplicitColumns]  
-    class UserSubsModel
+    public class UserSubsModel
     {
         [Column] 
-        Int64 id;
+        public Int64 id;
         [Column]  
-        string userID;
+        public string userID;
         [Column]  
-        string subverseID;
+        public string subverseID;
         [Column] 
-        bool ismod=false; 
+        public bool ismod=false; 
 
     }
 }
