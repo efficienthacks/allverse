@@ -12,7 +12,8 @@ import {RouterModule, Routes} from '@angular/router'
 
 const routes: Routes = [
     { path: '', component : HomeComponent },
-    { path: 'r/:id', component : SubverseComponent }
+    { path: 'r/:id', component : SubverseComponent },
+    { path: 'article/:id', component : ArticlePageComponent }
 ];
 
 @NgModule({

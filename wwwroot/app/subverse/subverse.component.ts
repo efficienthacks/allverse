@@ -1,11 +1,14 @@
 import {
   Component,
   OnInit,
-  Input
+  Input, 
+  Injectable
 } from '@angular/core';
 import { Article } from '../article/article.model';
 
 import {Location} from '@angular/common'; 
+import {Http} from 'angular/http';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-root',
@@ -39,11 +42,19 @@ constructor(private location:Location)
       console.log("Subverse is: " + this.subverseStr); 
   }
 
-  addArticle(title: HTMLInputElement, link: HTMLInputElement): boolean {
+  addArticle(title: HTMLInputElement, link: HTMLInputElement, text: HTMLInputElement): boolean {
     console.log(`Adding article title: ${title.value} and link: ${link.value}`);
-    this.articles.push(new Article(title.value, link.value,'home', 0));
+
+    var a : Article = new Article(title.value, link.value,this.subverseStr,text.value, 0);
+
+    this.articles.push(a);
+
+    //add article a to db
+
+
     title.value = '';
     link.value = '';
+    text.value = ''; 
     return false;
   }
   

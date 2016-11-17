@@ -11,9 +11,13 @@ Subverse!
     <label for="link">Link:</label>
     <input name="link" #newlink> <!-- changed -->
   </div>
+  <div class="field">
+    <label for="text">Text:</label>
+    <textarea name="text" cols="20" rows="10" #newtext> <!-- changed -->
+  </div>
 
   <!-- added this button -->
-  <button (click)="addArticle(newtitle, newlink)"  
+  <button (click)="addArticle(newtitle, newlink, newtext)"  
           class="ui positive right floated button">  
     Submit link  
   </button>  
