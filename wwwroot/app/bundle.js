@@ -41961,6 +41961,7 @@
 	            declarations: [
 	                app_component_1.AppComponent,
 	                article_component_1.ArticleComponent,
+	                articlepage_component_1.ArticlePageComponent,
 	                subverse_component_1.SubverseComponent,
 	                home_component_1.HomeComponent
 	            ],
@@ -49303,6 +49304,8 @@
 	var core_1 = __webpack_require__(258);
 	var article_model_1 = __webpack_require__(285);
 	var common_1 = __webpack_require__(277);
+	//import {Http} from '@angular/http';
+	//import {Observable} from 'rxjs/Observable';
 	var SubverseComponent = (function () {
 	    function SubverseComponent(location) {
 	        this.location = location;

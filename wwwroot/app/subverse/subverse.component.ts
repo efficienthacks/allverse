@@ -7,8 +7,8 @@ import {
 import { Article } from '../article/article.model';
 
 import {Location} from '@angular/common'; 
-import {Http} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+//import {Http} from '@angular/http';
+//import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-root',

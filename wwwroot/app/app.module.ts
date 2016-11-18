@@ -21,6 +21,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     ArticleComponent,
+    ArticlePageComponent,
     SubverseComponent,
     HomeComponent
   ],

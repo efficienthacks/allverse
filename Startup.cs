@@ -42,7 +42,7 @@ namespace WebApplication
             // Add framework services.
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString(pgsqlConnStr)));
+                options.UseNpgsql(pgsqlConnStr));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
