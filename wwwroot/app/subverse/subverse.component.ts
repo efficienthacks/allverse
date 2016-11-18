@@ -29,15 +29,9 @@ constructor(private location:Location, private hpService: AppServiceHackersPulse
 {
     this.service = hpService; 
 
-    this.articles = [
-      new Article('Angular 2', 'http://angular.io', 'sub','', 3),
-      new Article('Fullstack', 'http://fullstack.io', 'sub','', 2),
-      new Article('Angular Homepage', 'http://angular.io', 'sub','', 1),
-    ];
-
     this.subverseStr = location.path().split('/')[2]; 
 
-    //based off of subverse load articles from the DB
+    this.articles = this.service.GetArticles(this.subverseStr); 
 }
 
   ngOnInit() {
@@ -46,8 +40,8 @@ constructor(private location:Location, private hpService: AppServiceHackersPulse
 
   addArticle(title: HTMLInputElement, link: HTMLInputElement, text: HTMLInputElement): boolean {
     console.log(`Adding article title: ${title.value} and link: ${link.value}`);
-
-    var a : Article = new Article(title.value, link.value,this.subverseStr,text.value, 0);
+    var userID : string = this.service.GetUserID(); 
+    var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,userID,0);
     this.service.AddArticle(a); 
     this.articles.push(a);
     

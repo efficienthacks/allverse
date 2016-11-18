@@ -10,9 +10,12 @@ import {Article} from '../article/article.model';
 export class AppServiceHackersPulse extends HttpHelpers {
 
     private _getArticlePostUrl = 'Article/Post';
+    private _getArticlesUrl = 'Article/GetArticles'; 
+    private _getUserIDUrl = 'Manager/GetUserID'; 
 
     //private _todolist: Models.List[];
     private _articles: Article[]; 
+    private _userID : string; 
 
     constructor(private http: Http) {
         super(http);
@@ -43,17 +46,50 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     SelectedList: Models.List;*/
 
+    GetUserID() : string
+    {
+        this.getaction<string>(this._getUserIDUrl).subscribe(
+            result => {
+                this._userID = result; 
+            },
+            error => this.errormsg = error); 
+
+        return this._userID; 
+    }
+
+
+    GetArticles(subverse : string) : Article[]
+    {
+        this.getaction<Article[]>(this._getArticlesUrl).subscribe(
+            result => {
+                this._articles = result;
+            },
+            error => this.errormsg = error);
+
+        return this._articles; 
+    }
+
+
     AddArticle(article: Article) {
         console.log("AddArticle: title " + article.title); 
         this.postaction(article, this._getArticlePostUrl).subscribe(
             result => {
-                if (!result.haserror) {
-                    result.element.Articles = new Array<Article>();
-                    this._articles.push(result.element);
-                }
+                
+                    this._articles.push(article);
+                
             }, error => this.errormsg = error);
     }
+/**\
+         this.getaction<Models.List[]>(this._getTodoListUrl).subscribe(
+            result => {
+                this._todolist = result;
 
+                if (this._todolist.length > 0) {
+                    this.SelectedList = this._todolist[0];
+                }
+            },
+            error => this.errormsg = error);
+ */
 /*
     UpdateList(list: Models.List) {
         this.postaction(list, this._getListUpdateUrl).subscribe(result => result, error => this.errormsg = error);

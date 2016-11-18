@@ -8,11 +8,12 @@ export class Article {
   userID : string;  
   votes: number;
 
-  constructor(title: string, link: string, subverse : string, text : string, votes?: number) {
+  constructor(title: string, link: string, subverse : string, text : string, userID : string, votes?: number) {
     this.title = title;
     this.link = link;
     this.text = text; 
     this.subverse = subverse; 
+    this.userID = userID; 
     this.votes = votes || 0;
   }
 

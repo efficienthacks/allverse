@@ -19,14 +19,7 @@ export class HomeComponent implements OnInit {
 
 constructor()
 {
-    this.articles = [
-      new Article('Angular 2', 'http://angular.io', 'home','', 3),
-      new Article('Fullstack', 'http://fullstack.io', 'home','', 2),
-      new Article('Angular Homepage', 'http://angular.io', 'home','', 1),
-    ];
-
     this.subverseStr = "home"; 
-
     //based off of subverse load articles from the DB
 }
 
@@ -37,15 +30,7 @@ constructor()
       console.log("Homeverse");
   }
 
-  addArticle(title: HTMLInputElement, link: HTMLInputElement): boolean {
-    console.log(`Adding article title: ${title.value} and link: ${link.value}`);
-    this.articles.push(new Article(title.value, link.value,'home', '',0));
-    title.value = '';
-    link.value = '';
-    return false;
-  }
-
-    sortedArticles(): Article[] {
+  sortedArticles(): Article[] {
     return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
   }
 

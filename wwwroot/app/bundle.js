@@ -41598,7 +41598,7 @@
 	var forms_1 = __webpack_require__(279);
 	var http_1 = __webpack_require__(283);
 	var app_component_1 = __webpack_require__(284);
-	var article_component_1 = __webpack_require__(286);
+	var article_component_1 = __webpack_require__(285);
 	var subverse_component_1 = __webpack_require__(287);
 	var home_component_1 = __webpack_require__(614);
 	var articlepage_component_1 = __webpack_require__(615);
@@ -48126,20 +48126,11 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
-	var article_model_1 = __webpack_require__(285);
 	var AppComponent = (function () {
 	    function AppComponent() {
-	        this.articles = [
-	            new article_model_1.Article('Angular 2', 'http://angular.io', 'home', '', 3),
-	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'home', '', 2),
-	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'home', '', 1)
-	        ];
 	    }
 	    AppComponent.prototype.addArticle = function (title, link) {
-	        console.log("Adding article title: " + title.value + " and link: " + link.value);
-	        this.articles.push(new article_model_1.Article(title.value, link.value, 'home', '', 0));
-	        title.value = '';
-	        link.value = '';
+	        console.log("Not adding article");
 	        return false;
 	    };
 	    AppComponent.prototype.sortedArticles = function () {
@@ -48160,39 +48151,6 @@
 
 /***/ },
 /* 285 */
-/***/ function(module, exports) {
-
-	"use strict";
-	var Article = (function () {
-	    function Article(title, link, subverse, text, votes) {
-	        this.title = title;
-	        this.link = link;
-	        this.text = text;
-	        this.subverse = subverse;
-	        this.votes = votes || 0;
-	    }
-	    Article.prototype.voteUp = function () {
-	        this.votes += 1;
-	    };
-	    Article.prototype.voteDown = function () {
-	        this.votes -= 1;
-	    };
-	    Article.prototype.domain = function () {
-	        try {
-	            var link = this.link.split('//')[1];
-	            return link.split('/')[0];
-	        }
-	        catch (err) {
-	            return null;
-	        }
-	    };
-	    return Article;
-	}());
-	exports.Article = Article;
-
-
-/***/ },
-/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -48206,7 +48164,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
-	var article_model_1 = __webpack_require__(285);
+	var article_model_1 = __webpack_require__(286);
 	var ArticleComponent = (function () {
 	    function ArticleComponent() {
 	    }
@@ -48241,6 +48199,40 @@
 
 
 /***/ },
+/* 286 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var Article = (function () {
+	    function Article(title, link, subverse, text, userID, votes) {
+	        this.title = title;
+	        this.link = link;
+	        this.text = text;
+	        this.subverse = subverse;
+	        this.userID = userID;
+	        this.votes = votes || 0;
+	    }
+	    Article.prototype.voteUp = function () {
+	        this.votes += 1;
+	    };
+	    Article.prototype.voteDown = function () {
+	        this.votes -= 1;
+	    };
+	    Article.prototype.domain = function () {
+	        try {
+	            var link = this.link.split('//')[1];
+	            return link.split('/')[0];
+	        }
+	        catch (err) {
+	            return null;
+	        }
+	    };
+	    return Article;
+	}());
+	exports.Article = Article;
+
+
+/***/ },
 /* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -48255,7 +48247,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
-	var article_model_1 = __webpack_require__(285);
+	var article_model_1 = __webpack_require__(286);
 	var common_1 = __webpack_require__(277);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var SubverseComponent = (function () {
@@ -48263,21 +48255,16 @@
 	        this.location = location;
 	        this.hpService = hpService;
 	        this.service = hpService;
-	        this.articles = [
-	            new article_model_1.Article('Angular 2', 'http://angular.io', 'sub', '', 3),
-	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'sub', '', 2),
-	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'sub', '', 1),
-	        ];
 	        this.subverseStr = location.path().split('/')[2];
-	        //based off of subverse load articles from the DB
+	        this.articles = this.service.GetArticles(this.subverseStr);
 	    }
 	    SubverseComponent.prototype.ngOnInit = function () {
 	        console.log("Subverse is: " + this.subverseStr);
 	    };
 	    SubverseComponent.prototype.addArticle = function (title, link, text) {
 	        console.log("Adding article title: " + title.value + " and link: " + link.value);
-	        var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, 0);
-	        console.log("a.title: " + a.title);
+	        var userID = this.service.GetUserID();
+	        var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, userID, 0);
 	        this.service.AddArticle(a);
 	        this.articles.push(a);
 	        title.value = '';
@@ -48334,6 +48321,8 @@
 	        _super.call(this, http);
 	        this.http = http;
 	        this._getArticlePostUrl = 'Article/Post';
+	        this._getArticlesUrl = 'Article/GetArticles';
+	        this._getUserIDUrl = 'Manager/GetUserID';
 	        /*this.getaction<Models.List[]>(this._getTodoListUrl).subscribe(
 	            result => {
 	                this._todolist = result;
@@ -48358,14 +48347,25 @@
 	    }
 	
 	    SelectedList: Models.List;*/
+	    AppServiceHackersPulse.prototype.GetUserID = function () {
+	        var _this = this;
+	        this.getaction(this._getUserIDUrl).subscribe(function (result) {
+	            _this._userID = result;
+	        }, function (error) { return _this.errormsg = error; });
+	        return this._userID;
+	    };
+	    AppServiceHackersPulse.prototype.GetArticles = function (subverse) {
+	        var _this = this;
+	        this.getaction(this._getArticlesUrl).subscribe(function (result) {
+	            _this._articles = result;
+	        }, function (error) { return _this.errormsg = error; });
+	        return this._articles;
+	    };
 	    AppServiceHackersPulse.prototype.AddArticle = function (article) {
 	        var _this = this;
 	        console.log("AddArticle: title " + article.title);
 	        this.postaction(article, this._getArticlePostUrl).subscribe(function (result) {
-	            if (!result.haserror) {
-	                result.element.Articles = new Array();
-	                _this._articles.push(result.element);
-	            }
+	            _this._articles.push(article);
 	        }, function (error) { return _this.errormsg = error; });
 	    };
 	    AppServiceHackersPulse = __decorate([
@@ -65335,14 +65335,8 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
-	var article_model_1 = __webpack_require__(285);
 	var HomeComponent = (function () {
 	    function HomeComponent() {
-	        this.articles = [
-	            new article_model_1.Article('Angular 2', 'http://angular.io', 'home', '', 3),
-	            new article_model_1.Article('Fullstack', 'http://fullstack.io', 'home', '', 2),
-	            new article_model_1.Article('Angular Homepage', 'http://angular.io', 'home', '', 1),
-	        ];
 	        this.subverseStr = "home";
 	        //based off of subverse load articles from the DB
 	    }
@@ -65350,13 +65344,6 @@
 	        //load articles based off of subverse 
 	        var RouteStr;
 	        console.log("Homeverse");
-	    };
-	    HomeComponent.prototype.addArticle = function (title, link) {
-	        console.log("Adding article title: " + title.value + " and link: " + link.value);
-	        this.articles.push(new article_model_1.Article(title.value, link.value, 'home', '', 0));
-	        title.value = '';
-	        link.value = '';
-	        return false;
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {
 	        return this.articles.sort(function (a, b) { return b.votes - a.votes; });
