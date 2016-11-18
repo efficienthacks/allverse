@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ArticleComponent } from './article/article.component';
 import { SubverseComponent } from './subverse/subverse.component'; 
 import { HomeComponent } from './home/home.component';
+import { ArticlePageComponent } from './articlepage/articlepage.component';
 
 import {RouterModule, Routes} from '@angular/router'
 

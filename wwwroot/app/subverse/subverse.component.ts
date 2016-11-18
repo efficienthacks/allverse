@@ -25,9 +25,9 @@ export class SubverseComponent implements OnInit {
 constructor(private location:Location)
 {
     this.articles = [
-      new Article('Angular 2', 'http://angular.io', 'sub', 3),
-      new Article('Fullstack', 'http://fullstack.io', 'sub', 2),
-      new Article('Angular Homepage', 'http://angular.io', 'sub', 1),
+      new Article('Angular 2', 'http://angular.io', 'sub','', 3),
+      new Article('Fullstack', 'http://fullstack.io', 'sub','', 2),
+      new Article('Angular Homepage', 'http://angular.io', 'sub','', 1),
     ];
 
     this.subverseStr = location.path().split('/')[2]; 
