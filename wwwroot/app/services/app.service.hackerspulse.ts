@@ -44,6 +44,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     SelectedList: Models.List;*/
 
     AddArticle(article: Article) {
+        console.log("AddArticle: title " + article.title); 
         this.postaction(article, this._getArticlePostUrl).subscribe(
             result => {
                 if (!result.haserror) {

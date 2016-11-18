@@ -48,11 +48,9 @@ constructor(private location:Location, private hpService: AppServiceHackersPulse
     console.log(`Adding article title: ${title.value} and link: ${link.value}`);
 
     var a : Article = new Article(title.value, link.value,this.subverseStr,text.value, 0);
-
     this.service.AddArticle(a); 
     this.articles.push(a);
     
-
     title.value = '';
     link.value = '';
     text.value = ''; 

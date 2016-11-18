@@ -48277,8 +48277,9 @@
 	    SubverseComponent.prototype.addArticle = function (title, link, text) {
 	        console.log("Adding article title: " + title.value + " and link: " + link.value);
 	        var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, 0);
-	        this.articles.push(a);
+	        console.log("a.title: " + a.title);
 	        this.service.AddArticle(a);
+	        this.articles.push(a);
 	        title.value = '';
 	        link.value = '';
 	        text.value = '';
@@ -48359,6 +48360,7 @@
 	    SelectedList: Models.List;*/
 	    AppServiceHackersPulse.prototype.AddArticle = function (article) {
 	        var _this = this;
+	        console.log("AddArticle: title " + article.title);
 	        this.postaction(article, this._getArticlePostUrl).subscribe(function (result) {
 	            if (!result.haserror) {
 	                result.element.Articles = new Array();
@@ -48402,20 +48404,23 @@
 	            .catch(this._handleError);
 	    };
 	    HttpHelpers.prototype.postaction = function (param, path) {
-	        var _this = this;
 	        this.errormsg = null;
 	        var body = JSON.stringify(param);
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        return this._http.post(path, body, options)
-	            .map(function (m) {
-	            var jsonresult = m.json();
-	            if (jsonresult.haserror) {
-	                _this.errormsg = jsonresult.errormessage;
-	            }
-	            return jsonresult;
-	        })
-	            .catch(this._handleError);
+	        console.log("body is: " + body);
+	        return this._http.post(path, body, options);
+	        /*
+	            .map(m => {
+	                var jsonresult = <Models.ViewModel.JSONReturnVM<T>>m.json();
+	
+	                if (jsonresult.haserror) {
+	                    this.errormsg = jsonresult.errormessage;
+	                }
+	
+	                return jsonresult;
+	            })
+	            .catch(this._handleError);*/
 	    };
 	    HttpHelpers.prototype._handleError = function (error) {
 	        return Observable_1.Observable.throw(error.text() || 'Server error');

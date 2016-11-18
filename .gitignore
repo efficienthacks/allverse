@@ -251,3 +251,7 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Webpacked files
+bundle.js
+bundle.js.map

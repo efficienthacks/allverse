@@ -25,13 +25,14 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
-        public Int64 Post(ArticleModel article)
+        public Int64 Post([FromBody] ArticleModel article)
         {
             using(IDatabase db = GetDB())
             {
                 db.Insert(article); 
             }
             return article.id; 
+            //return Json(article); 
         }
 
         public List<ArticleModel> Get(string subverse)

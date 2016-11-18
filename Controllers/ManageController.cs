@@ -61,6 +61,28 @@ namespace WebApplication.Controllers
             return View(model);
         }
 
+                [HttpGet]
+        public string GetUserID()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return _userManager.GetUserId(HttpContext.User); 
+            }
+
+            return ""; 
+        }
+
+        [HttpGet]
+        public string GetUserName()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return User.Identity.Name; 
+            }
+
+            return ""; 
+        }
+
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
