@@ -23,16 +23,6 @@
     <script src="js/system.js"></script>
     <!-- 2. Configure SystemJS -->
     <script src="systemjs.config.js"></script>
-
-    
-    <environment names="Development">
-        <script src="~/lib/npmlibs/angular2/router.dev.js"></script>
-    </environment>
-    
-    <environment names="Staging,Production">
-        <script src="~/lib/npmlibs/angular2/router.min.js"></script>
-    </environment>
-
     <script>
       System.import('app').catch(function(err){ console.error(err); });
     </script>
@@ -81,7 +71,5 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
-    @RenderSection("scripts", required: false)
 </body>
 </html>
