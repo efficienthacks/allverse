@@ -1,9 +1,11 @@
 export class Article {
-  id : Number; 
+  id : number; 
+  isanon : boolean; 
   title: string;
   link: string;
   text: string; 
-  subverse : string; 
+  subverse : string;
+  userID : string;  
   votes: number;
 
   constructor(title: string, link: string, subverse : string, text : string, votes?: number) {

@@ -9,23 +9,22 @@ using Npgsql;
 
 namespace WebApplication.Controllers
 {
-    [Route("api/article")]
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true, Duration = -1)]
     public class ArticleController : Controller
     {
-        IConfiguration config; 
-        public ArticleController(IConfiguration config)
+        public ArticleController()
         {
-            this.config = config; 
+            
         }
 
         private IDatabase GetDB()
         {
-            string pgsqlConnStr = config["PostgresConn"];
+            string pgsqlConnStr = Startup.Configuration["PostgresConn"];
             IDatabase db = new Database(new NpgsqlConnection(pgsqlConnStr)); 
             return db; 
         }
 
+        [HttpPost]
         public Int64 Post(ArticleModel article)
         {
             using(IDatabase db = GetDB())

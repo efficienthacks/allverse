@@ -11,6 +11,8 @@ import { ArticlePageComponent } from './articlepage/articlepage.component';
 
 import {RouterModule, Routes} from '@angular/router'
 
+import {AppServiceHackersPulse} from './services/app.service.hackerspulse';
+
 const routes: Routes = [
     { path: '', component : HomeComponent },
     { path: 'r/:id', component : SubverseComponent },
