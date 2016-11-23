@@ -38,14 +38,23 @@ namespace WebApplication.Controllers
         [HttpGet] 
         public JsonResult GetArticles(string subverse)
         {
-            List<ArticleModel> articles = null; 
-            
-            using(IDatabase db = GetDB())
+            try
             {
-                articles = db.Fetch<ArticleModel>(@"select * from article where subverse='"+subverse+"'"); 
+                List<ArticleModel> articles = null; 
+                
+                using(IDatabase db = GetDB())
+                {
+                    articles = db.Fetch<ArticleModel>(@"SELECT * FROM public.article where subverse='"+subverse+"'"); 
+                }
+
+                return Json(articles); 
+            }
+            catch(Exception ex)
+            {
+                throw ex; 
             }
 
-            return Json(articles); 
+            return Json(""); 
         }
 
     }

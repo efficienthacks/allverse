@@ -61,7 +61,13 @@ namespace WebApplication.Controllers
             return View(model);
         }
 
-                [HttpGet]
+        [HttpGet]
+        bool GetUserIsAuthenticated()
+        {
+            return User.Identity.IsAuthenticated; 
+        }
+
+        [HttpGet]
         public string GetUserID()
         {
             if (User.Identity.IsAuthenticated)
