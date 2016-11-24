@@ -20,7 +20,7 @@ namespace WebApplication.Controllers
         private IDatabase GetDB()
         {
             string pgsqlConnStr = Startup.Configuration["PostgresConn"];
-            IDatabase db = new Database(new NpgsqlConnection(pgsqlConnStr)); 
+            IDatabase db = new Database(new NpgsqlConnection(pgsqlConnStr), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
             return db; 
         }
 
@@ -44,7 +44,8 @@ namespace WebApplication.Controllers
                 
                 using(IDatabase db = GetDB())
                 {
-                    articles = db.Fetch<ArticleModel>(@"SELECT * FROM public.article where subverse='"+subverse+"'"); 
+                    string sqlCommand=@"SELECT * FROM public.article where subverse='"+subverse+"'";
+                    articles = db.Fetch<ArticleModel>(sqlCommand); 
                 }
 
                 return Json(articles); 

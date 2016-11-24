@@ -99,7 +99,8 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     GetArticles(subverse : string) : Article[]
     {
-        this.getaction<Article[]>(this._getArticlesUrl).subscribe(
+        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse);
+        this.getaction<Article[]>(this._getArticlesUrl + "/?subverse="+subverse).subscribe(
             result => {
                 this._articles = result;
             },
