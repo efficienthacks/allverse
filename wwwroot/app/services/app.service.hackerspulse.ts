@@ -111,7 +111,8 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private extractData(res: Response) 
     {
         let body = res.json();
-        return body.data || { };
+        console.log("ExtractD: " + body + " bd: " + body.data); 
+        return body;
     }
 
     private handleError (error: Response | any) 

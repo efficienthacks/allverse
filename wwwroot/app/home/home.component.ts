@@ -16,7 +16,8 @@ import {Observable} from 'rxjs/Observable';
   providers: [AppServiceHackersPulse]
 })
 export class HomeComponent implements OnInit {
-    articles : Observable<Article[]>; 
+    articlesO : Observable<Article[]>; 
+    articles : Article[]; 
     subverseStr : string; 
     service : AppServiceHackersPulse; 
 
@@ -32,13 +33,26 @@ constructor(private hpService: AppServiceHackersPulse)
       //load articles based off of subverse 
       var RouteStr : string; 
 
-      console.log("Homeverse");
-      this.articles = this.service.GetArticles(this.subverseStr); 
-      console.log("Article len: " + this.articles.count());
+      console.log("Subverse is: " + this.subverseStr);
+      //this.articlesO = this.service.GetArticles(this.subverseStr); 
+
+      this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
+        console.log("Console log: " + data.toString());
+        this.articles = data; 
+        
+        for (var i = 0; i < this.articles.length; i++)
+        {
+          this.articles[i].log(); 
+        }
+
+        console.log("End"); 
+      });
+
+      
   }
 
   sortedArticles(): Article[] {
-    return this.articles.every(); 
+    return this.articles; 
     //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
   }
 

@@ -48340,6 +48340,9 @@
 	        this.userID = userID;
 	        this.votes = votes || 0;
 	    }
+	    Article.prototype.log = function () {
+	        console.log("Title: " + this.title + " Link: " + this.link + " subverse: " + this.subverse);
+	    };
 	    Article.prototype.voteUp = function () {
 	        this.votes += 1;
 	    };
@@ -48524,7 +48527,8 @@
 	    };
 	    AppServiceHackersPulse.prototype.extractData = function (res) {
 	        var body = res.json();
-	        return body.data || {};
+	        console.log("ExtractD: " + body + " bd: " + body.data);
+	        return body;
 	    };
 	    AppServiceHackersPulse.prototype.handleError = function (error) {
 	        // In a real world app, we might use a remote logging infrastructure
@@ -65540,14 +65544,22 @@
 	        //based off of subverse load articles from the DB
 	    }
 	    HomeComponent.prototype.ngOnInit = function () {
+	        var _this = this;
 	        //load articles based off of subverse 
 	        var RouteStr;
-	        console.log("Homeverse");
-	        this.articles = this.service.GetArticles(this.subverseStr);
-	        console.log("Article len: " + this.articles.count());
+	        console.log("Subverse is: " + this.subverseStr);
+	        //this.articlesO = this.service.GetArticles(this.subverseStr); 
+	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
+	            console.log("Console log: " + data.toString());
+	            _this.articles = data;
+	            for (var i = 0; i < _this.articles.length; i++) {
+	                _this.articles[i].log();
+	            }
+	            console.log("End");
+	        });
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {
-	        return this.articles.every();
+	        return this.articles;
 	        //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
 	    };
 	    HomeComponent = __decorate([

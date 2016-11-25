@@ -17,6 +17,10 @@ export class Article {
     this.votes = votes || 0;
   }
 
+  log() : void{
+    console.log("Title: " + this.title + " Link: " + this.link + " subverse: " + this.subverse); 
+  }
+
   voteUp(): void {
     this.votes += 1;
   }
