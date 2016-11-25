@@ -48343,12 +48343,6 @@
 	    Article.prototype.log = function () {
 	        console.log("Title: " + this.title + " Link: " + this.link + " subverse: " + this.subverse);
 	    };
-	    Article.prototype.voteUp = function () {
-	        this.votes += 1;
-	    };
-	    Article.prototype.voteDown = function () {
-	        this.votes -= 1;
-	    };
 	    Article.prototype.domain = function () {
 	        try {
 	            var link = this.link.split('//')[1];
@@ -48357,6 +48351,12 @@
 	        catch (err) {
 	            return null;
 	        }
+	    };
+	    Article.prototype.voteUp = function () {
+	        this.votes += 1;
+	    };
+	    Article.prototype.voteDown = function () {
+	        this.votes -= 1;
 	    };
 	    return Article;
 	}());
@@ -48392,11 +48392,12 @@
 	        var _this = this;
 	        console.log("Subverse is: " + this.subverseStr);
 	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
+	            console.log("Console log: " + data.toString());
 	            _this.articles = data;
 	        });
-	        this.service.GetUser().subscribe(function (data) {
-	            _this.user = data;
-	        });
+	        //this.service.GetUser().subscribe( (data) => {
+	        //  this.user = data; 
+	        //}); 
 	    };
 	    SubverseComponent.prototype.addArticle = function (title, link, text) {
 	        console.log("Adding article title: " + title.value + " and link: " + link.value);
@@ -48409,7 +48410,8 @@
 	        return false;
 	    };
 	    SubverseComponent.prototype.sortedArticles = function () {
-	        return this.articles.sort(function (a, b) { return b.votes - a.votes; });
+	        return this.articles;
+	        //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
 	    };
 	    SubverseComponent = __decorate([
 	        core_1.Component({
@@ -65505,8 +65507,9 @@
 	        var RouteStr;
 	        console.log("Subverse is: " + this.subverseStr);
 	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
-	            console.log("Console log: " + data.toString());
+	            console.log("CL: " + data.toString());
 	            _this.articles = data;
+	            console.log("Domain is: " + _this.articles[0].domain());
 	        });
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {

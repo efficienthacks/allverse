@@ -21,14 +21,6 @@ export class Article {
     console.log("Title: " + this.title + " Link: " + this.link + " subverse: " + this.subverse); 
   }
 
-  voteUp(): void {
-    this.votes += 1;
-  }
-
-  voteDown(): void {
-    this.votes -= 1;
-  }
-
   domain(): string {
     try {
       const link: string = this.link.split('//')[1];
@@ -37,4 +29,14 @@ export class Article {
       return null;
     }
   }
+
+  voteUp(): void {
+    this.votes += 1;
+  }
+
+  voteDown(): void {
+    this.votes -= 1;
+  }
+
+
 }

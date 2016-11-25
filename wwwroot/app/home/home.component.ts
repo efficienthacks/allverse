@@ -35,8 +35,9 @@ constructor(private hpService: AppServiceHackersPulse)
       console.log("Subverse is: " + this.subverseStr);
     
       this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
-        console.log("Console log: " + data.toString());
-        this.articles = data; 
+        console.log("CL: " + data.toString());
+        this.articles = <Article[]>data; 
+        console.log("Domain is: " + this.articles[0].domain()); 
       });
 
       

@@ -39,12 +39,14 @@ export class SubverseComponent implements OnInit {
       console.log("Subverse is: " + this.subverseStr); 
 
       this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
+        console.log("Console log: " + data.toString());
         this.articles = data; 
       });
 
-      this.service.GetUser().subscribe( (data) => {
-        this.user = data; 
-      }); 
+
+      //this.service.GetUser().subscribe( (data) => {
+      //  this.user = data; 
+      //}); 
   }
 
   addArticle(title: HTMLInputElement, link: HTMLInputElement, text: HTMLInputElement): boolean {
@@ -62,8 +64,9 @@ export class SubverseComponent implements OnInit {
     return false;
   }
   
-    sortedArticles(): Article[] {
-    return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
+  sortedArticles(): Article[] {
+    return this.articles; 
+    //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
   }
 
 }
