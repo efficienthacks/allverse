@@ -28,41 +28,36 @@ export class SubverseComponent implements OnInit {
     service : AppServiceHackersPulse; 
     user : User; 
 
-constructor(private location:Location, private hpService: AppServiceHackersPulse)
-{
-    this.service = hpService; 
+  constructor(private location:Location, private hpService: AppServiceHackersPulse)
+  {
+      this.service = hpService; 
 
-    this.subverseStr = location.path().split('/')[2]; 
-
-    console.log("Get User"); 
-    this.user = this.service.GetUser(); 
-    this.user.log(); 
-    console.log("End get user"); 
-    //this.articles = this.service.GetArticles(this.subverseStr); 
-}
+      this.subverseStr = location.path().split('/')[2]; 
+  }
 
   ngOnInit() {
       console.log("Subverse is: " + this.subverseStr); 
+
+      this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
+        this.articles = data; 
+      });
+
+      this.service.GetUser().subscribe( (data) => {
+        this.user = data; 
+      }); 
   }
 
   addArticle(title: HTMLInputElement, link: HTMLInputElement, text: HTMLInputElement): boolean {
+  
+    console.log(`Adding article title: ${title.value} and link: ${link.value}`);
     
-    if (this.user.isAuthenticated)
-    {
-      console.log(`Adding article title: ${title.value} and link: ${link.value}`);
-      var userID : string = this.service.GetUserID(); 
-      var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,userID,0);
-      this.service.AddArticle(a); 
-      this.articles.push(a);
-      
-      title.value = '';
-      link.value = '';
-      text.value = ''; 
-    }
-    else
-    {
-      console.log("Must be logged in to post articles"); 
-    }
+    var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,this.user.ID,0);
+    this.service.AddArticle(a); 
+    this.articles.push(a);
+    
+    title.value = '';
+    link.value = '';
+    text.value = ''; 
 
     return false;
   }

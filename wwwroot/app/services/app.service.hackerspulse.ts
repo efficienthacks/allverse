@@ -12,16 +12,9 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     private _getArticlePostUrl = 'Article/Post';
     private _getArticlesUrl = 'Article/GetArticles'; 
-    private _getUserIDUrl = 'Manage/GetUserID'; 
-    private _getUserIsAuth = 'Manage/GetUserIsAuthenticated'; 
-    private _getUserNameUrl = 'Manage/GetUserName'; 
+    private _getUserUrl = 'Manage/GetUser';
 
-    //private _todolist: Models.List[];
-    private _articles: Article[]; 
-    private _userID : string; 
-    private _isAuth : boolean; 
-    private _userName : string; 
-    private _user : User; 
+    //private _todolist: Models.List[]; 
     private http : Http; 
 
     constructor(http: Http) {
@@ -53,49 +46,11 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     SelectedList: Models.List;*/
 
-    GetUser() : User
+    GetUser() : Observable<User>
     {
-        this._user = new User(); 
-        
-        this._user.ID = this.GetUserID(); 
-        this._user.isAuthenticated = this.GetUserIsAuthenticated(); 
-        this._user.Name = this.GetUserName(); 
-
-        return this._user; 
-    }
-
-    GetUserIsAuthenticated() : boolean
-    {
-        this.getaction<string>(this._getUserIsAuth).subscribe(
-            result => {
-                this._isAuth = result; 
-            },
-            error => this.errormsg = error
-        );
-
-        return this._isAuth; 
-    }
-
-    GetUserID() : string
-    {
-        this.getaction<string>(this._getUserIDUrl).subscribe(
-            result => {
-                this._userID = result; 
-            },
-            error => this.errormsg = error); 
-
-        return this._userID; 
-    }
-
-    GetUserName() : string
-    {
-        this.getaction<string>(this._getUserNameUrl).subscribe(
-            result => {
-                this._userName = result; 
-            },
-            error => this.errormsg = error); 
-
-        return this._userName; 
+        return this.http.get(this._getUserUrl)
+                    .map(this.extractData)
+                    .catch(this.handleError);
     }
 
     GetArticles(subverse : string) : Observable<Article[]>
@@ -130,14 +85,17 @@ export class AppServiceHackersPulse extends HttpHelpers {
         return Observable.throw(errMsg);
     }
 
-    AddArticle(article: Article) {
+    AddArticle(article: Article) : Article {
         console.log("AddArticle: title " + article.title); 
+        var a : Article; 
         this.postaction(article, this._getArticlePostUrl).subscribe(
             result => {
                 
-                    this._articles.push(article);
+                    a = article; 
                 
-            }, error => this.errormsg = error);
+            }, error => { this.errormsg = error; console.log(this.errormsg);});
+
+            return a; 
     }
 /**\
          this.getaction<Models.List[]>(this._getTodoListUrl).subscribe(

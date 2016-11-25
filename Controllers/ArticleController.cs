@@ -25,14 +25,13 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
-        public Int64 Post([FromBody] ArticleModel article)
+        public JsonResult Post([FromBody] ArticleModel article)
         {
             using(IDatabase db = GetDB())
             {
                 db.Insert(article); 
             }
-            return article.id; 
-            //return Json(article); 
+            return Json(article); 
         }
 
         [HttpGet] 

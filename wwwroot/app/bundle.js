@@ -41768,9 +41768,9 @@
 	var app_component_1 = __webpack_require__(284);
 	var article_component_1 = __webpack_require__(285);
 	var subverse_component_1 = __webpack_require__(287);
-	var home_component_1 = __webpack_require__(615);
-	var articlepage_component_1 = __webpack_require__(616);
-	var router_1 = __webpack_require__(617);
+	var home_component_1 = __webpack_require__(614);
+	var articlepage_component_1 = __webpack_require__(615);
+	var router_1 = __webpack_require__(616);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 'r/:id', component: subverse_component_1.SubverseComponent },
@@ -48387,29 +48387,25 @@
 	        this.hpService = hpService;
 	        this.service = hpService;
 	        this.subverseStr = location.path().split('/')[2];
-	        console.log("Get User");
-	        this.user = this.service.GetUser();
-	        this.user.log();
-	        console.log("End get user");
-	        //this.articles = this.service.GetArticles(this.subverseStr); 
 	    }
 	    SubverseComponent.prototype.ngOnInit = function () {
+	        var _this = this;
 	        console.log("Subverse is: " + this.subverseStr);
+	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
+	            _this.articles = data;
+	        });
+	        this.service.GetUser().subscribe(function (data) {
+	            _this.user = data;
+	        });
 	    };
 	    SubverseComponent.prototype.addArticle = function (title, link, text) {
-	        if (this.user.isAuthenticated) {
-	            console.log("Adding article title: " + title.value + " and link: " + link.value);
-	            var userID = this.service.GetUserID();
-	            var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, userID, 0);
-	            this.service.AddArticle(a);
-	            this.articles.push(a);
-	            title.value = '';
-	            link.value = '';
-	            text.value = '';
-	        }
-	        else {
-	            console.log("Must be logged in to post articles");
-	        }
+	        console.log("Adding article title: " + title.value + " and link: " + link.value);
+	        var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.ID, 0);
+	        this.service.AddArticle(a);
+	        this.articles.push(a);
+	        title.value = '';
+	        link.value = '';
+	        text.value = '';
 	        return false;
 	    };
 	    SubverseComponent.prototype.sortedArticles = function () {
@@ -48455,7 +48451,6 @@
 	var http_1 = __webpack_require__(283);
 	var HttpHelpers_1 = __webpack_require__(289);
 	var Observable_1 = __webpack_require__(260);
-	var user_1 = __webpack_require__(614);
 	__webpack_require__(290);
 	var AppServiceHackersPulse = (function (_super) {
 	    __extends(AppServiceHackersPulse, _super);
@@ -48463,9 +48458,7 @@
 	        _super.call(this, http);
 	        this._getArticlePostUrl = 'Article/Post';
 	        this._getArticlesUrl = 'Article/GetArticles';
-	        this._getUserIDUrl = 'Manage/GetUserID';
-	        this._getUserIsAuth = 'Manage/GetUserIsAuthenticated';
-	        this._getUserNameUrl = 'Manage/GetUserName';
+	        this._getUserUrl = 'Manage/GetUser';
 	        this.http = http;
 	        /*this.getaction<Models.List[]>(this._getTodoListUrl).subscribe(
 	            result => {
@@ -48492,32 +48485,9 @@
 	
 	    SelectedList: Models.List;*/
 	    AppServiceHackersPulse.prototype.GetUser = function () {
-	        this._user = new user_1.User();
-	        this._user.ID = this.GetUserID();
-	        this._user.isAuthenticated = this.GetUserIsAuthenticated();
-	        this._user.Name = this.GetUserName();
-	        return this._user;
-	    };
-	    AppServiceHackersPulse.prototype.GetUserIsAuthenticated = function () {
-	        var _this = this;
-	        this.getaction(this._getUserIsAuth).subscribe(function (result) {
-	            _this._isAuth = result;
-	        }, function (error) { return _this.errormsg = error; });
-	        return this._isAuth;
-	    };
-	    AppServiceHackersPulse.prototype.GetUserID = function () {
-	        var _this = this;
-	        this.getaction(this._getUserIDUrl).subscribe(function (result) {
-	            _this._userID = result;
-	        }, function (error) { return _this.errormsg = error; });
-	        return this._userID;
-	    };
-	    AppServiceHackersPulse.prototype.GetUserName = function () {
-	        var _this = this;
-	        this.getaction(this._getUserNameUrl).subscribe(function (result) {
-	            _this._userName = result;
-	        }, function (error) { return _this.errormsg = error; });
-	        return this._userName;
+	        return this.http.get(this._getUserUrl)
+	            .map(this.extractData)
+	            .catch(this.handleError);
 	    };
 	    AppServiceHackersPulse.prototype.GetArticles = function (subverse) {
 	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse);
@@ -48547,9 +48517,11 @@
 	    AppServiceHackersPulse.prototype.AddArticle = function (article) {
 	        var _this = this;
 	        console.log("AddArticle: title " + article.title);
+	        var a;
 	        this.postaction(article, this._getArticlePostUrl).subscribe(function (result) {
-	            _this._articles.push(article);
-	        }, function (error) { return _this.errormsg = error; });
+	            a = article;
+	        }, function (error) { _this.errormsg = error; console.log(_this.errormsg); });
+	        return a;
 	    };
 	    AppServiceHackersPulse = __decorate([
 	        core_1.Injectable(), 
@@ -65506,22 +65478,6 @@
 
 /***/ },
 /* 614 */
-/***/ function(module, exports) {
-
-	"use strict";
-	var User = (function () {
-	    function User() {
-	    }
-	    User.prototype.log = function () {
-	        console.log("User ID: " + this.ID + " isAuth: " + this.isAuthenticated + " Name: " + this.Name);
-	    };
-	    return User;
-	}());
-	exports.User = User;
-
-
-/***/ },
-/* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65548,14 +65504,9 @@
 	        //load articles based off of subverse 
 	        var RouteStr;
 	        console.log("Subverse is: " + this.subverseStr);
-	        //this.articlesO = this.service.GetArticles(this.subverseStr); 
 	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
 	            console.log("Console log: " + data.toString());
 	            _this.articles = data;
-	            for (var i = 0; i < _this.articles.length; i++) {
-	                _this.articles[i].log();
-	            }
-	            console.log("End");
 	        });
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {
@@ -65580,7 +65531,7 @@
 
 
 /***/ },
-/* 616 */
+/* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65619,7 +65570,7 @@
 
 
 /***/ },
-/* 617 */
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**

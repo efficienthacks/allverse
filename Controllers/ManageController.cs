@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApplication.Models;
+using WebApplication.Models.app; 
 using WebApplication.Models.ManageViewModels;
 using WebApplication.Services;
 
@@ -62,31 +63,13 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        bool GetUserIsAuthenticated()
+        JsonResult GetUser()
         {
-            return User.Identity.IsAuthenticated; 
-        }
-
-        [HttpGet]
-        public string GetUserID()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return _userManager.GetUserId(HttpContext.User); 
-            }
-
-            return ""; 
-        }
-
-        [HttpGet]
-        public string GetUserName()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return User.Identity.Name; 
-            }
-
-            return ""; 
+            var user = new UserModel(); 
+            user.isAuthenticated = User.Identity.IsAuthenticated;
+            user.ID = _userManager.GetUserId(HttpContext.User); 
+            user.Name = User.Identity.Name; 
+            return Json(user); 
         }
 
         //

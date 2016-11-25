@@ -16,7 +16,6 @@ import {Observable} from 'rxjs/Observable';
   providers: [AppServiceHackersPulse]
 })
 export class HomeComponent implements OnInit {
-    articlesO : Observable<Article[]>; 
     articles : Article[]; 
     subverseStr : string; 
     service : AppServiceHackersPulse; 
@@ -34,18 +33,10 @@ constructor(private hpService: AppServiceHackersPulse)
       var RouteStr : string; 
 
       console.log("Subverse is: " + this.subverseStr);
-      //this.articlesO = this.service.GetArticles(this.subverseStr); 
-
+    
       this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
         console.log("Console log: " + data.toString());
         this.articles = data; 
-        
-        for (var i = 0; i < this.articles.length; i++)
-        {
-          this.articles[i].log(); 
-        }
-
-        console.log("End"); 
       });
 
       
