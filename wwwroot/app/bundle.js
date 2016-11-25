@@ -6786,7 +6786,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.0
+	 * @license Angular v2.2.3
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -6954,7 +6954,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v2.2.0
+	 * @license Angular v2.2.3
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -11421,77 +11421,6 @@
 	      return MessageBundle;
 	  }());
 	
-	  /**
-	   * Wraps Javascript Objects
-	   */
-	  var StringMapWrapper = (function () {
-	      function StringMapWrapper() {
-	      }
-	      StringMapWrapper.merge = function (m1, m2) {
-	          var m = {};
-	          for (var _i = 0, _a = Object.keys(m1); _i < _a.length; _i++) {
-	              var k = _a[_i];
-	              m[k] = m1[k];
-	          }
-	          for (var _b = 0, _c = Object.keys(m2); _b < _c.length; _b++) {
-	              var k = _c[_b];
-	              m[k] = m2[k];
-	          }
-	          return m;
-	      };
-	      StringMapWrapper.equals = function (m1, m2) {
-	          var k1 = Object.keys(m1);
-	          var k2 = Object.keys(m2);
-	          if (k1.length != k2.length) {
-	              return false;
-	          }
-	          for (var i = 0; i < k1.length; i++) {
-	              var key = k1[i];
-	              if (m1[key] !== m2[key]) {
-	                  return false;
-	              }
-	          }
-	          return true;
-	      };
-	      return StringMapWrapper;
-	  }());
-	  var ListWrapper = (function () {
-	      function ListWrapper() {
-	      }
-	      ListWrapper.removeAll = function (list, items) {
-	          for (var i = 0; i < items.length; ++i) {
-	              var index = list.indexOf(items[i]);
-	              if (index > -1) {
-	                  list.splice(index, 1);
-	              }
-	          }
-	      };
-	      ListWrapper.remove = function (list, el) {
-	          var index = list.indexOf(el);
-	          if (index > -1) {
-	              list.splice(index, 1);
-	              return true;
-	          }
-	          return false;
-	      };
-	      ListWrapper.equals = function (a, b) {
-	          if (a.length != b.length)
-	              return false;
-	          for (var i = 0; i < a.length; ++i) {
-	              if (a[i] !== b[i])
-	                  return false;
-	          }
-	          return true;
-	      };
-	      ListWrapper.flatten = function (list) {
-	          return list.reduce(function (flat, item) {
-	              var flatItem = Array.isArray(item) ? ListWrapper.flatten(item) : item;
-	              return flat.concat(flatItem);
-	          }, []);
-	      };
-	      return ListWrapper;
-	  }());
-	
 	  var XmlTagDefinition = (function () {
 	      function XmlTagDefinition() {
 	          this.closedByParent = false;
@@ -11770,7 +11699,8 @@
 	      _WriteVisitor.prototype.serialize = function (nodes) {
 	          var _this = this;
 	          this._isInIcu = false;
-	          return ListWrapper.flatten(nodes.map(function (node) { return node.visit(_this); }));
+	          return (_a = []).concat.apply(_a, nodes.map(function (node) { return node.visit(_this); }));
+	          var _a;
 	      };
 	      return _WriteVisitor;
 	  }());
@@ -11965,7 +11895,8 @@
 	      };
 	      _Visitor.prototype.serialize = function (nodes) {
 	          var _this = this;
-	          return ListWrapper.flatten(nodes.map(function (node) { return node.visit(_this); }));
+	          return (_a = []).concat.apply(_a, nodes.map(function (node) { return node.visit(_this); }));
+	          var _a;
 	      };
 	      return _Visitor;
 	  }());
@@ -12183,6 +12114,77 @@
 	          }
 	      };
 	      return I18NHtmlParser;
+	  }());
+	
+	  /**
+	   * Wraps Javascript Objects
+	   */
+	  var StringMapWrapper = (function () {
+	      function StringMapWrapper() {
+	      }
+	      StringMapWrapper.merge = function (m1, m2) {
+	          var m = {};
+	          for (var _i = 0, _a = Object.keys(m1); _i < _a.length; _i++) {
+	              var k = _a[_i];
+	              m[k] = m1[k];
+	          }
+	          for (var _b = 0, _c = Object.keys(m2); _b < _c.length; _b++) {
+	              var k = _c[_b];
+	              m[k] = m2[k];
+	          }
+	          return m;
+	      };
+	      StringMapWrapper.equals = function (m1, m2) {
+	          var k1 = Object.keys(m1);
+	          var k2 = Object.keys(m2);
+	          if (k1.length != k2.length) {
+	              return false;
+	          }
+	          for (var i = 0; i < k1.length; i++) {
+	              var key = k1[i];
+	              if (m1[key] !== m2[key]) {
+	                  return false;
+	              }
+	          }
+	          return true;
+	      };
+	      return StringMapWrapper;
+	  }());
+	  var ListWrapper = (function () {
+	      function ListWrapper() {
+	      }
+	      ListWrapper.removeAll = function (list, items) {
+	          for (var i = 0; i < items.length; ++i) {
+	              var index = list.indexOf(items[i]);
+	              if (index > -1) {
+	                  list.splice(index, 1);
+	              }
+	          }
+	      };
+	      ListWrapper.remove = function (list, el) {
+	          var index = list.indexOf(el);
+	          if (index > -1) {
+	              list.splice(index, 1);
+	              return true;
+	          }
+	          return false;
+	      };
+	      ListWrapper.equals = function (a, b) {
+	          if (a.length != b.length)
+	              return false;
+	          for (var i = 0; i < a.length; ++i) {
+	              if (a[i] !== b[i])
+	                  return false;
+	          }
+	          return true;
+	      };
+	      ListWrapper.flatten = function (list) {
+	          return list.reduce(function (flat, item) {
+	              var flatItem = Array.isArray(item) ? ListWrapper.flatten(item) : item;
+	              return flat.concat(flatItem);
+	          }, []);
+	      };
+	      return ListWrapper;
 	  }());
 	
 	  var _SELECTOR_REGEXP = new RegExp('(\\:not\\()|' +
@@ -13040,7 +13042,7 @@
 	              exportedModules: this.exportedModules,
 	              exportedDirectives: this.exportedDirectives,
 	              exportedPipes: this.exportedPipes,
-	              loadingPromises: this.transitiveModule.loadingPromises
+	              directiveLoaders: this.transitiveModule.directiveLoaders
 	          };
 	      };
 	      CompileNgModuleMetadata.prototype.toInjectorSummary = function () {
@@ -13060,20 +13062,20 @@
 	              exportedDirectives: this.exportedDirectives,
 	              exportedPipes: this.exportedPipes,
 	              exportedModules: this.exportedModules,
-	              loadingPromises: this.transitiveModule.loadingPromises
+	              directiveLoaders: this.transitiveModule.directiveLoaders
 	          };
 	      };
 	      return CompileNgModuleMetadata;
 	  }());
 	  var TransitiveCompileNgModuleMetadata = (function () {
-	      function TransitiveCompileNgModuleMetadata(modules, providers, entryComponents, directives, pipes, loadingPromises) {
+	      function TransitiveCompileNgModuleMetadata(modules, providers, entryComponents, directives, pipes, directiveLoaders) {
 	          var _this = this;
 	          this.modules = modules;
 	          this.providers = providers;
 	          this.entryComponents = entryComponents;
 	          this.directives = directives;
 	          this.pipes = pipes;
-	          this.loadingPromises = loadingPromises;
+	          this.directiveLoaders = directiveLoaders;
 	          this.directivesSet = new Set();
 	          this.pipesSet = new Set();
 	          directives.forEach(function (dir) { return _this.directivesSet.add(dir.reference); });
@@ -16463,7 +16465,9 @@
 	  var _ANIMATION_START_STATE_STYLES_VAR = variable('startStateStyles');
 	  var _ANIMATION_END_STATE_STYLES_VAR = variable('endStateStyles');
 	  var _ANIMATION_COLLECTED_STYLES = variable('collectedStyles');
-	  var EMPTY_MAP = literalMap([]);
+	  var _PREVIOUS_ANIMATION_PLAYERS = variable('previousPlayers');
+	  var _EMPTY_MAP = literalMap([]);
+	  var _EMPTY_ARRAY = literalArr([]);
 	  var _AnimationBuilder = (function () {
 	      function _AnimationBuilder(animationName, factoryName) {
 	          this.animationName = animationName;
@@ -16514,10 +16518,15 @@
 	      };
 	      /** @internal */
 	      _AnimationBuilder.prototype._callAnimateMethod = function (ast, startingStylesExpr, keyframesExpr, context) {
+	          var previousStylesValue = _EMPTY_ARRAY;
+	          if (context.isExpectingFirstAnimateStep) {
+	              previousStylesValue = _PREVIOUS_ANIMATION_PLAYERS;
+	              context.isExpectingFirstAnimateStep = false;
+	          }
 	          context.totalTransitionTime += ast.duration + ast.delay;
 	          return _ANIMATION_FACTORY_RENDERER_VAR.callMethod('animate', [
 	              _ANIMATION_FACTORY_ELEMENT_VAR, startingStylesExpr, keyframesExpr, literal(ast.duration),
-	              literal(ast.delay), literal(ast.easing)
+	              literal(ast.delay), literal(ast.easing), previousStylesValue
 	          ]);
 	      };
 	      _AnimationBuilder.prototype.visitAnimationSequence = function (ast, context) {
@@ -16547,6 +16556,7 @@
 	          }
 	          context.totalTransitionTime = 0;
 	          context.isExpectingFirstStyleStep = true;
+	          context.isExpectingFirstAnimateStep = true;
 	          var stateChangePreconditions = [];
 	          ast.stateChanges.forEach(function (stateChange) {
 	              stateChangePreconditions.push(_compareToAnimationStateExpr(_ANIMATION_CURRENT_STATE_VAR, stateChange.fromState)
@@ -16572,13 +16582,13 @@
 	          // this should always be defined even if the user overrides it
 	          context.stateMap.registerState(DEFAULT_STATE, {});
 	          var statements = [];
-	          statements.push(_ANIMATION_FACTORY_VIEW_CONTEXT
-	              .callMethod('cancelActiveAnimation', [
+	          statements.push(_PREVIOUS_ANIMATION_PLAYERS
+	              .set(_ANIMATION_FACTORY_VIEW_CONTEXT.callMethod('getAnimationPlayers', [
 	              _ANIMATION_FACTORY_ELEMENT_VAR, literal(this.animationName),
 	              _ANIMATION_NEXT_STATE_VAR.equals(literal(EMPTY_ANIMATION_STATE))
-	          ])
-	              .toStmt());
-	          statements.push(_ANIMATION_COLLECTED_STYLES.set(EMPTY_MAP).toDeclStmt());
+	          ]))
+	              .toDeclStmt());
+	          statements.push(_ANIMATION_COLLECTED_STYLES.set(_EMPTY_MAP).toDeclStmt());
 	          statements.push(_ANIMATION_PLAYER_VAR.set(NULL_EXPR).toDeclStmt());
 	          statements.push(_ANIMATION_TIME_VAR.set(literal(0)).toDeclStmt());
 	          statements.push(_ANIMATION_DEFAULT_STATE_VAR.set(this._statesMapVar.key(literal(DEFAULT_STATE)))
@@ -16590,16 +16600,6 @@
 	              .toDeclStmt());
 	          statements.push(new IfStmt(_ANIMATION_END_STATE_STYLES_VAR.equals(NULL_EXPR), [_ANIMATION_END_STATE_STYLES_VAR.set(_ANIMATION_DEFAULT_STATE_VAR).toStmt()]));
 	          var RENDER_STYLES_FN = importExpr(resolveIdentifier(Identifiers.renderStyles));
-	          // before we start any animation we want to clear out the starting
-	          // styles from the element's style property (since they were placed
-	          // there at the end of the last animation
-	          statements.push(RENDER_STYLES_FN
-	              .callFn([
-	              _ANIMATION_FACTORY_ELEMENT_VAR, _ANIMATION_FACTORY_RENDERER_VAR,
-	              importExpr(resolveIdentifier(Identifiers.clearStyles))
-	                  .callFn([_ANIMATION_START_STATE_STYLES_VAR])
-	          ])
-	              .toStmt());
 	          ast.stateTransitions.forEach(function (transAst) { return statements.push(transAst.visit(_this, context)); });
 	          // this check ensures that the animation factory always returns a player
 	          // so that the onDone callback can be used for tracking
@@ -16623,6 +16623,20 @@
 	                  ])
 	                      .toStmt()
 	              ])])
+	              .toStmt());
+	          statements.push(importExpr(resolveIdentifier(Identifiers.AnimationSequencePlayer))
+	              .instantiate([_PREVIOUS_ANIMATION_PLAYERS])
+	              .callMethod('destroy', [])
+	              .toStmt());
+	          // before we start any animation we want to clear out the starting
+	          // styles from the element's style property (since they were placed
+	          // there at the end of the last animation
+	          statements.push(RENDER_STYLES_FN
+	              .callFn([
+	              _ANIMATION_FACTORY_ELEMENT_VAR, _ANIMATION_FACTORY_RENDERER_VAR,
+	              importExpr(resolveIdentifier(Identifiers.clearStyles))
+	                  .callFn([_ANIMATION_START_STATE_STYLES_VAR])
+	          ])
 	              .toStmt());
 	          statements.push(_ANIMATION_FACTORY_VIEW_CONTEXT
 	              .callMethod('queueAnimation', [
@@ -16648,7 +16662,7 @@
 	          var lookupMap = [];
 	          Object.keys(context.stateMap.states).forEach(function (stateName) {
 	              var value = context.stateMap.states[stateName];
-	              var variableValue = EMPTY_MAP;
+	              var variableValue = _EMPTY_MAP;
 	              if (isPresent(value)) {
 	                  var styleMap_1 = [];
 	                  Object.keys(value).forEach(function (key) { styleMap_1.push([key, literal(value[key])]); });
@@ -16667,6 +16681,7 @@
 	          this.stateMap = new _AnimationBuilderStateMap();
 	          this.endStateAnimateStep = null;
 	          this.isExpectingFirstStyleStep = false;
+	          this.isExpectingFirstAnimateStep = false;
 	          this.totalTransitionTime = 0;
 	      }
 	      return _AnimationBuilderContext;
@@ -19637,9 +19652,24 @@
 	  }());
 	  // Returns all the source files and a mapping from modules to directives
 	  function analyzeNgModules(programStaticSymbols, options, metadataResolver) {
-	      return _loadNgModules(programStaticSymbols, options, metadataResolver).then(_analyzeNgModules);
+	      var _a = _createNgModules(programStaticSymbols, options, metadataResolver), ngModules = _a.ngModules, symbolsMissingModule = _a.symbolsMissingModule;
+	      return _analyzeNgModules(ngModules, symbolsMissingModule);
 	  }
-	  function _analyzeNgModules(ngModuleMetas) {
+	  function analyzeAndValidateNgModules(programStaticSymbols, options, metadataResolver) {
+	      var result = analyzeNgModules(programStaticSymbols, options, metadataResolver);
+	      if (result.symbolsMissingModule && result.symbolsMissingModule.length) {
+	          var messages = result.symbolsMissingModule.map(function (s) { return ("Cannot determine the module for class " + s.name + " in " + s.filePath + "!"); });
+	          throw new Error(messages.join('\n'));
+	      }
+	      return result;
+	  }
+	  // Wait for the directives in the given modules have been loaded
+	  function loadNgModuleDirectives(ngModules) {
+	      return Promise
+	          .all(ListWrapper.flatten(ngModules.map(function (ngModule) { return ngModule.transitiveModule.directiveLoaders.map(function (loader) { return loader(); }); })))
+	          .then(function () { });
+	  }
+	  function _analyzeNgModules(ngModuleMetas, symbolsMissingModule) {
 	      var moduleMetasByRef = new Map();
 	      ngModuleMetas.forEach(function (ngModule) { return moduleMetasByRef.set(ngModule.type.reference, ngModule); });
 	      var ngModuleByPipeOrDirective = new Map();
@@ -19677,6 +19707,7 @@
 	          ngModuleByPipeOrDirective: ngModuleByPipeOrDirective,
 	          // list modules and directives for every source file
 	          files: files,
+	          ngModules: ngModuleMetas, symbolsMissingModule: symbolsMissingModule
 	      };
 	  }
 	  var OfflineCompiler = (function () {
@@ -19696,9 +19727,8 @@
 	      OfflineCompiler.prototype.clearCache = function () { this._metadataResolver.clearCache(); };
 	      OfflineCompiler.prototype.compileModules = function (staticSymbols, options) {
 	          var _this = this;
-	          return analyzeNgModules(staticSymbols, options, this._metadataResolver)
-	              .then(function (_a) {
-	              var ngModuleByPipeOrDirective = _a.ngModuleByPipeOrDirective, files = _a.files;
+	          var _a = analyzeAndValidateNgModules(staticSymbols, options, this._metadataResolver), ngModuleByPipeOrDirective = _a.ngModuleByPipeOrDirective, files = _a.files, ngModules = _a.ngModules;
+	          return loadNgModuleDirectives(ngModules).then(function () {
 	              var sourceModules = files.map(function (file) { return _this._compileSrcFile(file.srcUrl, ngModuleByPipeOrDirective, file.directives, file.ngModules); });
 	              return ListWrapper.flatten(sourceModules);
 	          });
@@ -19858,19 +19888,17 @@
 	  // Load the NgModules and check
 	  // that all directives / pipes that are present in the program
 	  // are also declared by a module.
-	  function _loadNgModules(programStaticSymbols, options, metadataResolver) {
+	  function _createNgModules(programStaticSymbols, options, metadataResolver) {
 	      var ngModules = new Map();
 	      var programPipesAndDirectives = [];
 	      var ngModulePipesAndDirective = new Set();
-	      var loadingPromises = [];
 	      var addNgModule = function (staticSymbol) {
 	          if (ngModules.has(staticSymbol)) {
 	              return false;
 	          }
-	          var _a = metadataResolver.loadNgModuleMetadata(staticSymbol, false, false), ngModule = _a.ngModule, loading = _a.loading;
+	          var ngModule = metadataResolver.getUnloadedNgModuleMetadata(staticSymbol, false, false);
 	          if (ngModule) {
 	              ngModules.set(ngModule.type.reference, ngModule);
-	              loadingPromises.push(loading);
 	              ngModule.declaredDirectives.forEach(function (dir) { return ngModulePipesAndDirective.add(dir.reference); });
 	              ngModule.declaredPipes.forEach(function (pipe) { return ngModulePipesAndDirective.add(pipe.reference); });
 	              if (options.transitiveModules) {
@@ -19888,11 +19916,7 @@
 	      });
 	      // Throw an error if any of the program pipe or directives is not declared by a module
 	      var symbolsMissingModule = programPipesAndDirectives.filter(function (s) { return !ngModulePipesAndDirective.has(s); });
-	      if (symbolsMissingModule.length) {
-	          var messages = symbolsMissingModule.map(function (s) { return ("Cannot determine the module for class " + s.name + " in " + s.filePath + "!"); });
-	          throw new Error(messages.join('\n'));
-	      }
-	      return Promise.all(loadingPromises).then(function () { return Array.from(ngModules.values()); });
+	      return { ngModules: Array.from(ngModules.values()), symbolsMissingModule: symbolsMissingModule };
 	  }
 	
 	  var StylesCollectionEntry = (function () {
@@ -21374,87 +21398,41 @@
 	              return;
 	          }
 	          directiveType = _angular_core.resolveForwardRef(directiveType);
-	          var dirMeta = this._directiveResolver.resolve(directiveType);
-	          if (!dirMeta) {
-	              return null;
-	          }
-	          var moduleUrl = staticTypeModuleUrl(directiveType);
-	          var createDirectiveMetadata = function (templateMeta) {
-	              var changeDetectionStrategy = null;
-	              var viewProviders = [];
-	              var entryComponentMetadata = [];
-	              var selector = dirMeta.selector;
-	              if (dirMeta instanceof _angular_core.Component) {
-	                  // Component
-	                  changeDetectionStrategy = dirMeta.changeDetection;
-	                  if (dirMeta.viewProviders) {
-	                      viewProviders = _this._getProvidersMetadata(dirMeta.viewProviders, entryComponentMetadata, "viewProviders for \"" + stringify(directiveType) + "\"");
-	                  }
-	                  if (dirMeta.entryComponents) {
-	                      entryComponentMetadata =
-	                          flattenAndDedupeArray(dirMeta.entryComponents)
-	                              .map(function (type) { return _this._getIdentifierMetadata(type, staticTypeModuleUrl(type)); })
-	                              .concat(entryComponentMetadata);
-	                  }
-	                  if (!selector) {
-	                      selector = _this._schemaRegistry.getDefaultComponentElementName();
-	                  }
-	              }
-	              else {
-	                  // Directive
-	                  if (!selector) {
-	                      throw new Error("Directive " + stringify(directiveType) + " has no selector, please add it!");
-	                  }
-	              }
-	              var providers = [];
-	              if (isPresent(dirMeta.providers)) {
-	                  providers = _this._getProvidersMetadata(dirMeta.providers, entryComponentMetadata, "providers for \"" + stringify(directiveType) + "\"");
-	              }
-	              var queries = [];
-	              var viewQueries = [];
-	              if (isPresent(dirMeta.queries)) {
-	                  queries = _this._getQueriesMetadata(dirMeta.queries, false, directiveType);
-	                  viewQueries = _this._getQueriesMetadata(dirMeta.queries, true, directiveType);
-	              }
-	              var meta = CompileDirectiveMetadata.create({
-	                  selector: selector,
-	                  exportAs: dirMeta.exportAs,
-	                  isComponent: !!templateMeta,
-	                  type: _this._getTypeMetadata(directiveType, moduleUrl),
-	                  template: templateMeta,
-	                  changeDetection: changeDetectionStrategy,
-	                  inputs: dirMeta.inputs,
-	                  outputs: dirMeta.outputs,
-	                  host: dirMeta.host,
-	                  providers: providers,
-	                  viewProviders: viewProviders,
-	                  queries: queries,
-	                  viewQueries: viewQueries,
-	                  entryComponents: entryComponentMetadata
+	          var nonNormalizedMetadata = this.getNonNormalizedDirectiveMetadata(directiveType);
+	          var createDirectiveMetadata = function (templateMetadata) {
+	              var normalizedDirMeta = new CompileDirectiveMetadata({
+	                  type: nonNormalizedMetadata.type,
+	                  isComponent: nonNormalizedMetadata.isComponent,
+	                  selector: nonNormalizedMetadata.selector,
+	                  exportAs: nonNormalizedMetadata.exportAs,
+	                  changeDetection: nonNormalizedMetadata.changeDetection,
+	                  inputs: nonNormalizedMetadata.inputs,
+	                  outputs: nonNormalizedMetadata.outputs,
+	                  hostListeners: nonNormalizedMetadata.hostListeners,
+	                  hostProperties: nonNormalizedMetadata.hostProperties,
+	                  hostAttributes: nonNormalizedMetadata.hostAttributes,
+	                  providers: nonNormalizedMetadata.providers,
+	                  viewProviders: nonNormalizedMetadata.viewProviders,
+	                  queries: nonNormalizedMetadata.queries,
+	                  viewQueries: nonNormalizedMetadata.viewQueries,
+	                  entryComponents: nonNormalizedMetadata.entryComponents,
+	                  template: templateMetadata
 	              });
-	              _this._directiveCache.set(directiveType, meta);
-	              _this._directiveSummaryCache.set(directiveType, meta.toSummary());
-	              return meta;
+	              _this._directiveCache.set(directiveType, normalizedDirMeta);
+	              _this._directiveSummaryCache.set(directiveType, normalizedDirMeta.toSummary());
+	              return normalizedDirMeta;
 	          };
-	          if (dirMeta instanceof _angular_core.Component) {
-	              // component
-	              moduleUrl = componentModuleUrl(this._reflector, directiveType, dirMeta);
-	              assertArrayOfStrings('styles', dirMeta.styles);
-	              assertArrayOfStrings('styleUrls', dirMeta.styleUrls);
-	              assertInterpolationSymbols('interpolation', dirMeta.interpolation);
-	              var animations = dirMeta.animations ?
-	                  dirMeta.animations.map(function (e) { return _this.getAnimationEntryMetadata(e); }) :
-	                  null;
+	          if (nonNormalizedMetadata.isComponent) {
 	              var templateMeta = this._directiveNormalizer.normalizeTemplate({
 	                  componentType: directiveType,
-	                  moduleUrl: moduleUrl,
-	                  encapsulation: dirMeta.encapsulation,
-	                  template: dirMeta.template,
-	                  templateUrl: dirMeta.templateUrl,
-	                  styles: dirMeta.styles,
-	                  styleUrls: dirMeta.styleUrls,
-	                  animations: animations,
-	                  interpolation: dirMeta.interpolation
+	                  moduleUrl: nonNormalizedMetadata.type.moduleUrl,
+	                  encapsulation: nonNormalizedMetadata.template.encapsulation,
+	                  template: nonNormalizedMetadata.template.template,
+	                  templateUrl: nonNormalizedMetadata.template.templateUrl,
+	                  styles: nonNormalizedMetadata.template.styles,
+	                  styleUrls: nonNormalizedMetadata.template.styleUrls,
+	                  animations: nonNormalizedMetadata.template.animations,
+	                  interpolation: nonNormalizedMetadata.template.interpolation
 	              });
 	              if (templateMeta.syncResult) {
 	                  createDirectiveMetadata(templateMeta.syncResult);
@@ -21472,6 +21450,87 @@
 	              createDirectiveMetadata(null);
 	              return null;
 	          }
+	      };
+	      CompileMetadataResolver.prototype.getNonNormalizedDirectiveMetadata = function (directiveType) {
+	          var _this = this;
+	          directiveType = _angular_core.resolveForwardRef(directiveType);
+	          var dirMeta = this._directiveResolver.resolve(directiveType);
+	          if (!dirMeta) {
+	              return null;
+	          }
+	          var moduleUrl = staticTypeModuleUrl(directiveType);
+	          var nonNormalizedTemplateMetadata;
+	          if (dirMeta instanceof _angular_core.Component) {
+	              // component
+	              moduleUrl = componentModuleUrl(this._reflector, directiveType, dirMeta);
+	              assertArrayOfStrings('styles', dirMeta.styles);
+	              assertArrayOfStrings('styleUrls', dirMeta.styleUrls);
+	              assertInterpolationSymbols('interpolation', dirMeta.interpolation);
+	              var animations = dirMeta.animations ?
+	                  dirMeta.animations.map(function (e) { return _this.getAnimationEntryMetadata(e); }) :
+	                  null;
+	              nonNormalizedTemplateMetadata = new CompileTemplateMetadata({
+	                  encapsulation: dirMeta.encapsulation,
+	                  template: dirMeta.template,
+	                  templateUrl: dirMeta.templateUrl,
+	                  styles: dirMeta.styles,
+	                  styleUrls: dirMeta.styleUrls,
+	                  animations: animations,
+	                  interpolation: dirMeta.interpolation
+	              });
+	          }
+	          var changeDetectionStrategy = null;
+	          var viewProviders = [];
+	          var entryComponentMetadata = [];
+	          var selector = dirMeta.selector;
+	          if (dirMeta instanceof _angular_core.Component) {
+	              // Component
+	              changeDetectionStrategy = dirMeta.changeDetection;
+	              if (dirMeta.viewProviders) {
+	                  viewProviders = this._getProvidersMetadata(dirMeta.viewProviders, entryComponentMetadata, "viewProviders for \"" + stringify(directiveType) + "\"");
+	              }
+	              if (dirMeta.entryComponents) {
+	                  entryComponentMetadata =
+	                      flattenAndDedupeArray(dirMeta.entryComponents)
+	                          .map(function (type) { return _this._getIdentifierMetadata(type, staticTypeModuleUrl(type)); })
+	                          .concat(entryComponentMetadata);
+	              }
+	              if (!selector) {
+	                  selector = this._schemaRegistry.getDefaultComponentElementName();
+	              }
+	          }
+	          else {
+	              // Directive
+	              if (!selector) {
+	                  throw new Error("Directive " + stringify(directiveType) + " has no selector, please add it!");
+	              }
+	          }
+	          var providers = [];
+	          if (isPresent(dirMeta.providers)) {
+	              providers = this._getProvidersMetadata(dirMeta.providers, entryComponentMetadata, "providers for \"" + stringify(directiveType) + "\"");
+	          }
+	          var queries = [];
+	          var viewQueries = [];
+	          if (isPresent(dirMeta.queries)) {
+	              queries = this._getQueriesMetadata(dirMeta.queries, false, directiveType);
+	              viewQueries = this._getQueriesMetadata(dirMeta.queries, true, directiveType);
+	          }
+	          return CompileDirectiveMetadata.create({
+	              selector: selector,
+	              exportAs: dirMeta.exportAs,
+	              isComponent: !!nonNormalizedTemplateMetadata,
+	              type: this._getTypeMetadata(directiveType, moduleUrl),
+	              template: nonNormalizedTemplateMetadata,
+	              changeDetection: changeDetectionStrategy,
+	              inputs: dirMeta.inputs,
+	              outputs: dirMeta.outputs,
+	              host: dirMeta.host,
+	              providers: providers,
+	              viewProviders: viewProviders,
+	              queries: queries,
+	              viewQueries: viewQueries,
+	              entryComponents: entryComponentMetadata
+	          });
 	      };
 	      /**
 	       * Gets the metadata for the given directive.
@@ -21519,8 +21578,17 @@
 	      CompileMetadataResolver.prototype.loadNgModuleMetadata = function (moduleType, isSync, throwIfNotFound) {
 	          if (throwIfNotFound === void 0) { throwIfNotFound = true; }
 	          var ngModule = this._loadNgModuleMetadata(moduleType, isSync, throwIfNotFound);
-	          var loading = ngModule ? Promise.all(ngModule.transitiveModule.loadingPromises) : Promise.resolve(null);
+	          var loading = ngModule ?
+	              Promise.all(ngModule.transitiveModule.directiveLoaders.map(function (loader) { return loader(); })) :
+	              Promise.resolve(null);
 	          return { ngModule: ngModule, loading: loading };
+	      };
+	      /**
+	       * Get the NgModule metadata without loading the directives.
+	       */
+	      CompileMetadataResolver.prototype.getUnloadedNgModuleMetadata = function (moduleType, isSync, throwIfNotFound) {
+	          if (throwIfNotFound === void 0) { throwIfNotFound = true; }
+	          return this._loadNgModuleMetadata(moduleType, isSync, throwIfNotFound);
 	      };
 	      CompileMetadataResolver.prototype._loadNgModuleMetadata = function (moduleType, isSync, throwIfNotFound) {
 	          var _this = this;
@@ -21596,10 +21664,7 @@
 	                      transitiveModule.directives.push(declaredIdentifier);
 	                      declaredDirectives.push(declaredIdentifier);
 	                      _this._addTypeToModule(declaredType, moduleType);
-	                      var loadingPromise = _this._loadDirectiveMetadata(declaredType, isSync);
-	                      if (loadingPromise) {
-	                          transitiveModule.loadingPromises.push(loadingPromise);
-	                      }
+	                      transitiveModule.directiveLoaders.push(function () { return _this._loadDirectiveMetadata(declaredType, isSync); });
 	                  }
 	                  else if (_this._pipeResolver.isPipe(declaredType)) {
 	                      transitiveModule.pipesSet.add(declaredType);
@@ -21702,8 +21767,8 @@
 	          var transitiveExportedModules = getTransitiveExportedModules(importedModules);
 	          var directives = flattenArray(transitiveExportedModules.map(function (ngModule) { return ngModule.exportedDirectives; }));
 	          var pipes = flattenArray(transitiveExportedModules.map(function (ngModule) { return ngModule.exportedPipes; }));
-	          var loadingPromises = ListWrapper.flatten(transitiveExportedModules.map(function (ngModule) { return ngModule.loadingPromises; }));
-	          return new TransitiveCompileNgModuleMetadata(transitiveModules, providers, entryComponents, directives, pipes, loadingPromises);
+	          var directiveLoaders = ListWrapper.flatten(transitiveExportedModules.map(function (ngModule) { return ngModule.directiveLoaders; }));
+	          return new TransitiveCompileNgModuleMetadata(transitiveModules, providers, entryComponents, directives, pipes, directiveLoaders);
 	      };
 	      CompileMetadataResolver.prototype._getIdentifierMetadata = function (type, moduleUrl) {
 	          type = _angular_core.resolveForwardRef(type);
@@ -21748,19 +21813,24 @@
 	          }
 	          return pipeSummary;
 	      };
+	      CompileMetadataResolver.prototype.getOrLoadPipeMetadata = function (pipeType) {
+	          var pipeMeta = this._pipeCache.get(pipeType);
+	          if (!pipeMeta) {
+	              pipeMeta = this._loadPipeMetadata(pipeType);
+	          }
+	          return pipeMeta;
+	      };
 	      CompileMetadataResolver.prototype._loadPipeMetadata = function (pipeType) {
 	          pipeType = _angular_core.resolveForwardRef(pipeType);
-	          var pipeMeta = this._pipeResolver.resolve(pipeType);
-	          if (!pipeMeta) {
-	              return null;
-	          }
-	          var meta = new CompilePipeMetadata({
+	          var pipeAnnotation = this._pipeResolver.resolve(pipeType);
+	          var pipeMeta = new CompilePipeMetadata({
 	              type: this._getTypeMetadata(pipeType, staticTypeModuleUrl(pipeType)),
-	              name: pipeMeta.name,
-	              pure: pipeMeta.pure
+	              name: pipeAnnotation.name,
+	              pure: pipeAnnotation.pure
 	          });
-	          this._pipeCache.set(pipeType, meta);
-	          this._pipeSummaryCache.set(pipeType, meta.toSummary());
+	          this._pipeCache.set(pipeType, pipeMeta);
+	          this._pipeSummaryCache.set(pipeType, pipeMeta.toSummary());
+	          return pipeMeta;
 	      };
 	      CompileMetadataResolver.prototype._getDependenciesMetadata = function (typeOrFunc, dependencies) {
 	          var _this = this;
@@ -25279,6 +25349,8 @@
 	  exports.ProviderMeta = ProviderMeta;
 	  exports.SourceModule = SourceModule;
 	  exports.analyzeNgModules = analyzeNgModules;
+	  exports.analyzeAndValidateNgModules = analyzeAndValidateNgModules;
+	  exports.loadNgModuleDirectives = loadNgModuleDirectives;
 	  exports.OfflineCompiler = OfflineCompiler;
 	  exports.createUrlResolverWithoutPackagePrefix = createUrlResolverWithoutPackagePrefix;
 	  exports.createOfflineCompileUrlResolver = createOfflineCompileUrlResolver;
@@ -25339,7 +25411,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.0
+	 * @license Angular v2.2.3
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -26944,8 +27016,11 @@
 	                return type.parameters;
 	            }
 	            // API of tsickle for lowering decorators to properties on the class.
-	            if (type.ctorParameters) {
-	                var ctorParameters = type.ctorParameters;
+	            var tsickleCtorParams = type.ctorParameters;
+	            if (tsickleCtorParams) {
+	                // Newer tsickle uses a function closure
+	                // Retain the non-function case for compatibility with older tsickle
+	                var ctorParameters = typeof tsickleCtorParams === 'function' ? tsickleCtorParams() : tsickleCtorParams;
 	                var paramTypes = ctorParameters.map(function (ctorParam) { return ctorParam && ctorParam.type; });
 	                var paramAnnotations = ctorParameters.map(function (ctorParam) {
 	                    return ctorParam && convertTsickleDecoratorIntoMetadata(ctorParam.decorators);
@@ -27159,7 +27234,7 @@
 	            /**
 	             * Factory function which can return an instance of an object represented by a key.
 	             */
-	            factory,
+	            factory, 
 	            /**
 	             * Arguments (dependencies) to the `factory` function.
 	             */
@@ -33018,7 +33093,7 @@
 	            this._finished = false;
 	            this._started = false;
 	        };
-	        AnimationGroupPlayer.prototype.setPosition = function (p /** TODO #9100 */) {
+	        AnimationGroupPlayer.prototype.setPosition = function (p) {
 	            this._players.forEach(function (player) { player.setPosition(p); });
 	        };
 	        AnimationGroupPlayer.prototype.getPosition = function () {
@@ -33029,6 +33104,11 @@
 	            });
 	            return min;
 	        };
+	        Object.defineProperty(AnimationGroupPlayer.prototype, "players", {
+	            get: function () { return this._players; },
+	            enumerable: true,
+	            configurable: true
+	        });
 	        return AnimationGroupPlayer;
 	    }());
 	
@@ -33091,7 +33171,7 @@
 	        NoOpAnimationPlayer.prototype.finish = function () { this._onFinish(); };
 	        NoOpAnimationPlayer.prototype.destroy = function () { };
 	        NoOpAnimationPlayer.prototype.reset = function () { };
-	        NoOpAnimationPlayer.prototype.setPosition = function (p /** TODO #9100 */) { };
+	        NoOpAnimationPlayer.prototype.setPosition = function (p) { };
 	        NoOpAnimationPlayer.prototype.getPosition = function () { return 0; };
 	        return NoOpAnimationPlayer;
 	    }());
@@ -33178,8 +33258,13 @@
 	                this._activePlayer = new NoOpAnimationPlayer();
 	            }
 	        };
-	        AnimationSequencePlayer.prototype.setPosition = function (p /** TODO #9100 */) { this._players[0].setPosition(p); };
+	        AnimationSequencePlayer.prototype.setPosition = function (p) { this._players[0].setPosition(p); };
 	        AnimationSequencePlayer.prototype.getPosition = function () { return this._players[0].getPosition(); };
+	        Object.defineProperty(AnimationSequencePlayer.prototype, "players", {
+	            get: function () { return this._players; },
+	            enumerable: true,
+	            configurable: true
+	        });
 	        return AnimationSequencePlayer;
 	    }());
 	
@@ -33910,6 +33995,7 @@
 	        if (hasExtraFirstStyles) {
 	            firstKeyframe.styles.styles.push(extraFirstKeyframeStyles);
 	        }
+	        collectAndResolveStyles(collectedStyles, [finalStateStyles]);
 	        return keyframes;
 	    }
 	    function clearStyles(styles) {
@@ -34152,8 +34238,9 @@
 	            this._delegate.invokeElementMethod(renderElement, methodName, args);
 	        };
 	        DebugDomRenderer.prototype.setText = function (renderNode, text) { this._delegate.setText(renderNode, text); };
-	        DebugDomRenderer.prototype.animate = function (element, startingStyles, keyframes, duration, delay, easing) {
-	            return this._delegate.animate(element, startingStyles, keyframes, duration, delay, easing);
+	        DebugDomRenderer.prototype.animate = function (element, startingStyles, keyframes, duration, delay, easing, previousPlayers) {
+	            if (previousPlayers === void 0) { previousPlayers = []; }
+	            return this._delegate.animate(element, startingStyles, keyframes, duration, delay, easing, previousPlayers);
 	        };
 	        return DebugDomRenderer;
 	    }());
@@ -34349,20 +34436,30 @@
 	            queueAnimationGlobally(player);
 	            this._players.set(element, animationName, player);
 	        };
-	        AnimationViewContext.prototype.cancelActiveAnimation = function (element, animationName, removeAllAnimations) {
+	        AnimationViewContext.prototype.getAnimationPlayers = function (element, animationName, removeAllAnimations) {
 	            if (removeAllAnimations === void 0) { removeAllAnimations = false; }
+	            var players = [];
 	            if (removeAllAnimations) {
-	                this._players.findAllPlayersByElement(element).forEach(function (player) { return player.destroy(); });
+	                this._players.findAllPlayersByElement(element).forEach(function (player) { _recursePlayers(player, players); });
 	            }
 	            else {
-	                var player = this._players.find(element, animationName);
-	                if (player) {
-	                    player.destroy();
+	                var currentPlayer = this._players.find(element, animationName);
+	                if (currentPlayer) {
+	                    _recursePlayers(currentPlayer, players);
 	                }
 	            }
+	            return players;
 	        };
 	        return AnimationViewContext;
 	    }());
+	    function _recursePlayers(player, collectedPlayers) {
+	        if ((player instanceof AnimationGroupPlayer) || (player instanceof AnimationSequencePlayer)) {
+	            player.players.forEach(function (player) { return _recursePlayers(player, collectedPlayers); });
+	        }
+	        else {
+	            collectedPlayers.push(player);
+	        }
+	    }
 	
 	    /**
 	     * @license
@@ -34593,7 +34690,10 @@
 	                    this.visitRootNodesInternal(this._directRenderer.insertBefore, nextSibling);
 	                }
 	                else {
-	                    this.visitRootNodesInternal(this._directRenderer.appendChild, this._directRenderer.parentElement(prevNode));
+	                    var parentElement = this._directRenderer.parentElement(prevNode);
+	                    if (parentElement) {
+	                        this.visitRootNodesInternal(this._directRenderer.appendChild, parentElement);
+	                    }
 	                }
 	            }
 	            else {
@@ -36095,7 +36195,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.0
+	 * @license Angular v2.2.3
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -36111,7 +36211,8 @@
 	    var _NoOpAnimationDriver = (function () {
 	        function _NoOpAnimationDriver() {
 	        }
-	        _NoOpAnimationDriver.prototype.animate = function (element, startingStyles, keyframes, duration, delay, easing) {
+	        _NoOpAnimationDriver.prototype.animate = function (element, startingStyles, keyframes, duration, delay, easing, previousPlayers) {
+	            if (previousPlayers === void 0) { previousPlayers = []; }
 	            return new NoOpAnimationPlayer();
 	        };
 	        return _NoOpAnimationDriver;
@@ -36239,7 +36340,9 @@
 	    }());
 	
 	    var WebAnimationsPlayer = (function () {
-	        function WebAnimationsPlayer(element, keyframes, options) {
+	        function WebAnimationsPlayer(element, keyframes, options, previousPlayers) {
+	            var _this = this;
+	            if (previousPlayers === void 0) { previousPlayers = []; }
 	            this.element = element;
 	            this.keyframes = keyframes;
 	            this.options = options;
@@ -36251,6 +36354,11 @@
 	            this._destroyed = false;
 	            this.parentPlayer = null;
 	            this._duration = options['duration'];
+	            this.previousStyles = {};
+	            previousPlayers.forEach(function (player) {
+	                var styles = player._captureStyles();
+	                Object.keys(styles).forEach(function (prop) { return _this.previousStyles[prop] = styles[prop]; });
+	            });
 	        }
 	        WebAnimationsPlayer.prototype._onFinish = function () {
 	            if (!this._finished) {
@@ -36266,13 +36374,28 @@
 	            this._initialized = true;
 	            var keyframes = this.keyframes.map(function (styles) {
 	                var formattedKeyframe = {};
-	                Object.keys(styles).forEach(function (prop) {
+	                Object.keys(styles).forEach(function (prop, index) {
 	                    var value = styles[prop];
-	                    formattedKeyframe[prop] = value == _angular_core.AUTO_STYLE ? _computeStyle(_this.element, prop) : value;
+	                    if (value == _angular_core.AUTO_STYLE) {
+	                        value = _computeStyle(_this.element, prop);
+	                    }
+	                    if (value != undefined) {
+	                        formattedKeyframe[prop] = value;
+	                    }
 	                });
 	                return formattedKeyframe;
 	            });
+	            var previousStyleProps = Object.keys(this.previousStyles);
+	            if (previousStyleProps.length) {
+	                var startingKeyframe_1 = findStartingKeyframe(keyframes);
+	                previousStyleProps.forEach(function (prop) {
+	                    if (isPresent(startingKeyframe_1[prop])) {
+	                        startingKeyframe_1[prop] = _this.previousStyles[prop];
+	                    }
+	                });
+	            }
 	            this._player = this._triggerWebAnimation(this.element, keyframes, this.options);
+	            this._finalKeyframe = _copyKeyframeStyles(keyframes[keyframes.length - 1]);
 	            // this is required so that the player doesn't start to animate right away
 	            this._resetDomPlayerState();
 	            this._player.addEventListener('finish', function () { return _this._onFinish(); });
@@ -36332,25 +36455,61 @@
 	        });
 	        WebAnimationsPlayer.prototype.setPosition = function (p) { this._player.currentTime = p * this.totalTime; };
 	        WebAnimationsPlayer.prototype.getPosition = function () { return this._player.currentTime / this.totalTime; };
+	        WebAnimationsPlayer.prototype._captureStyles = function () {
+	            var _this = this;
+	            var styles = {};
+	            if (this.hasStarted()) {
+	                Object.keys(this._finalKeyframe).forEach(function (prop) {
+	                    if (prop != 'offset') {
+	                        styles[prop] =
+	                            _this._finished ? _this._finalKeyframe[prop] : _computeStyle(_this.element, prop);
+	                    }
+	                });
+	            }
+	            return styles;
+	        };
 	        return WebAnimationsPlayer;
 	    }());
 	    function _computeStyle(element, prop) {
 	        return getDOM().getComputedStyle(element)[prop];
 	    }
+	    function _copyKeyframeStyles(styles) {
+	        var newStyles = {};
+	        Object.keys(styles).forEach(function (prop) {
+	            if (prop != 'offset') {
+	                newStyles[prop] = styles[prop];
+	            }
+	        });
+	        return newStyles;
+	    }
+	    function findStartingKeyframe(keyframes) {
+	        var startingKeyframe = keyframes[0];
+	        // it's important that we find the LAST keyframe
+	        // to ensure that style overidding is final.
+	        for (var i = 1; i < keyframes.length; i++) {
+	            var kf = keyframes[i];
+	            var offset = kf['offset'];
+	            if (offset !== 0)
+	                break;
+	            startingKeyframe = kf;
+	        }
+	        return startingKeyframe;
+	    }
 	
 	    var WebAnimationsDriver = (function () {
 	        function WebAnimationsDriver() {
 	        }
-	        WebAnimationsDriver.prototype.animate = function (element, startingStyles, keyframes, duration, delay, easing) {
+	        WebAnimationsDriver.prototype.animate = function (element, startingStyles, keyframes, duration, delay, easing, previousPlayers) {
+	            if (previousPlayers === void 0) { previousPlayers = []; }
 	            var formattedSteps = [];
 	            var startingStyleLookup = {};
 	            if (isPresent(startingStyles) && startingStyles.styles.length > 0) {
-	                startingStyleLookup = _populateStyles(element, startingStyles, {});
+	                startingStyleLookup = _populateStyles(startingStyles, {});
 	                startingStyleLookup['offset'] = 0;
 	                formattedSteps.push(startingStyleLookup);
 	            }
 	            keyframes.forEach(function (keyframe) {
-	                var data = _populateStyles(element, keyframe.styles, startingStyleLookup);
+	                var data = _populateStyles(keyframe.styles, startingStyleLookup);
 	                data['offset'] = keyframe.offset;
 	                formattedSteps.push(data);
 	            });
@@ -36373,11 +36532,14 @@
 	            if (easing) {
 	                playerOptions['easing'] = easing;
 	            }
-	            return new WebAnimationsPlayer(element, formattedSteps, playerOptions);
+	            // there may be a chance a NoOp player is returned depending
+	            // on when the previous animation was cancelled
+	            previousPlayers = previousPlayers.filter(filterWebAnimationPlayerFn);
+	            return new WebAnimationsPlayer(element, formattedSteps, playerOptions, previousPlayers);
 	        };
 	        return WebAnimationsDriver;
 	    }());
-	    function _populateStyles(element, styles, defaultStyles) {
+	    function _populateStyles(styles, defaultStyles) {
 	        var data = {};
 	        styles.styles.forEach(function (entry) { Object.keys(entry).forEach(function (prop) { data[prop] = entry[prop]; }); });
 	        Object.keys(defaultStyles).forEach(function (prop) {
@@ -36386,6 +36548,9 @@
 	            }
 	        });
 	        return data;
+	    }
+	    function filterWebAnimationPlayerFn(player) {
+	        return player instanceof WebAnimationsPlayer;
 	    }
 	
 	    /**
@@ -37471,8 +37636,9 @@
 	            renderElement[methodName].apply(renderElement, args);
 	        };
 	        DomRenderer.prototype.setText = function (renderNode, text) { renderNode.nodeValue = text; };
-	        DomRenderer.prototype.animate = function (element, startingStyles, keyframes, duration, delay, easing) {
-	            return this._animationDriver.animate(element, startingStyles, keyframes, duration, delay, easing);
+	        DomRenderer.prototype.animate = function (element, startingStyles, keyframes, duration, delay, easing, previousPlayers) {
+	            if (previousPlayers === void 0) { previousPlayers = []; }
+	            return this._animationDriver.animate(element, startingStyles, keyframes, duration, delay, easing, previousPlayers);
 	        };
 	        return DomRenderer;
 	    }());
@@ -38568,7 +38734,9 @@
 	     * @experimental All debugging apis are currently experimental.
 	     */
 	    function disableDebugTools() {
-	        delete context.ng.profiler;
+	        if (context.ng) {
+	            delete context.ng.profiler;
+	        }
 	    }
 	
 	    /**
@@ -38665,7 +38833,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.0
+	 * @license Angular v2.2.3
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -40813,7 +40981,7 @@
 	    }());
 	    var DATE_FORMATS_SPLIT = /((?:[^yMLdHhmsazZEwGjJ']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|L+|d+|H+|h+|J+|j+|m+|s+|a|z|Z|G+|w+))(.*)/;
 	    var PATTERN_ALIASES = {
-	        yMMMdjms: datePartGetterFactory(combine([
+	        'yMMMdjms': datePartGetterFactory(combine([
 	            digitCondition('year', 1),
 	            nameCondition('month', 3),
 	            digitCondition('day', 1),
@@ -40821,19 +40989,19 @@
 	            digitCondition('minute', 1),
 	            digitCondition('second', 1),
 	        ])),
-	        yMdjm: datePartGetterFactory(combine([
+	        'yMdjm': datePartGetterFactory(combine([
 	            digitCondition('year', 1), digitCondition('month', 1), digitCondition('day', 1),
 	            digitCondition('hour', 1), digitCondition('minute', 1)
 	        ])),
-	        yMMMMEEEEd: datePartGetterFactory(combine([
+	        'yMMMMEEEEd': datePartGetterFactory(combine([
 	            digitCondition('year', 1), nameCondition('month', 4), nameCondition('weekday', 4),
 	            digitCondition('day', 1)
 	        ])),
-	        yMMMMd: datePartGetterFactory(combine([digitCondition('year', 1), nameCondition('month', 4), digitCondition('day', 1)])),
-	        yMMMd: datePartGetterFactory(combine([digitCondition('year', 1), nameCondition('month', 3), digitCondition('day', 1)])),
-	        yMd: datePartGetterFactory(combine([digitCondition('year', 1), digitCondition('month', 1), digitCondition('day', 1)])),
-	        jms: datePartGetterFactory(combine([digitCondition('hour', 1), digitCondition('second', 1), digitCondition('minute', 1)])),
-	        jm: datePartGetterFactory(combine([digitCondition('hour', 1), digitCondition('minute', 1)]))
+	        'yMMMMd': datePartGetterFactory(combine([digitCondition('year', 1), nameCondition('month', 4), digitCondition('day', 1)])),
+	        'yMMMd': datePartGetterFactory(combine([digitCondition('year', 1), nameCondition('month', 3), digitCondition('day', 1)])),
+	        'yMd': datePartGetterFactory(combine([digitCondition('year', 1), digitCondition('month', 1), digitCondition('day', 1)])),
+	        'jms': datePartGetterFactory(combine([digitCondition('hour', 1), digitCondition('second', 1), digitCondition('minute', 1)])),
+	        'jm': datePartGetterFactory(combine([digitCondition('hour', 1), digitCondition('minute', 1)]))
 	    };
 	    var DATE_FORMATS = {
 	        yyyy: datePartGetterFactory(digitCondition('year', 4)),
@@ -41644,7 +41812,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v2.2.0
+	 * @license Angular v2.2.3
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -42548,8 +42716,8 @@
 	        };
 	        /** @internal */
 	        SelectControlValueAccessor.prototype._getOptionValue = function (valueString) {
-	            var value = this._optionMap.get(_extractId(valueString));
-	            return value != null ? value : valueString;
+	            var id = _extractId(valueString);
+	            return this._optionMap.has(id) ? this._optionMap.get(id) : valueString;
 	        };
 	        SelectControlValueAccessor.decorators = [
 	            { type: _angular_core.Directive, args: [{
@@ -42717,8 +42885,8 @@
 	        };
 	        /** @internal */
 	        SelectMultipleControlValueAccessor.prototype._getOptionValue = function (valueString) {
-	            var opt = this._optionMap.get(_extractId$1(valueString));
-	            return opt ? opt._value : valueString;
+	            var id = _extractId$1(valueString);
+	            return this._optionMap.has(id) ? this._optionMap.get(id)._value : valueString;
 	        };
 	        SelectMultipleControlValueAccessor.decorators = [
 	            { type: _angular_core.Directive, args: [{
@@ -45750,7 +45918,7 @@
 	        Object.defineProperty(RequiredValidator.prototype, "required", {
 	            get: function () { return this._required; },
 	            set: function (value) {
-	                this._required = isPresent(value) && "" + value !== 'false';
+	                this._required = value != null && value !== false && "" + value !== 'false';
 	                if (this._onChange)
 	                    this._onChange();
 	            },
@@ -45765,7 +45933,7 @@
 	            { type: _angular_core.Directive, args: [{
 	                        selector: '[required][formControlName],[required][formControl],[required][ngModel]',
 	                        providers: [REQUIRED_VALIDATOR],
-	                        host: { '[attr.required]': 'required? "" : null' }
+	                        host: { '[attr.required]': 'required ? "" : null' }
 	                    },] },
 	        ];
 	        /** @nocollapse */
@@ -45796,11 +45964,8 @@
 	    var MinLengthValidator = (function () {
 	        function MinLengthValidator() {
 	        }
-	        MinLengthValidator.prototype._createValidator = function () {
-	            this._validator = Validators.minLength(parseInt(this.minlength, 10));
-	        };
 	        MinLengthValidator.prototype.ngOnChanges = function (changes) {
-	            if (changes['minlength']) {
+	            if ('minlength' in changes) {
 	                this._createValidator();
 	                if (this._onChange)
 	                    this._onChange();
@@ -45810,11 +45975,14 @@
 	            return this.minlength == null ? null : this._validator(c);
 	        };
 	        MinLengthValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+	        MinLengthValidator.prototype._createValidator = function () {
+	            this._validator = Validators.minLength(parseInt(this.minlength, 10));
+	        };
 	        MinLengthValidator.decorators = [
 	            { type: _angular_core.Directive, args: [{
 	                        selector: '[minlength][formControlName],[minlength][formControl],[minlength][ngModel]',
 	                        providers: [MIN_LENGTH_VALIDATOR],
-	                        host: { '[attr.minlength]': 'minlength? minlength : null' }
+	                        host: { '[attr.minlength]': 'minlength ? minlength : null' }
 	                    },] },
 	        ];
 	        /** @nocollapse */
@@ -45846,25 +46014,25 @@
 	    var MaxLengthValidator = (function () {
 	        function MaxLengthValidator() {
 	        }
-	        MaxLengthValidator.prototype._createValidator = function () {
-	            this._validator = Validators.maxLength(parseInt(this.maxlength, 10));
-	        };
 	        MaxLengthValidator.prototype.ngOnChanges = function (changes) {
-	            if (changes['maxlength']) {
+	            if ('maxlength' in changes) {
 	                this._createValidator();
 	                if (this._onChange)
 	                    this._onChange();
 	            }
 	        };
 	        MaxLengthValidator.prototype.validate = function (c) {
-	            return isPresent(this.maxlength) ? this._validator(c) : null;
+	            return this.maxlength != null ? this._validator(c) : null;
 	        };
 	        MaxLengthValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+	        MaxLengthValidator.prototype._createValidator = function () {
+	            this._validator = Validators.maxLength(parseInt(this.maxlength, 10));
+	        };
 	        MaxLengthValidator.decorators = [
 	            { type: _angular_core.Directive, args: [{
 	                        selector: '[maxlength][formControlName],[maxlength][formControl],[maxlength][ngModel]',
 	                        providers: [MAX_LENGTH_VALIDATOR],
-	                        host: { '[attr.maxlength]': 'maxlength? maxlength : null' }
+	                        host: { '[attr.maxlength]': 'maxlength ? maxlength : null' }
 	                    },] },
 	        ];
 	        /** @nocollapse */
@@ -45895,18 +46063,16 @@
 	    var PatternValidator = (function () {
 	        function PatternValidator() {
 	        }
-	        PatternValidator.prototype._createValidator = function () { this._validator = Validators.pattern(this.pattern); };
 	        PatternValidator.prototype.ngOnChanges = function (changes) {
-	            if (changes['pattern']) {
+	            if ('pattern' in changes) {
 	                this._createValidator();
 	                if (this._onChange)
 	                    this._onChange();
 	            }
 	        };
-	        PatternValidator.prototype.validate = function (c) {
-	            return this.pattern ? this._validator(c) : null;
-	        };
+	        PatternValidator.prototype.validate = function (c) { return this._validator(c); };
 	        PatternValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+	        PatternValidator.prototype._createValidator = function () { this._validator = Validators.pattern(this.pattern); };
 	        PatternValidator.decorators = [
 	            { type: _angular_core.Directive, args: [{
 	                        selector: '[pattern][formControlName],[pattern][formControl],[pattern][ngModel]',
@@ -46030,7 +46196,10 @@
 	        function InternalFormsSharedModule() {
 	        }
 	        InternalFormsSharedModule.decorators = [
-	            { type: _angular_core.NgModule, args: [{ declarations: SHARED_FORM_DIRECTIVES, exports: SHARED_FORM_DIRECTIVES },] },
+	            { type: _angular_core.NgModule, args: [{
+	                        declarations: SHARED_FORM_DIRECTIVES,
+	                        exports: SHARED_FORM_DIRECTIVES,
+	                    },] },
 	        ];
 	        /** @nocollapse */
 	        InternalFormsSharedModule.ctorParameters = [];
@@ -46284,8 +46453,8 @@
 /* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.0
+	/**
+	 * @license Angular v2.2.3
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -46313,42 +46482,6 @@
 	        BrowserXhr.ctorParameters = [];
 	        return BrowserXhr;
 	    }());
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var globalScope;
-	    if (typeof window === 'undefined') {
-	        if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
-	            // TODO: Replace any with WorkerGlobalScope from lib.webworker.d.ts #3492
-	            globalScope = self;
-	        }
-	        else {
-	            globalScope = global;
-	        }
-	    }
-	    else {
-	        globalScope = window;
-	    }
-	    // Need to declare a new variable for global here since TypeScript
-	    // exports the original value of the symbol.
-	    var global$1 = globalScope;
-	    // TODO: remove calls to assert in production environment
-	    // Note: Can't just export this and import in in other files
-	    // as `assert` is a reserved keyword in Dart
-	    global$1.assert = function assert(condition) {
-	        // TODO: to be fixed properly via #2830, noop for now
-	    };
-	    function isPresent(obj) {
-	        return obj != null;
-	    }
-	    function isJsObject(o) {
-	        return o !== null && (typeof o === 'function' || typeof o === 'object');
-	    }
 	
 	    /**
 	     * @license
@@ -46634,12 +46767,12 @@
 	    var ResponseOptions = (function () {
 	        function ResponseOptions(_a) {
 	            var _b = _a === void 0 ? {} : _a, body = _b.body, status = _b.status, headers = _b.headers, statusText = _b.statusText, type = _b.type, url = _b.url;
-	            this.body = isPresent(body) ? body : null;
-	            this.status = isPresent(status) ? status : null;
-	            this.headers = isPresent(headers) ? headers : null;
-	            this.statusText = isPresent(statusText) ? statusText : null;
-	            this.type = isPresent(type) ? type : null;
-	            this.url = isPresent(url) ? url : null;
+	            this.body = body != null ? body : null;
+	            this.status = status != null ? status : null;
+	            this.headers = headers != null ? headers : null;
+	            this.statusText = statusText != null ? statusText : null;
+	            this.type = type != null ? type : null;
+	            this.url = url != null ? url : null;
 	        }
 	        /**
 	         * Creates a copy of the `ResponseOptions` instance, using the optional input as values to
@@ -46668,13 +46801,12 @@
 	         */
 	        ResponseOptions.prototype.merge = function (options) {
 	            return new ResponseOptions({
-	                body: isPresent(options) && isPresent(options.body) ? options.body : this.body,
-	                status: isPresent(options) && isPresent(options.status) ? options.status : this.status,
-	                headers: isPresent(options) && isPresent(options.headers) ? options.headers : this.headers,
-	                statusText: isPresent(options) && isPresent(options.statusText) ? options.statusText :
-	                    this.statusText,
-	                type: isPresent(options) && isPresent(options.type) ? options.type : this.type,
-	                url: isPresent(options) && isPresent(options.url) ? options.url : this.url,
+	                body: options && options.body != null ? options.body : this.body,
+	                status: options && options.status != null ? options.status : this.status,
+	                headers: options && options.headers != null ? options.headers : this.headers,
+	                statusText: options && options.statusText != null ? options.statusText : this.statusText,
+	                type: options && options.type != null ? options.type : this.type,
+	                url: options && options.url != null ? options.url : this.url,
 	            });
 	        };
 	        return ResponseOptions;
@@ -47027,7 +47159,7 @@
 	            if (this._body === null) {
 	                return '';
 	            }
-	            if (isJsObject(this._body)) {
+	            if (typeof this._body === 'object') {
 	                return JSON.stringify(this._body, null, 2);
 	            }
 	            return this._body.toString();
@@ -47110,8 +47242,9 @@
 	    var JSONP_HOME = '__ng_jsonp__';
 	    var _jsonpConnections = null;
 	    function _getJsonpConnections() {
+	        var w = typeof window == 'object' ? window : {};
 	        if (_jsonpConnections === null) {
-	            _jsonpConnections = global$1[JSONP_HOME] = {};
+	            _jsonpConnections = w[JSONP_HOME] = {};
 	        }
 	        return _jsonpConnections;
 	    }
@@ -47209,14 +47342,14 @@
 	                    _dom.cleanup(script);
 	                    if (!_this._finished) {
 	                        var responseOptions_1 = new ResponseOptions({ body: JSONP_ERR_NO_CALLBACK, type: exports.ResponseType.Error, url: url });
-	                        if (isPresent(baseResponseOptions)) {
+	                        if (baseResponseOptions) {
 	                            responseOptions_1 = baseResponseOptions.merge(responseOptions_1);
 	                        }
 	                        responseObserver.error(new Response(responseOptions_1));
 	                        return;
 	                    }
 	                    var responseOptions = new ResponseOptions({ body: _this._responseData, url: url });
-	                    if (isPresent(_this.baseResponseOptions)) {
+	                    if (_this.baseResponseOptions) {
 	                        responseOptions = _this.baseResponseOptions.merge(responseOptions);
 	                    }
 	                    responseObserver.next(new Response(responseOptions));
@@ -47228,7 +47361,7 @@
 	                    _this.readyState = exports.ReadyState.Done;
 	                    _dom.cleanup(script);
 	                    var responseOptions = new ResponseOptions({ body: error.message, type: exports.ResponseType.Error });
-	                    if (isPresent(baseResponseOptions)) {
+	                    if (baseResponseOptions) {
 	                        responseOptions = baseResponseOptions.merge(responseOptions);
 	                    }
 	                    responseObserver.error(new Response(responseOptions));
@@ -47240,9 +47373,7 @@
 	                    _this.readyState = exports.ReadyState.Cancelled;
 	                    script.removeEventListener('load', onLoad);
 	                    script.removeEventListener('error', onError);
-	                    if (isPresent(script)) {
-	                        _this._dom.cleanup(script);
-	                    }
+	                    _this._dom.cleanup(script);
 	                };
 	            });
 	        }
@@ -47307,31 +47438,37 @@
 	            this.response = new rxjs_Observable.Observable(function (responseObserver) {
 	                var _xhr = browserXHR.build();
 	                _xhr.open(exports.RequestMethod[req.method].toUpperCase(), req.url);
-	                if (isPresent(req.withCredentials)) {
+	                if (req.withCredentials != null) {
 	                    _xhr.withCredentials = req.withCredentials;
 	                }
 	                // load event handler
 	                var onLoad = function () {
-	                    // responseText is the old-school way of retrieving response (supported by IE8 & 9)
-	                    // response/responseType properties were introduced in ResourceLoader Level2 spec (supported
-	                    // by IE10)
-	                    var body = _xhr.response === undefined ? _xhr.responseText : _xhr.response;
-	                    // Implicitly strip a potential XSSI prefix.
-	                    if (typeof body === 'string')
-	                        body = body.replace(XSSI_PREFIX, '');
-	                    var headers = Headers.fromResponseHeaderString(_xhr.getAllResponseHeaders());
-	                    var url = getResponseURL(_xhr);
 	                    // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
 	                    var status = _xhr.status === 1223 ? 204 : _xhr.status;
+	                    var body = null;
+	                    // HTTP 204 means no content
+	                    if (status !== 204) {
+	                        // responseText is the old-school way of retrieving response (supported by IE8 & 9)
+	                        // response/responseType properties were introduced in ResourceLoader Level2 spec
+	                        // (supported by IE10)
+	                        body = _xhr.response == null ? _xhr.responseText : _xhr.response;
+	                        // Implicitly strip a potential XSSI prefix.
+	                        if (typeof body === 'string') {
+	                            body = body.replace(XSSI_PREFIX, '');
+	                        }
+	                    }
 	                    // fix status code when it is 0 (0 status is undocumented).
 	                    // Occurs when accessing file resources or on Android 4.1 stock browser
 	                    // while retrieving files from application cache.
 	                    if (status === 0) {
 	                        status = body ? 200 : 0;
 	                    }
+	                    var headers = Headers.fromResponseHeaderString(_xhr.getAllResponseHeaders());
+	                    // IE 9 does not provide the way to get URL of response
+	                    var url = getResponseURL(_xhr) || req.url;
 	                    var statusText = _xhr.statusText || 'OK';
 	                    var responseOptions = new ResponseOptions({ body: body, status: status, headers: headers, statusText: statusText, url: url });
-	                    if (isPresent(baseResponseOptions)) {
+	                    if (baseResponseOptions != null) {
 	                        responseOptions = baseResponseOptions.merge(responseOptions);
 	                    }
 	                    var response = new Response(responseOptions);
@@ -47352,17 +47489,17 @@
 	                        status: _xhr.status,
 	                        statusText: _xhr.statusText,
 	                    });
-	                    if (isPresent(baseResponseOptions)) {
+	                    if (baseResponseOptions != null) {
 	                        responseOptions = baseResponseOptions.merge(responseOptions);
 	                    }
 	                    responseObserver.error(new Response(responseOptions));
 	                };
 	                _this.setDetectedContentType(req, _xhr);
-	                if (isPresent(req.headers)) {
+	                if (req.headers != null) {
 	                    req.headers.forEach(function (values, name) { return _xhr.setRequestHeader(name, values.join(',')); });
 	                }
 	                // Select the correct buffer type to store the response
-	                if (isPresent(req.responseType) && isPresent(_xhr.responseType)) {
+	                if (req.responseType != null && _xhr.responseType != null) {
 	                    switch (req.responseType) {
 	                        case exports.ResponseContentType.ArrayBuffer:
 	                            _xhr.responseType = 'arraybuffer';
@@ -47390,9 +47527,9 @@
 	                };
 	            });
 	        }
-	        XHRConnection.prototype.setDetectedContentType = function (req /** TODO #9100 */, _xhr /** TODO #9100 */) {
+	        XHRConnection.prototype.setDetectedContentType = function (req /** TODO Request */, _xhr /** XMLHttpRequest */) {
 	            // Skip if a custom Content-Type header is provided
-	            if (isPresent(req.headers) && isPresent(req.headers.get('Content-Type'))) {
+	            if (req.headers != null && req.headers.get('Content-Type') != null) {
 	                return;
 	            }
 	            // Set the detected content type
@@ -47533,16 +47670,14 @@
 	    var RequestOptions = (function () {
 	        function RequestOptions(_a) {
 	            var _b = _a === void 0 ? {} : _a, method = _b.method, headers = _b.headers, body = _b.body, url = _b.url, search = _b.search, withCredentials = _b.withCredentials, responseType = _b.responseType;
-	            this.method = isPresent(method) ? normalizeMethodName(method) : null;
-	            this.headers = isPresent(headers) ? headers : null;
-	            this.body = isPresent(body) ? body : null;
-	            this.url = isPresent(url) ? url : null;
-	            this.search = isPresent(search) ?
-	                (typeof search === 'string' ? new URLSearchParams((search)) :
-	                    (search)) :
-	                null;
-	            this.withCredentials = isPresent(withCredentials) ? withCredentials : null;
-	            this.responseType = isPresent(responseType) ? responseType : null;
+	            this.method = method != null ? normalizeMethodName(method) : null;
+	            this.headers = headers != null ? headers : null;
+	            this.body = body != null ? body : null;
+	            this.url = url != null ? url : null;
+	            this.search =
+	                search != null ? (typeof search === 'string' ? new URLSearchParams(search) : search) : null;
+	            this.withCredentials = withCredentials != null ? withCredentials : null;
+	            this.responseType = responseType != null ? responseType : null;
 	        }
 	        /**
 	         * Creates a copy of the `RequestOptions` instance, using the optional input as values to override
@@ -47571,17 +47706,17 @@
 	         */
 	        RequestOptions.prototype.merge = function (options) {
 	            return new RequestOptions({
-	                method: options && isPresent(options.method) ? options.method : this.method,
-	                headers: options && isPresent(options.headers) ? options.headers : this.headers,
-	                body: options && isPresent(options.body) ? options.body : this.body,
-	                url: options && isPresent(options.url) ? options.url : this.url,
-	                search: options && isPresent(options.search) ?
+	                method: options && options.method != null ? options.method : this.method,
+	                headers: options && options.headers != null ? options.headers : this.headers,
+	                body: options && options.body != null ? options.body : this.body,
+	                url: options && options.url != null ? options.url : this.url,
+	                search: options && options.search != null ?
 	                    (typeof options.search === 'string' ? new URLSearchParams(options.search) :
-	                        (options.search).clone()) :
+	                        options.search.clone()) :
 	                    this.search,
-	                withCredentials: options && isPresent(options.withCredentials) ? options.withCredentials :
+	                withCredentials: options && options.withCredentials != null ? options.withCredentials :
 	                    this.withCredentials,
-	                responseType: options && isPresent(options.responseType) ? options.responseType :
+	                responseType: options && options.responseType != null ? options.responseType :
 	                    this.responseType
 	            });
 	        };
@@ -47705,7 +47840,7 @@
 	            // TODO: assert that url is present
 	            var url = requestOptions.url;
 	            this.url = requestOptions.url;
-	            if (isPresent(requestOptions.search)) {
+	            if (requestOptions.search) {
 	                var search = requestOptions.search.toString();
 	                if (search.length > 0) {
 	                    var prefix = '?';
@@ -47720,7 +47855,6 @@
 	            this.method = normalizeMethodName(requestOptions.method);
 	            // TODO(jeffbcross): implement behavior
 	            // Defaults to 'omit', consistent with browser
-	            // TODO(jeffbcross): implement behavior
 	            this.headers = new Headers(requestOptions.headers);
 	            this.contentType = this.detectContentType();
 	            this.withCredentials = requestOptions.withCredentials;
@@ -47819,7 +47953,7 @@
 	    }
 	    function mergeOptions(defaultOpts, providedOpts, method, url) {
 	        var newOptions = defaultOpts;
-	        if (isPresent(providedOpts)) {
+	        if (providedOpts) {
 	            // Hack so Dart can used named parameters
 	            return newOptions.merge(new RequestOptions({
 	                method: providedOpts.method || method,
@@ -47831,12 +47965,7 @@
 	                responseType: providedOpts.responseType
 	            }));
 	        }
-	        if (isPresent(method)) {
-	            return newOptions.merge(new RequestOptions({ method: method, url: url }));
-	        }
-	        else {
-	            return newOptions.merge(new RequestOptions({ url: url }));
-	        }
+	        return newOptions.merge(new RequestOptions({ method: method, url: url }));
 	    }
 	    /**
 	     * Performs http requests using `XMLHttpRequest` as the default backend.
@@ -48109,7 +48238,6 @@
 	    exports.URLSearchParams = URLSearchParams;
 	
 	}));
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 284 */
@@ -48260,7 +48388,7 @@
 	        this.user = this.service.GetUser();
 	        this.user.log();
 	        console.log("End get user");
-	        this.articles = this.service.GetArticles(this.subverseStr);
+	        //this.articles = this.service.GetArticles(this.subverseStr); 
 	    }
 	    SubverseComponent.prototype.ngOnInit = function () {
 	        console.log("Subverse is: " + this.subverseStr);
@@ -48323,18 +48451,19 @@
 	var core_1 = __webpack_require__(258);
 	var http_1 = __webpack_require__(283);
 	var HttpHelpers_1 = __webpack_require__(289);
+	var Observable_1 = __webpack_require__(260);
 	var user_1 = __webpack_require__(614);
 	__webpack_require__(290);
 	var AppServiceHackersPulse = (function (_super) {
 	    __extends(AppServiceHackersPulse, _super);
 	    function AppServiceHackersPulse(http) {
 	        _super.call(this, http);
-	        this.http = http;
 	        this._getArticlePostUrl = 'Article/Post';
 	        this._getArticlesUrl = 'Article/GetArticles';
 	        this._getUserIDUrl = 'Manage/GetUserID';
 	        this._getUserIsAuth = 'Manage/GetUserIsAuthenticated';
 	        this._getUserNameUrl = 'Manage/GetUserName';
+	        this.http = http;
 	        /*this.getaction<Models.List[]>(this._getTodoListUrl).subscribe(
 	            result => {
 	                this._todolist = result;
@@ -48388,11 +48517,28 @@
 	        return this._userName;
 	    };
 	    AppServiceHackersPulse.prototype.GetArticles = function (subverse) {
-	        var _this = this;
-	        this.getaction(this._getArticlesUrl).subscribe(function (result) {
-	            _this._articles = result;
-	        }, function (error) { return _this.errormsg = error; });
-	        return this._articles;
+	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse);
+	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.extractData = function (res) {
+	        var body = res.json();
+	        return body.data || {};
+	    };
+	    AppServiceHackersPulse.prototype.handleError = function (error) {
+	        // In a real world app, we might use a remote logging infrastructure
+	        var errMsg;
+	        if (error instanceof http_1.Response) {
+	            var body = error.json() || '';
+	            var err = body.error || JSON.stringify(body);
+	            errMsg = error.status + " - " + (error.statusText || '') + " " + err;
+	        }
+	        else {
+	            errMsg = error.message ? error.message : error.toString();
+	        }
+	        console.error(errMsg);
+	        return Observable_1.Observable.throw(errMsg);
 	    };
 	    AppServiceHackersPulse.prototype.AddArticle = function (article) {
 	        var _this = this;
@@ -48432,6 +48578,7 @@
 	    HttpHelpers.prototype.getaction = function (path) {
 	        return this._http.get(path)
 	            .map(function (res) {
+	            console.log("res is: " + res);
 	            return res.json();
 	        })
 	            .catch(this._handleError);
@@ -65384,8 +65531,11 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
+	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var HomeComponent = (function () {
-	    function HomeComponent() {
+	    function HomeComponent(hpService) {
+	        this.hpService = hpService;
+	        this.service = hpService;
 	        this.subverseStr = "home";
 	        //based off of subverse load articles from the DB
 	    }
@@ -65393,9 +65543,12 @@
 	        //load articles based off of subverse 
 	        var RouteStr;
 	        console.log("Homeverse");
+	        this.articles = this.service.GetArticles(this.subverseStr);
+	        console.log("Article len: " + this.articles.count());
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {
-	        return this.articles.sort(function (a, b) { return b.votes - a.votes; });
+	        return this.articles.every();
+	        //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
 	    };
 	    HomeComponent = __decorate([
 	        core_1.Component({
@@ -65404,9 +65557,10 @@
 	            styleUrls: ['./app/home/home.component.css'],
 	            host: {
 	                class: 'row'
-	            }
+	            },
+	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [app_service_hackerspulse_1.AppServiceHackersPulse])
 	    ], HomeComponent);
 	    return HomeComponent;
 	}());
@@ -65457,11 +65611,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v3.2.0
+	 * @license Angular v3.2.3
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
-	 */
-	(function (global, factory) {
+	 */(function (global, factory) {
 	     true ? factory(exports, __webpack_require__(277), __webpack_require__(258), __webpack_require__(516), __webpack_require__(259), __webpack_require__(323), __webpack_require__(360), __webpack_require__(415), __webpack_require__(482), __webpack_require__(462), __webpack_require__(385), __webpack_require__(416), __webpack_require__(490), __webpack_require__(260), __webpack_require__(407), __webpack_require__(413), __webpack_require__(463), __webpack_require__(281), __webpack_require__(478), __webpack_require__(313), __webpack_require__(276), __webpack_require__(454)) :
 	    typeof define === 'function' && define.amd ? define(['exports', '@angular/common', '@angular/core', 'rxjs/BehaviorSubject', 'rxjs/Subject', 'rxjs/observable/from', 'rxjs/observable/of', 'rxjs/operator/concatMap', 'rxjs/operator/every', 'rxjs/operator/first', 'rxjs/operator/map', 'rxjs/operator/mergeMap', 'rxjs/operator/reduce', 'rxjs/Observable', 'rxjs/operator/catch', 'rxjs/operator/concatAll', 'rxjs/util/EmptyError', 'rxjs/observable/fromPromise', 'rxjs/operator/last', 'rxjs/operator/mergeAll', '@angular/platform-browser', 'rxjs/operator/filter'], factory) :
 	    (factory((global.ng = global.ng || {}, global.ng.router = global.ng.router || {}),global.ng.common,global.ng.core,global.Rx,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.platformBrowser,global.Rx.Observable.prototype));
@@ -65766,11 +65919,11 @@
 	            /**
 	            * The root segment group of the URL tree.
 	             */
-	            root,
+	            root, 
 	            /**
 	             * The query params of the URL.
 	             */
-	            queryParams,
+	            queryParams, 
 	            /**
 	             * The fragment of the URL.
 	             */
@@ -65797,7 +65950,7 @@
 	            /**
 	             * The URL segments of this group. See {@link UrlSegment} for more information.
 	             */
-	            segments,
+	            segments, 
 	            /**
 	             * The list of children of this group.
 	             */
@@ -65859,7 +66012,7 @@
 	            /**
 	             * The path part of a URL segment.
 	             */
-	            path,
+	            path, 
 	            /**
 	             * The matrix parameters associated with a segment.
 	             */
@@ -66214,27 +66367,31 @@
 	        return NoMatch;
 	    }());
 	    var AbsoluteRedirect = (function () {
-	        function AbsoluteRedirect(segments) {
-	            this.segments = segments;
+	        function AbsoluteRedirect(urlTree) {
+	            this.urlTree = urlTree;
 	        }
 	        return AbsoluteRedirect;
 	    }());
 	    function noMatch(segmentGroup) {
 	        return new rxjs_Observable.Observable(function (obs) { return obs.error(new NoMatch(segmentGroup)); });
 	    }
-	    function absoluteRedirect(segments) {
-	        return new rxjs_Observable.Observable(function (obs) { return obs.error(new AbsoluteRedirect(segments)); });
+	    function absoluteRedirect(newTree) {
+	        return new rxjs_Observable.Observable(function (obs) { return obs.error(new AbsoluteRedirect(newTree)); });
+	    }
+	    function namedOutletsRedirect(redirectTo) {
+	        return new rxjs_Observable.Observable(function (obs) { return obs.error(new Error("Only absolute redirects can have named outlets. redirectTo: '" + redirectTo + "'")); });
 	    }
 	    function canLoadFails(route) {
 	        return new rxjs_Observable.Observable(function (obs) { return obs.error(new NavigationCancelingError("Cannot load children because the guard of the route \"path: '" + route.path + "'\" returned false")); });
 	    }
-	    function applyRedirects(injector, configLoader, urlTree, config) {
-	        return new ApplyRedirects(injector, configLoader, urlTree, config).apply();
+	    function applyRedirects(injector, configLoader, urlSerializer, urlTree, config) {
+	        return new ApplyRedirects(injector, configLoader, urlSerializer, urlTree, config).apply();
 	    }
 	    var ApplyRedirects = (function () {
-	        function ApplyRedirects(injector, configLoader, urlTree, config) {
+	        function ApplyRedirects(injector, configLoader, urlSerializer, urlTree, config) {
 	            this.injector = injector;
 	            this.configLoader = configLoader;
+	            this.urlSerializer = urlSerializer;
 	            this.urlTree = urlTree;
 	            this.config = config;
 	            this.allowRedirects = true;
@@ -66242,14 +66399,13 @@
 	        ApplyRedirects.prototype.apply = function () {
 	            var _this = this;
 	            var expanded$ = this.expandSegmentGroup(this.injector, this.config, this.urlTree.root, PRIMARY_OUTLET);
-	            var urlTrees$ = rxjs_operator_map.map.call(expanded$, function (rootSegmentGroup) { return _this.createUrlTree(rootSegmentGroup); });
+	            var urlTrees$ = rxjs_operator_map.map.call(expanded$, function (rootSegmentGroup) { return _this.createUrlTree(rootSegmentGroup, _this.urlTree.queryParams, _this.urlTree.fragment); });
 	            return rxjs_operator_catch._catch.call(urlTrees$, function (e) {
 	                if (e instanceof AbsoluteRedirect) {
 	                    // after an absolute redirect we do not apply any more redirects!
 	                    _this.allowRedirects = false;
-	                    var group = new UrlSegmentGroup([], (_a = {}, _a[PRIMARY_OUTLET] = new UrlSegmentGroup(e.segments, {}), _a));
 	                    // we need to run matching, so we can fetch all lazy-loaded modules
-	                    return _this.match(group);
+	                    return _this.match(e.urlTree);
 	                }
 	                else if (e instanceof NoMatch) {
 	                    throw _this.noMatchError(e);
@@ -66257,13 +66413,14 @@
 	                else {
 	                    throw e;
 	                }
-	                var _a;
 	            });
 	        };
-	        ApplyRedirects.prototype.match = function (segmentGroup) {
+	        ApplyRedirects.prototype.match = function (tree) {
 	            var _this = this;
-	            var expanded$ = this.expandSegmentGroup(this.injector, this.config, segmentGroup, PRIMARY_OUTLET);
-	            var mapped$ = rxjs_operator_map.map.call(expanded$, function (rootSegmentGroup) { return _this.createUrlTree(rootSegmentGroup); });
+	            var expanded$ = this.expandSegmentGroup(this.injector, this.config, tree.root, PRIMARY_OUTLET);
+	            var mapped$ = rxjs_operator_map.map.call(expanded$, function (rootSegmentGroup) {
+	                return _this.createUrlTree(rootSegmentGroup, tree.queryParams, tree.fragment);
+	            });
 	            return rxjs_operator_catch._catch.call(mapped$, function (e) {
 	                if (e instanceof NoMatch) {
 	                    throw _this.noMatchError(e);
@@ -66276,11 +66433,11 @@
 	        ApplyRedirects.prototype.noMatchError = function (e) {
 	            return new Error("Cannot match any routes. URL Segment: '" + e.segmentGroup + "'");
 	        };
-	        ApplyRedirects.prototype.createUrlTree = function (rootCandidate) {
+	        ApplyRedirects.prototype.createUrlTree = function (rootCandidate, queryParams, fragment) {
 	            var root = rootCandidate.segments.length > 0 ?
 	                new UrlSegmentGroup([], (_a = {}, _a[PRIMARY_OUTLET] = rootCandidate, _a)) :
 	                rootCandidate;
-	            return new UrlTree(root, this.urlTree.queryParams, this.urlTree.fragment);
+	            return new UrlTree(root, queryParams, fragment);
 	            var _a;
 	        };
 	        ApplyRedirects.prototype.expandSegmentGroup = function (injector, routes, segmentGroup, outlet) {
@@ -66347,25 +66504,31 @@
 	            }
 	        };
 	        ApplyRedirects.prototype.expandWildCardWithParamsAgainstRouteUsingRedirect = function (injector, routes, route, outlet) {
-	            var newSegments = applyRedirectCommands([], route.redirectTo, {});
+	            var _this = this;
+	            var newTree = this.applyRedirectCommands([], route.redirectTo, {});
 	            if (route.redirectTo.startsWith('/')) {
-	                return absoluteRedirect(newSegments);
+	                return absoluteRedirect(newTree);
 	            }
 	            else {
-	                var group = new UrlSegmentGroup(newSegments, {});
-	                return this.expandSegment(injector, group, routes, newSegments, outlet, false);
+	                return rxjs_operator_mergeMap.mergeMap.call(this.lineralizeSegments(route, newTree), function (newSegments) {
+	                    var group = new UrlSegmentGroup(newSegments, {});
+	                    return _this.expandSegment(injector, group, routes, newSegments, outlet, false);
+	                });
 	            }
 	        };
 	        ApplyRedirects.prototype.expandRegularSegmentAgainstRouteUsingRedirect = function (injector, segmentGroup, routes, route, segments, outlet) {
+	            var _this = this;
 	            var _a = match(segmentGroup, route, segments), matched = _a.matched, consumedSegments = _a.consumedSegments, lastChild = _a.lastChild, positionalParamSegments = _a.positionalParamSegments;
 	            if (!matched)
 	                return noMatch(segmentGroup);
-	            var newSegments = applyRedirectCommands(consumedSegments, route.redirectTo, positionalParamSegments);
+	            var newTree = this.applyRedirectCommands(consumedSegments, route.redirectTo, positionalParamSegments);
 	            if (route.redirectTo.startsWith('/')) {
-	                return absoluteRedirect(newSegments);
+	                return absoluteRedirect(newTree);
 	            }
 	            else {
-	                return this.expandSegment(injector, segmentGroup, routes, newSegments.concat(segments.slice(lastChild)), outlet, false);
+	                return rxjs_operator_mergeMap.mergeMap.call(this.lineralizeSegments(route, newTree), function (newSegments) {
+	                    return _this.expandSegment(injector, segmentGroup, routes, newSegments.concat(segments.slice(lastChild)), outlet, false);
+	                });
 	            }
 	        };
 	        ApplyRedirects.prototype.matchSegmentAgainstRoute = function (injector, rawSegmentGroup, route, segments) {
@@ -66432,6 +66595,74 @@
 	                return rxjs_observable_of.of(new LoadedRouterConfig([], injector, null, null));
 	            }
 	        };
+	        ApplyRedirects.prototype.lineralizeSegments = function (route, urlTree) {
+	            var res = [];
+	            var c = urlTree.root;
+	            while (true) {
+	                res = res.concat(c.segments);
+	                if (c.numberOfChildren === 0) {
+	                    return rxjs_observable_of.of(res);
+	                }
+	                else if (c.numberOfChildren > 1 || !c.children[PRIMARY_OUTLET]) {
+	                    return namedOutletsRedirect(route.redirectTo);
+	                }
+	                else {
+	                    c = c.children[PRIMARY_OUTLET];
+	                }
+	            }
+	        };
+	        ApplyRedirects.prototype.applyRedirectCommands = function (segments, redirectTo, posParams) {
+	            var t = this.urlSerializer.parse(redirectTo);
+	            return this.applyRedirectCreatreUrlTree(redirectTo, this.urlSerializer.parse(redirectTo), segments, posParams);
+	        };
+	        ApplyRedirects.prototype.applyRedirectCreatreUrlTree = function (redirectTo, urlTree, segments, posParams) {
+	            var newRoot = this.createSegmentGroup(redirectTo, urlTree.root, segments, posParams);
+	            return new UrlTree(newRoot, this.createQueryParams(urlTree.queryParams, this.urlTree.queryParams), urlTree.fragment);
+	        };
+	        ApplyRedirects.prototype.createQueryParams = function (redirectToParams, actualParams) {
+	            var res = {};
+	            forEach(redirectToParams, function (v, k) {
+	                if (v.startsWith(':')) {
+	                    res[k] = actualParams[v.substring(1)];
+	                }
+	                else {
+	                    res[k] = v;
+	                }
+	            });
+	            return res;
+	        };
+	        ApplyRedirects.prototype.createSegmentGroup = function (redirectTo, group, segments, posParams) {
+	            var _this = this;
+	            var updatedSegments = this.createSegments(redirectTo, group.segments, segments, posParams);
+	            var children = {};
+	            forEach(group.children, function (child, name) {
+	                children[name] = _this.createSegmentGroup(redirectTo, child, segments, posParams);
+	            });
+	            return new UrlSegmentGroup(updatedSegments, children);
+	        };
+	        ApplyRedirects.prototype.createSegments = function (redirectTo, redirectToSegments, actualSegments, posParams) {
+	            var _this = this;
+	            return redirectToSegments.map(function (s) { return s.path.startsWith(':') ? _this.findPosParam(redirectTo, s, posParams) :
+	                _this.findOrReturn(s, actualSegments); });
+	        };
+	        ApplyRedirects.prototype.findPosParam = function (redirectTo, redirectToUrlSegment, posParams) {
+	            var pos = posParams[redirectToUrlSegment.path.substring(1)];
+	            if (!pos)
+	                throw new Error("Cannot redirect to '" + redirectTo + "'. Cannot find '" + redirectToUrlSegment.path + "'.");
+	            return pos;
+	        };
+	        ApplyRedirects.prototype.findOrReturn = function (redirectToUrlSegment, actualSegments) {
+	            var idx = 0;
+	            for (var _i = 0, actualSegments_1 = actualSegments; _i < actualSegments_1.length; _i++) {
+	                var s = actualSegments_1[_i];
+	                if (s.path === redirectToUrlSegment.path) {
+	                    actualSegments.splice(idx);
+	                    return s;
+	                }
+	                idx++;
+	            }
+	            return redirectToUrlSegment;
+	        };
 	        return ApplyRedirects;
 	    }());
 	    function runGuards(injector, route) {
@@ -66469,38 +66700,6 @@
 	            lastChild: res.consumed.length,
 	            positionalParamSegments: res.posParams
 	        };
-	    }
-	    function applyRedirectCommands(segments, redirectTo, posParams) {
-	        var r = redirectTo.startsWith('/') ? redirectTo.substring(1) : redirectTo;
-	        if (r === '') {
-	            return [];
-	        }
-	        else {
-	            return createSegments(redirectTo, r.split('/'), segments, posParams);
-	        }
-	    }
-	    function createSegments(redirectTo, parts, segments, posParams) {
-	        return parts.map(function (p) { return p.startsWith(':') ? findPosParam(p, posParams, redirectTo) :
-	            findOrCreateSegment(p, segments); });
-	    }
-	    function findPosParam(part, posParams, redirectTo) {
-	        var paramName = part.substring(1);
-	        var pos = posParams[paramName];
-	        if (!pos)
-	            throw new Error("Cannot redirect to '" + redirectTo + "'. Cannot find '" + part + "'.");
-	        return pos;
-	    }
-	    function findOrCreateSegment(part, segments) {
-	        var idx = 0;
-	        for (var _i = 0, segments_1 = segments; _i < segments_1.length; _i++) {
-	            var s = segments_1[_i];
-	            if (s.path === part) {
-	                segments.splice(idx);
-	                return s;
-	            }
-	            idx++;
-	        }
-	        return new UrlSegment(part, {});
 	    }
 	    function split(segmentGroup, consumedSegments, slicedSegments, config) {
 	        if (slicedSegments.length > 0 &&
@@ -66745,7 +66944,7 @@
 	        /**
 	         * @internal
 	         */
-	        function RouterState(root,
+	        function RouterState(root, 
 	            /**
 	             * The current snapshot of the router state.
 	             */
@@ -66805,31 +67004,31 @@
 	             *  The URL segments matched by this route. The observable will emit a new value when
 	             *  the array of segments changes.
 	             */
-	            url,
+	            url, 
 	            /**
 	             * The matrix parameters scoped to this route. The observable will emit a new value when
 	             * the set of the parameters changes.
 	             */
-	            params,
+	            params, 
 	            /**
 	             * The query parameters shared by all the routes. The observable will emit a new value when
 	             * the set of the parameters changes.
 	             */
-	            queryParams,
+	            queryParams, 
 	            /**
 	             * The URL fragment shared by all the routes. The observable will emit a new value when
 	             * the URL fragment changes.
 	             */
-	            fragment,
+	            fragment, 
 	            /**
 	             * The static and resolved data of this route. The observable will emit a new value when
 	             * any of the resolvers returns a new object.
 	             */
-	            data,
+	            data, 
 	            /**
 	             * The outlet name of the route. It's a constant.
 	             */
-	            outlet,
+	            outlet, 
 	            /**
 	             * The component of the route. It's a constant.
 	             */
@@ -66956,27 +67155,27 @@
 	            /**
 	             *  The URL segments matched by this route.
 	             */
-	            url,
+	            url, 
 	            /**
 	             * The matrix parameters scoped to this route.
 	             */
-	            params,
+	            params, 
 	            /**
 	             * The query parameters shared by all the routes.
 	             */
-	            queryParams,
+	            queryParams, 
 	            /**
 	             * The URL fragment shared by all the routes.
 	             */
-	            fragment,
+	            fragment, 
 	            /**
 	             * The static and resolved data of this route.
 	             */
-	            data,
+	            data, 
 	            /**
 	             * The outlet name of the route.
 	             */
-	            outlet,
+	            outlet, 
 	            /**
 	             * The component of the route.
 	             */
@@ -67761,7 +67960,7 @@
 	        // TODO: vsavkin: make internal
 	        function NavigationStart(
 	            /** @docsNotRequired */
-	            id,
+	            id, 
 	            /** @docsNotRequired */
 	            url) {
 	            this.id = id;
@@ -67780,9 +67979,9 @@
 	        // TODO: vsavkin: make internal
 	        function NavigationEnd(
 	            /** @docsNotRequired */
-	            id,
+	            id, 
 	            /** @docsNotRequired */
-	            url,
+	            url, 
 	            /** @docsNotRequired */
 	            urlAfterRedirects) {
 	            this.id = id;
@@ -67804,9 +68003,9 @@
 	        // TODO: vsavkin: make internal
 	        function NavigationCancel(
 	            /** @docsNotRequired */
-	            id,
+	            id, 
 	            /** @docsNotRequired */
-	            url,
+	            url, 
 	            /** @docsNotRequired */
 	            reason) {
 	            this.id = id;
@@ -67826,9 +68025,9 @@
 	        // TODO: vsavkin: make internal
 	        function NavigationError(
 	            /** @docsNotRequired */
-	            id,
+	            id, 
 	            /** @docsNotRequired */
-	            url,
+	            url, 
 	            /** @docsNotRequired */
 	            error) {
 	            this.id = id;
@@ -67850,11 +68049,11 @@
 	        // TODO: vsavkin: make internal
 	        function RoutesRecognized(
 	            /** @docsNotRequired */
-	            id,
+	            id, 
 	            /** @docsNotRequired */
-	            url,
+	            url, 
 	            /** @docsNotRequired */
-	            urlAfterRedirects,
+	            urlAfterRedirects, 
 	            /** @docsNotRequired */
 	            state) {
 	            this.id = id;
@@ -68180,7 +68379,7 @@
 	            else if (urlTransition && prevRawUrl && this.urlHandlingStrategy.shouldProcessUrl(prevRawUrl)) {
 	                this.routerEvents.next(new NavigationStart(id, this.serializeUrl(url)));
 	                Promise.resolve()
-	                    .then(function (_) { return _this.runNavigate(url, rawUrl, false, false, id, createEmptyState(url, _this.rootComponentType)); })
+	                    .then(function (_) { return _this.runNavigate(url, rawUrl, false, false, id, createEmptyState(url, _this.rootComponentType).snapshot); })
 	                    .then(resolve, reject);
 	            }
 	            else {
@@ -68196,54 +68395,68 @@
 	                return Promise.resolve(false);
 	            }
 	            return new Promise(function (resolvePromise, rejectPromise) {
-	                var state;
-	                var navigationIsSuccessful;
-	                var preActivation;
-	                var appliedUrl;
-	                var storedState = _this.currentRouterState;
-	                var storedUrl = _this.currentUrlTree;
-	                var routerState$;
+	                // create an observable of the url and route state snapshot
+	                // this operation do not result in any side effects
+	                var urlAndSnapshot$;
 	                if (!precreatedState) {
-	                    var redirectsApplied$ = applyRedirects(_this.injector, _this.configLoader, url, _this.config);
-	                    var snapshot$ = rxjs_operator_mergeMap.mergeMap.call(redirectsApplied$, function (u) {
-	                        appliedUrl = u;
-	                        return recognize(_this.rootComponentType, _this.config, appliedUrl, _this.serializeUrl(appliedUrl));
-	                    });
-	                    var emitRecognzied$ = rxjs_operator_map.map.call(snapshot$, function (newRouterStateSnapshot) {
-	                        _this.routerEvents.next(new RoutesRecognized(id, _this.serializeUrl(url), _this.serializeUrl(appliedUrl), newRouterStateSnapshot));
-	                        return newRouterStateSnapshot;
-	                    });
-	                    routerState$ = rxjs_operator_map.map.call(emitRecognzied$, function (routerStateSnapshot) {
-	                        return createRouterState(routerStateSnapshot, _this.currentRouterState);
+	                    var redirectsApplied$ = applyRedirects(_this.injector, _this.configLoader, _this.urlSerializer, url, _this.config);
+	                    urlAndSnapshot$ = rxjs_operator_mergeMap.mergeMap.call(redirectsApplied$, function (appliedUrl) {
+	                        return rxjs_operator_map.map.call(recognize(_this.rootComponentType, _this.config, appliedUrl, _this.serializeUrl(appliedUrl)), function (snapshot) {
+	                            _this.routerEvents.next(new RoutesRecognized(id, _this.serializeUrl(url), _this.serializeUrl(appliedUrl), snapshot));
+	                            return { appliedUrl: appliedUrl, snapshot: snapshot };
+	                        });
 	                    });
 	                }
 	                else {
-	                    appliedUrl = url;
-	                    routerState$ = rxjs_observable_of.of(precreatedState);
+	                    urlAndSnapshot$ = rxjs_observable_of.of({ appliedUrl: url, snapshot: precreatedState });
 	                }
-	                var preactivation$ = rxjs_operator_map.map.call(routerState$, function (newState) {
-	                    state = newState;
+	                // run preactivation: guards and data resolvers
+	                var preActivation;
+	                var preactivationTraverse$ = rxjs_operator_map.map.call(urlAndSnapshot$, function (_a) {
+	                    var appliedUrl = _a.appliedUrl, snapshot = _a.snapshot;
 	                    preActivation =
-	                        new PreActivation(state.snapshot, _this.currentRouterState.snapshot, _this.injector);
+	                        new PreActivation(snapshot, _this.currentRouterState.snapshot, _this.injector);
 	                    preActivation.traverse(_this.outletMap);
+	                    return { appliedUrl: appliedUrl, snapshot: snapshot };
 	                });
-	                var preactivation2$ = rxjs_operator_mergeMap.mergeMap.call(preactivation$, function () {
+	                var preactivationCheckGuards = rxjs_operator_mergeMap.mergeMap.call(preactivationTraverse$, function (_a) {
+	                    var appliedUrl = _a.appliedUrl, snapshot = _a.snapshot;
 	                    if (_this.navigationId !== id)
 	                        return rxjs_observable_of.of(false);
-	                    return preActivation.checkGuards();
+	                    return rxjs_operator_map.map.call(preActivation.checkGuards(), function (shouldActivate) {
+	                        return { appliedUrl: appliedUrl, snapshot: snapshot, shouldActivate: shouldActivate };
+	                    });
 	                });
-	                var resolveData$ = rxjs_operator_mergeMap.mergeMap.call(preactivation2$, function (shouldActivate) {
+	                var preactivationResolveData$ = rxjs_operator_mergeMap.mergeMap.call(preactivationCheckGuards, function (p) {
 	                    if (_this.navigationId !== id)
 	                        return rxjs_observable_of.of(false);
-	                    if (shouldActivate) {
-	                        return rxjs_operator_map.map.call(preActivation.resolveData(), function () { return shouldActivate; });
+	                    if (p.shouldActivate) {
+	                        return rxjs_operator_map.map.call(preActivation.resolveData(), function () { return p; });
 	                    }
 	                    else {
-	                        return rxjs_observable_of.of(shouldActivate);
+	                        return rxjs_observable_of.of(p);
 	                    }
 	                });
-	                resolveData$
-	                    .forEach(function (shouldActivate) {
+	                // create router state
+	                // this operation has side effects => route state is being affected
+	                var routerState$ = rxjs_operator_map.map.call(preactivationResolveData$, function (_a) {
+	                    var appliedUrl = _a.appliedUrl, snapshot = _a.snapshot, shouldActivate = _a.shouldActivate;
+	                    if (shouldActivate) {
+	                        var state = createRouterState(snapshot, _this.currentRouterState);
+	                        return { appliedUrl: appliedUrl, state: state, shouldActivate: shouldActivate };
+	                    }
+	                    else {
+	                        return { appliedUrl: appliedUrl, state: null, shouldActivate: shouldActivate };
+	                    }
+	                });
+	                // applied the new router state
+	                // this operation has side effects
+	                var navigationIsSuccessful;
+	                var storedState = _this.currentRouterState;
+	                var storedUrl = _this.currentUrlTree;
+	                routerState$
+	                    .forEach(function (_a) {
+	                    var appliedUrl = _a.appliedUrl, state = _a.state, shouldActivate = _a.shouldActivate;
 	                    if (!shouldActivate || id !== _this.navigationId) {
 	                        navigationIsSuccessful = false;
 	                        return;
@@ -68266,7 +68479,7 @@
 	                    .then(function () {
 	                    _this.navigated = true;
 	                    if (navigationIsSuccessful) {
-	                        _this.routerEvents.next(new NavigationEnd(id, _this.serializeUrl(url), _this.serializeUrl(appliedUrl)));
+	                        _this.routerEvents.next(new NavigationEnd(id, _this.serializeUrl(url), _this.serializeUrl(_this.currentUrlTree)));
 	                        resolvePromise(true);
 	                    }
 	                    else {

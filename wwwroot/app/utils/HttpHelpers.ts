@@ -15,6 +15,7 @@ export class HttpHelpers {
     getaction<T>(path: string) {
         return this._http.get(path)
             .map(res => {
+                console.log("res is: " + res); 
                 return <T>res.json();
             })
             .catch(this._handleError);

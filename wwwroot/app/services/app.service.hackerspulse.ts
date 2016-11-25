@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, Response } from '@angular/http';
 import {HttpHelpers} from '../utils/HttpHelpers';
 import {Observable} from 'rxjs/Observable';
 import {User} from '../models/user';
@@ -22,10 +22,11 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _isAuth : boolean; 
     private _userName : string; 
     private _user : User; 
+    private http : Http; 
 
-    constructor(private http: Http) {
+    constructor(http: Http) {
         super(http);
-
+        this.http = http; 
         /*this.getaction<Models.List[]>(this._getTodoListUrl).subscribe(
             result => {
                 this._todolist = result;
@@ -97,18 +98,36 @@ export class AppServiceHackersPulse extends HttpHelpers {
         return this._userName; 
     }
 
-    GetArticles(subverse : string) : Article[]
+    GetArticles(subverse : string) : Observable<Article[]>
     {
         console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse);
-        this.getaction<Article[]>(this._getArticlesUrl + "/?subverse="+subverse).subscribe(
-            result => {
-                this._articles = result;
-            },
-            error => this.errormsg = error);
 
-        return this._articles; 
+        return this.http.get(this._getArticlesUrl + "/?subverse="+subverse)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+
     }
 
+    private extractData(res: Response) 
+    {
+        let body = res.json();
+        return body.data || { };
+    }
+
+    private handleError (error: Response | any) 
+    {
+        // In a real world app, we might use a remote logging infrastructure
+        let errMsg: string;
+        if (error instanceof Response) {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+        } else {
+        errMsg = error.message ? error.message : error.toString();
+        }
+        console.error(errMsg);
+        return Observable.throw(errMsg);
+    }
 
     AddArticle(article: Article) {
         console.log("AddArticle: title " + article.title); 

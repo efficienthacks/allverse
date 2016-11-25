@@ -38,7 +38,7 @@ constructor(private location:Location, private hpService: AppServiceHackersPulse
     this.user = this.service.GetUser(); 
     this.user.log(); 
     console.log("End get user"); 
-    this.articles = this.service.GetArticles(this.subverseStr); 
+    //this.articles = this.service.GetArticles(this.subverseStr); 
 }
 
   ngOnInit() {
