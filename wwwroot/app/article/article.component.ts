@@ -17,12 +17,12 @@ export class ArticleComponent implements OnInit {
   @Input() article: Article;
 
   voteUp(): boolean {
-    this.article.voteUp();
+    this.article.votes+=1;
     return false;
   }
 
   voteDown(): boolean {
-    this.article.voteDown();
+    this.article.votes-=1;
     return false;
   }
 

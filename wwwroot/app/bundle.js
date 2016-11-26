@@ -48297,11 +48297,11 @@
 	    function ArticleComponent() {
 	    }
 	    ArticleComponent.prototype.voteUp = function () {
-	        this.article.voteUp();
+	        this.article.votes += 1;
 	        return false;
 	    };
 	    ArticleComponent.prototype.voteDown = function () {
-	        this.article.voteDown();
+	        this.article.votes -= 1;
 	        return false;
 	    };
 	    ArticleComponent.prototype.ngOnInit = function () {
@@ -48345,8 +48345,7 @@
 	    };
 	    Article.prototype.domain = function () {
 	        try {
-	            var link = this.link.split('//')[1];
-	            return link.split('/')[0];
+	            return this.link;
 	        }
 	        catch (err) {
 	            return null;
@@ -65507,9 +65506,7 @@
 	        var RouteStr;
 	        console.log("Subverse is: " + this.subverseStr);
 	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
-	            console.log("CL: " + data.toString());
 	            _this.articles = data;
-	            console.log("Domain is: " + _this.articles[0].domain());
 	        });
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {
