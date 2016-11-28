@@ -31,8 +31,7 @@ namespace WebApplication.Controllers
             {
                 try
                 {
-                    article.id=0; 
-                    db.Insert(article); 
+                    article.id = (long)db.Insert(article); 
                 }
                 catch(Exception ex)
                 {

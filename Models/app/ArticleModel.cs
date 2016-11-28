@@ -6,7 +6,7 @@ namespace WebApplication.Models.app
 {
     [JsonObject(MemberSerialization.OptOut)]
     [TableName("article")]
-    [PrimaryKey("id", AutoIncrement=false)]
+    [PrimaryKey("id", AutoIncrement=true)]
     [ExplicitColumns]  
     public class ArticleModel
     {
