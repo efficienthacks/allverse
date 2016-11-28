@@ -48390,17 +48390,18 @@
 	    SubverseComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        console.log("Subverse is: " + this.subverseStr);
+	        this.service.GetUser().subscribe(function (data) {
+	            _this.user = data;
+	        });
 	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
-	            console.log("Console log: " + data.toString());
 	            _this.articles = data;
 	        });
-	        //this.service.GetUser().subscribe( (data) => {
-	        //  this.user = data; 
-	        //}); 
 	    };
 	    SubverseComponent.prototype.addArticle = function (title, link, text) {
-	        console.log("Adding article title: " + title.value + " and link: " + link.value);
-	        var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.ID, 0);
+	        var UID = this.user.id;
+	        console.log(("Adding article title: " + title.value + " and link: " + link.value + " and uid ") + UID);
+	        var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.id, 0);
+	        console.log("Service add article");
 	        this.service.AddArticle(a);
 	        this.articles.push(a);
 	        title.value = '';
@@ -48486,6 +48487,7 @@
 	
 	    SelectedList: Models.List;*/
 	    AppServiceHackersPulse.prototype.GetUser = function () {
+	        console.log(this._getUserUrl);
 	        return this.http.get(this._getUserUrl)
 	            .map(this.extractData)
 	            .catch(this.handleError);
@@ -48498,7 +48500,7 @@
 	    };
 	    AppServiceHackersPulse.prototype.extractData = function (res) {
 	        var body = res.json();
-	        console.log("ExtractD: " + body + " bd: " + body.data);
+	        console.log("ExtractD: " + body);
 	        return body;
 	    };
 	    AppServiceHackersPulse.prototype.handleError = function (error) {

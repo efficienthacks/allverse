@@ -29,7 +29,16 @@ namespace WebApplication.Controllers
         {
             using(IDatabase db = GetDB())
             {
-                db.Insert(article); 
+                try
+                {
+                    article.id=0; 
+                    db.Insert(article); 
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message;
+                    string im = ex.InnerException.ToString(); 
+                }
             }
             return Json(article); 
         }
@@ -54,7 +63,7 @@ namespace WebApplication.Controllers
                 throw ex; 
             }
 
-            return Json(""); 
+            //return Json(""); 
         }
 
     }

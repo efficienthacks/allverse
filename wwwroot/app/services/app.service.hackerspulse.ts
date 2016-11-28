@@ -48,6 +48,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     GetUser() : Observable<User>
     {
+        console.log(this._getUserUrl); 
         return this.http.get(this._getUserUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
@@ -66,7 +67,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private extractData(res: Response) 
     {
         let body = res.json();
-        console.log("ExtractD: " + body + " bd: " + body.data); 
+        console.log("ExtractD: " + body);
         return body;
     }
 

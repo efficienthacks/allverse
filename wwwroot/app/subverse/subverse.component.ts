@@ -38,22 +38,25 @@ export class SubverseComponent implements OnInit {
   ngOnInit() {
       console.log("Subverse is: " + this.subverseStr); 
 
+      this.service.GetUser().subscribe( (data) => {
+        this.user = data; 
+      }); 
+
+
       this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
-        console.log("Console log: " + data.toString());
         this.articles = data; 
       });
 
-
-      //this.service.GetUser().subscribe( (data) => {
-      //  this.user = data; 
-      //}); 
   }
 
   addArticle(title: HTMLInputElement, link: HTMLInputElement, text: HTMLInputElement): boolean {
   
-    console.log(`Adding article title: ${title.value} and link: ${link.value}`);
+    var UID : string = this.user.id; 
+    console.log(`Adding article title: ${title.value} and link: ${link.value} and uid ` + UID);
     
-    var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,this.user.ID,0);
+    var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,this.user.id,0);
+    
+    console.log("Service add article"); 
     this.service.AddArticle(a); 
     this.articles.push(a);
     

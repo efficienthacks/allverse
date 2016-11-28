@@ -2,11 +2,11 @@
 export class User
 {
     isAuthenticated : boolean; 
-    ID : string; 
-    Name : string; 
+    id : string; 
+    name : string; 
 
     log()
     {
-        console.log("User ID: " + this.ID + " isAuth: " + this.isAuthenticated + " Name: " + this.Name); 
+        console.log("User ID: " + this.id + " isAuth: " + this.isAuthenticated + " Name: " + this.name); 
     }
 }

@@ -63,7 +63,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        JsonResult GetUser()
+        public JsonResult GetUser()
         {
             var user = new UserModel(); 
             user.isAuthenticated = User.Identity.IsAuthenticated;

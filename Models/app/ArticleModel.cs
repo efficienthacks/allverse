@@ -6,7 +6,7 @@ namespace WebApplication.Models.app
 {
     [JsonObject(MemberSerialization.OptOut)]
     [TableName("article")]
-    [PrimaryKey("id")]   
+    [PrimaryKey("id", AutoIncrement=false)]
     [ExplicitColumns]  
     public class ArticleModel
     {
@@ -25,7 +25,7 @@ namespace WebApplication.Models.app
         [Column]
         public int votes; 
         [Column] 
-        public bool isanon=false; 
+        public int isanon=0; 
 
     }
 }
