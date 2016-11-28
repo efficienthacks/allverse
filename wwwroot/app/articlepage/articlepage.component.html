@@ -1,7 +1,8 @@
+Article! 
 
-<div>
-
-
- 
-
-</div> 
+<div class="ui grid posts">
+  <app-articlefullpage
+    *ngFor="let article of getArticle()"
+    [article]="article">
+  </app-articlefullpage>
+</div>

@@ -28,7 +28,8 @@ constructor(private hpService: AppServiceHackersPulse)
     //based off of subverse load articles from the DB
 }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
       //load articles based off of subverse 
       var RouteStr : string; 
 
@@ -36,9 +37,7 @@ constructor(private hpService: AppServiceHackersPulse)
     
       this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
         this.articles = <Article[]>data; 
-      });
-
-      
+      }); 
   }
 
   sortedArticles(): Article[] {

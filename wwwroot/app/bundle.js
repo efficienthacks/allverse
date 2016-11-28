@@ -41770,11 +41770,12 @@
 	var subverse_component_1 = __webpack_require__(287);
 	var home_component_1 = __webpack_require__(614);
 	var articlepage_component_1 = __webpack_require__(615);
-	var router_1 = __webpack_require__(616);
+	var articlefullpage_component_1 = __webpack_require__(616);
+	var router_1 = __webpack_require__(617);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 'r/:id', component: subverse_component_1.SubverseComponent },
-	    { path: 'article/:id', component: articlepage_component_1.ArticlePageComponent }
+	    { path: 'a/:id', component: articlepage_component_1.ArticlePageComponent }
 	];
 	var AppModule = (function () {
 	    function AppModule() {
@@ -41786,7 +41787,8 @@
 	                article_component_1.ArticleComponent,
 	                articlepage_component_1.ArticlePageComponent,
 	                subverse_component_1.SubverseComponent,
-	                home_component_1.HomeComponent
+	                home_component_1.HomeComponent,
+	                articlefullpage_component_1.ArticleFullPageComponent
 	            ],
 	            imports: [
 	                platform_browser_1.BrowserModule,
@@ -48402,7 +48404,7 @@
 	        console.log(("Adding article title: " + title.value + " and link: " + link.value + " and uid ") + UID);
 	        var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.id, 0);
 	        console.log("Service add article");
-	        this.service.AddArticle(a);
+	        a = this.service.AddArticle(a); //should return with article id 
 	        this.articles.push(a);
 	        title.value = '';
 	        link.value = '';
@@ -48460,6 +48462,7 @@
 	        _super.call(this, http);
 	        this._getArticlePostUrl = 'Article/Post';
 	        this._getArticlesUrl = 'Article/GetArticles';
+	        this._getArticleUrl = 'Article/GetArticle';
 	        this._getUserUrl = 'Manage/GetUser';
 	        this.http = http;
 	        /*this.getaction<Models.List[]>(this._getTodoListUrl).subscribe(
@@ -48492,6 +48495,11 @@
 	            .map(this.extractData)
 	            .catch(this.handleError);
 	    };
+	    AppServiceHackersPulse.prototype.GetArticle = function (id) {
+	        return this.http.get(this._getArticleUrl + "/" + id)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
 	    AppServiceHackersPulse.prototype.GetArticles = function (subverse) {
 	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse);
 	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse)
@@ -48500,7 +48508,6 @@
 	    };
 	    AppServiceHackersPulse.prototype.extractData = function (res) {
 	        var body = res.json();
-	        console.log("ExtractD: " + body);
 	        return body;
 	    };
 	    AppServiceHackersPulse.prototype.handleError = function (error) {
@@ -65548,11 +65555,22 @@
 	};
 	var core_1 = __webpack_require__(258);
 	var common_1 = __webpack_require__(277);
+	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var ArticlePageComponent = (function () {
-	    function ArticlePageComponent(location) {
+	    function ArticlePageComponent(location, hpService) {
+	        var _this = this;
+	        this.hpService = hpService;
+	        this.service = hpService;
 	        this.Id = location.path().split('/')[2];
 	        console.log("Article: " + this.Id);
+	        this.service.GetArticle(this.Id).subscribe(function (data) {
+	            _this.article = data;
+	            console.log(_this.article.title);
+	        });
 	    }
+	    ArticlePageComponent.prototype.getArticle = function () {
+	        return [this.article];
+	    };
 	    ArticlePageComponent.prototype.ngOnInit = function () {
 	    };
 	    ArticlePageComponent = __decorate([
@@ -65562,9 +65580,10 @@
 	            styleUrls: ['./app/articlepage/articlepage.component.css'],
 	            host: {
 	                class: 'row'
-	            }
+	            },
+	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
 	        }), 
-	        __metadata('design:paramtypes', [common_1.Location])
+	        __metadata('design:paramtypes', [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
 	    ], ArticlePageComponent);
 	    return ArticlePageComponent;
 	}());
@@ -65573,6 +65592,51 @@
 
 /***/ },
 /* 616 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(258);
+	var article_model_1 = __webpack_require__(286);
+	var app_service_hackerspulse_1 = __webpack_require__(288);
+	var ArticleFullPageComponent = (function () {
+	    function ArticleFullPageComponent(hpService) {
+	        this.hpService = hpService;
+	        this.service = hpService;
+	    }
+	    ArticleFullPageComponent.prototype.ngOnInit = function () {
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', article_model_1.Article)
+	    ], ArticleFullPageComponent.prototype, "article", void 0);
+	    ArticleFullPageComponent = __decorate([
+	        core_1.Component({
+	            selector: 'app-articlefullpage',
+	            templateUrl: './app/articlefullpage/articlefullpage.component.html',
+	            styleUrls: ['./app/articlefullpage/articlefullpage.component.css'],
+	            host: {
+	                class: 'row'
+	            },
+	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	        }), 
+	        __metadata('design:paramtypes', [app_service_hackerspulse_1.AppServiceHackersPulse])
+	    ], ArticleFullPageComponent);
+	    return ArticleFullPageComponent;
+	}());
+	exports.ArticleFullPageComponent = ArticleFullPageComponent;
+
+
+/***/ },
+/* 617 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**

@@ -42,6 +42,17 @@ namespace WebApplication.Controllers
             return Json(article); 
         }
 
+        [HttpGet]
+        public JsonResult GetArticle(long id)
+        {
+            ArticleModel a = null; 
+            using (IDatabase db = GetDB())
+            {
+                a = db.SingleById<ArticleModel>(id); 
+            }
+            return Json(a); 
+        }
+
         [HttpGet] 
         public JsonResult GetArticles(string subverse)
         {

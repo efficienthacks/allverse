@@ -8,6 +8,7 @@ import { ArticleComponent } from './article/article.component';
 import { SubverseComponent } from './subverse/subverse.component'; 
 import { HomeComponent } from './home/home.component';
 import { ArticlePageComponent } from './articlepage/articlepage.component';
+import {ArticleFullPageComponent} from './articlefullpage/articlefullpage.component'; 
 
 import {RouterModule, Routes} from '@angular/router'
 
@@ -16,7 +17,7 @@ import {AppServiceHackersPulse} from './services/app.service.hackerspulse';
 const routes: Routes = [
     { path: '', component : HomeComponent },
     { path: 'r/:id', component : SubverseComponent },
-    { path: 'article/:id', component : ArticlePageComponent }
+    { path: 'a/:id', component : ArticlePageComponent }
 ];
 
 @NgModule({
@@ -25,7 +26,8 @@ const routes: Routes = [
     ArticleComponent,
     ArticlePageComponent,
     SubverseComponent,
-    HomeComponent
+    HomeComponent,
+    ArticleFullPageComponent
   ],
   imports: [
     BrowserModule,

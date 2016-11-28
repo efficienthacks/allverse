@@ -12,7 +12,9 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     private _getArticlePostUrl = 'Article/Post';
     private _getArticlesUrl = 'Article/GetArticles'; 
+    private _getArticleUrl = 'Article/GetArticle'; 
     private _getUserUrl = 'Manage/GetUser';
+
 
     //private _todolist: Models.List[]; 
     private http : Http; 
@@ -54,6 +56,13 @@ export class AppServiceHackersPulse extends HttpHelpers {
                     .catch(this.handleError);
     }
 
+    GetArticle(id : string) : Observable<Article>
+    {
+        return this.http.get(this._getArticleUrl + "/"+id)
+                    .map(this.extractData)
+                    .catch(this.handleError);        
+    }
+
     GetArticles(subverse : string) : Observable<Article[]>
     {
         console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse);
@@ -67,7 +76,6 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private extractData(res: Response) 
     {
         let body = res.json();
-        console.log("ExtractD: " + body);
         return body;
     }
 

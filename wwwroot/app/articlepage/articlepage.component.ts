@@ -5,6 +5,8 @@ import {
 } from '@angular/core';
 import { Article } from '../article/article.model';
 import {Location} from '@angular/common'; 
+import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
+
 
 @Component({
   selector: 'app-articlepage',
@@ -12,18 +14,31 @@ import {Location} from '@angular/common';
   styleUrls: ['./app/articlepage/articlepage.component.css'],
   host: {
     class: 'row'
-  }
+  },
+  providers: [AppServiceHackersPulse]
 })
 export class ArticlePageComponent implements OnInit {
-  
   Id : string; 
+  service : AppServiceHackersPulse; 
   article : Article; 
 
-
-  constructor(location : Location)
+  constructor(location : Location,private hpService: AppServiceHackersPulse)
   {
+    this.service = hpService; 
     this.Id = location.path().split('/')[2]; 
-    console.log("Article: " + this.Id); 
+    console.log("Article: " + this.Id);
+    this.service.GetArticle(this.Id).subscribe((data) =>{
+      this.article = data; 
+      console.log(this.article.title); 
+    });
+
+    
+
+  }
+
+  getArticle() : Article[]
+  {
+    return [this.article]; 
   }
 
   ngOnInit() {
