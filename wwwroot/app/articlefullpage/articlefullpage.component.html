@@ -1,17 +1,17 @@
 <div class="ui large segment"> 
-<div class="field">
+<div class="field"  *ngIf="article">
   Article Title: {{article.title}}
 </div> 
-<div class="field">
+<div class="field"  *ngIf="article">
   Article Link: <a href="{{article.link}}">{{article.link}}</a>
 </div> 
-<div class="field">
+<div class="field"  *ngIf="article">
   User Text: {{article.text}}
 </div> 
-<div class="field">
+<div class="field"  *ngIf="article">
   Subverse: {{article.subverse}}
 </div> 
-<div class="field">
+<div class="field"  *ngIf="article">
   Votes: {{article.votes}}
 </div> 
 </div> 
@@ -19,10 +19,10 @@
 
 <div class="ui large segment">
 Add comment 
-<form class="form ui large segment">
-<textarea rows="10" cols="10" #comment>
+<form class="form ui large segment" >
+  <textarea rows="10" cols="10" #comment>
 
-</textarea>
+  </textarea>
   <!-- added this button -->
   <button (click)="addComment(comment)"  
           class="ui positive right floated button">  
@@ -31,5 +31,5 @@ Add comment
 </form> 
 </div> 
 
-<app-comment-tree [commentTree]="article.comments"></app-comment-tree>
+<app-comment-tree *ngIf="article" [commentTree]="article.comments"></app-comment-tree>
 

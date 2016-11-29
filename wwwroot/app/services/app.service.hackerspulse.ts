@@ -90,6 +90,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     {
         let b = res.json();
         var a : Article = new Article(b.title,b.link,b.subverse,b.text,b.userID,b.votes); 
+        a.id = b.id; 
         return a;
     }
     private extractArticlesData(res: Response) 
@@ -100,6 +101,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
         for (var b in body)
         {
             var a : Article = new Article(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].votes);
+            a.id = body[b].id; 
             articles.push(a);  
         }
 
