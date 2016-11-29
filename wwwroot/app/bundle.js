@@ -41768,10 +41768,12 @@
 	var app_component_1 = __webpack_require__(284);
 	var article_component_1 = __webpack_require__(285);
 	var subverse_component_1 = __webpack_require__(287);
-	var home_component_1 = __webpack_require__(614);
-	var articlepage_component_1 = __webpack_require__(615);
-	var articlefullpage_component_1 = __webpack_require__(616);
-	var router_1 = __webpack_require__(617);
+	var home_component_1 = __webpack_require__(615);
+	var articlepage_component_1 = __webpack_require__(616);
+	var articlefullpage_component_1 = __webpack_require__(617);
+	var router_1 = __webpack_require__(618);
+	var comment_component_1 = __webpack_require__(619);
+	var comment_tree_component_1 = __webpack_require__(620);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 'r/:id', component: subverse_component_1.SubverseComponent },
@@ -41788,7 +41790,9 @@
 	                articlepage_component_1.ArticlePageComponent,
 	                subverse_component_1.SubverseComponent,
 	                home_component_1.HomeComponent,
-	                articlefullpage_component_1.ArticleFullPageComponent
+	                articlefullpage_component_1.ArticleFullPageComponent,
+	                comment_component_1.CommentComponent,
+	                comment_tree_component_1.CommentTreeComponent
 	            ],
 	            imports: [
 	                platform_browser_1.BrowserModule,
@@ -48455,7 +48459,9 @@
 	var http_1 = __webpack_require__(283);
 	var HttpHelpers_1 = __webpack_require__(289);
 	var Observable_1 = __webpack_require__(260);
+	var user_1 = __webpack_require__(614);
 	__webpack_require__(290);
+	var article_1 = __webpack_require__(286);
 	var AppServiceHackersPulse = (function (_super) {
 	    __extends(AppServiceHackersPulse, _super);
 	    function AppServiceHackersPulse(http) {
@@ -48492,20 +48498,43 @@
 	    AppServiceHackersPulse.prototype.GetUser = function () {
 	        console.log(this._getUserUrl);
 	        return this.http.get(this._getUserUrl)
-	            .map(this.extractData)
+	            .map(this.extractUserData)
 	            .catch(this.handleError);
 	    };
 	    AppServiceHackersPulse.prototype.GetArticle = function (id) {
 	        return this.http.get(this._getArticleUrl + "/" + id)
-	            .map(this.extractData)
+	            .map(this.extractArticleData)
 	            .catch(this.handleError);
 	    };
 	    AppServiceHackersPulse.prototype.GetArticles = function (subverse) {
 	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse);
 	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse)
-	            .map(this.extractData)
+	            .map(this.extractArticlesData)
 	            .catch(this.handleError);
 	    };
+	    AppServiceHackersPulse.prototype.extractUserData = function (res) {
+	        var u = new user_1.User();
+	        var body = res.json();
+	        u.id = body.id;
+	        u.isAuthenticated = body.isAuthenticated;
+	        u.name = body.name;
+	        return u;
+	    };
+	    AppServiceHackersPulse.prototype.extractArticleData = function (res) {
+	        var b = res.json();
+	        var a = new article_1.Article(b.title, b.link, b.subverse, b.text, b.userID, b.votes);
+	        return a;
+	    };
+	    AppServiceHackersPulse.prototype.extractArticlesData = function (res) {
+	        var body = res.json();
+	        var articles = new Array();
+	        body.each(function (b) {
+	            var a = new article_1.Article(b.title, b.link, b.subverse, b.text, b.userID, b.votes);
+	            articles.push(a);
+	        });
+	        return articles;
+	    };
+	    //note: probably should not be used, but kept as an example 
 	    AppServiceHackersPulse.prototype.extractData = function (res) {
 	        var body = res.json();
 	        return body;
@@ -65488,6 +65517,22 @@
 
 /***/ },
 /* 614 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var User = (function () {
+	    function User() {
+	    }
+	    User.prototype.log = function () {
+	        console.log("User ID: " + this.id + " isAuth: " + this.isAuthenticated + " Name: " + this.name);
+	    };
+	    return User;
+	}());
+	exports.User = User;
+
+
+/***/ },
+/* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65540,7 +65585,7 @@
 
 
 /***/ },
-/* 615 */
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65591,7 +65636,7 @@
 
 
 /***/ },
-/* 616 */
+/* 617 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65609,10 +65654,16 @@
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var ArticleFullPageComponent = (function () {
 	    function ArticleFullPageComponent(hpService) {
+	        var _this = this;
 	        this.hpService = hpService;
 	        this.service = hpService;
+	        this.service.GetUser().subscribe(function (data) {
+	            _this.user = data;
+	        });
 	    }
 	    ArticleFullPageComponent.prototype.ngOnInit = function () {
+	    };
+	    ArticleFullPageComponent.prototype.addComment = function (comment) {
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -65636,7 +65687,7 @@
 
 
 /***/ },
-/* 617 */
+/* 618 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -69780,6 +69831,81 @@
 	    exports.__router_private__ = __router_private__;
 	
 	}));
+
+/***/ },
+/* 619 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(258);
+	var CommentComponent = (function () {
+	    function CommentComponent() {
+	    }
+	    CommentComponent.prototype.ngOnInit = function () {
+	        this.collapse = false;
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], CommentComponent.prototype, "comment", void 0);
+	    CommentComponent = __decorate([
+	        core_1.Component({
+	            selector: 'app-comment',
+	            templateUrl: './comment.component.html',
+	            styleUrls: ['./comment.component.scss']
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], CommentComponent);
+	    return CommentComponent;
+	}());
+	exports.CommentComponent = CommentComponent;
+
+
+/***/ },
+/* 620 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(258);
+	var CommentTreeComponent = (function () {
+	    function CommentTreeComponent() {
+	    }
+	    CommentTreeComponent.prototype.ngOnInit = function () {
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], CommentTreeComponent.prototype, "commentTree", void 0);
+	    CommentTreeComponent = __decorate([
+	        core_1.Component({
+	            selector: 'app-comment-tree',
+	            templateUrl: './comment-tree.component.html',
+	            styleUrls: ['./comment-tree.component.scss']
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], CommentTreeComponent);
+	    return CommentTreeComponent;
+	}());
+	exports.CommentTreeComponent = CommentTreeComponent;
+
 
 /***/ }
 /******/ ]);

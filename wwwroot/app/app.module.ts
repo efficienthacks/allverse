@@ -14,6 +14,9 @@ import {RouterModule, Routes} from '@angular/router'
 
 import {AppServiceHackersPulse} from './services/app.service.hackerspulse';
 
+import {CommentComponent} from './comment/comment.component';
+import {CommentTreeComponent} from './comment-tree/comment-tree.component';
+
 const routes: Routes = [
     { path: '', component : HomeComponent },
     { path: 'r/:id', component : SubverseComponent },
@@ -27,7 +30,9 @@ const routes: Routes = [
     ArticlePageComponent,
     SubverseComponent,
     HomeComponent,
-    ArticleFullPageComponent
+    ArticleFullPageComponent,
+    CommentComponent,
+    CommentTreeComponent
   ],
   imports: [
     BrowserModule,

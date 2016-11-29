@@ -52,14 +52,14 @@ export class AppServiceHackersPulse extends HttpHelpers {
     {
         console.log(this._getUserUrl); 
         return this.http.get(this._getUserUrl)
-                    .map(this.extractData)
+                    .map(this.extractUserData)
                     .catch(this.handleError);
     }
 
     GetArticle(id : string) : Observable<Article>
     {
         return this.http.get(this._getArticleUrl + "/"+id)
-                    .map(this.extractData)
+                    .map(this.extractArticleData)
                     .catch(this.handleError);        
     }
 
@@ -68,11 +68,43 @@ export class AppServiceHackersPulse extends HttpHelpers {
         console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse);
 
         return this.http.get(this._getArticlesUrl + "/?subverse="+subverse)
-                    .map(this.extractData)
+                    .map(this.extractArticlesData)
                     .catch(this.handleError);
 
     }
 
+    private extractUserData(res: Response) 
+    {
+        var u : User = new User(); 
+        let body = res.json();
+
+        u.id = body.id; 
+        u.isAuthenticated = body.isAuthenticated;
+        u.name = body.name;
+
+        return u;
+    }
+
+    private extractArticleData(res: Response) 
+    {
+        let b = res.json();
+        var a : Article = new Article(b.title,b.link,b.subverse,b.text,b.userID,b.votes); 
+        return a;
+    }
+    private extractArticlesData(res: Response) 
+    {
+        let body = res.json();
+        var articles : Article[] = new Array<Article>(); 
+
+        body.each(function(b){
+            var a : Article = new Article(b.title,b.link,b.subverse,b.text,b.userID,b.votes);
+            articles.push(a);  
+        });
+
+        return articles;
+    }
+
+    //note: probably should not be used, but kept as an example 
     private extractData(res: Response) 
     {
         let body = res.json();

@@ -6,6 +6,7 @@ import {
 import { Article } from '../models/article';
 import {Location} from '@angular/common'; 
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
+import {User} from '../models/user';
 
 @Component({
   selector: 'app-articlefullpage',
@@ -20,15 +21,24 @@ export class ArticleFullPageComponent implements OnInit {
   @Input() article : Article; 
 
   service : AppServiceHackersPulse; 
+  user : User; 
 
   constructor(private hpService: AppServiceHackersPulse)
   {
     this.service = hpService; 
 
-  
+    this.service.GetUser().subscribe( (data) => {
+      this.user = data; 
+    }); 
   }
 
   ngOnInit() {
+
+
+  }
+
+  addComment(comment : HTMLElement)
+  {
 
 
   }
