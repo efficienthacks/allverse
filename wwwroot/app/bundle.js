@@ -41771,9 +41771,9 @@
 	var home_component_1 = __webpack_require__(615);
 	var articlepage_component_1 = __webpack_require__(616);
 	var articlefullpage_component_1 = __webpack_require__(617);
-	var router_1 = __webpack_require__(618);
-	var comment_component_1 = __webpack_require__(619);
-	var comment_tree_component_1 = __webpack_require__(620);
+	var router_1 = __webpack_require__(619);
+	var comment_component_1 = __webpack_require__(620);
+	var comment_tree_component_1 = __webpack_require__(621);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 'r/:id', component: subverse_component_1.SubverseComponent },
@@ -65651,19 +65651,29 @@
 	};
 	var core_1 = __webpack_require__(258);
 	var article_1 = __webpack_require__(286);
+	var common_1 = __webpack_require__(277);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
+	var comment_1 = __webpack_require__(618);
 	var ArticleFullPageComponent = (function () {
-	    function ArticleFullPageComponent(hpService) {
+	    function ArticleFullPageComponent(location, hpService) {
 	        var _this = this;
+	        this.location = location;
 	        this.hpService = hpService;
 	        this.service = hpService;
+	        this.Id = location.path().split('/')[2];
 	        this.service.GetUser().subscribe(function (data) {
 	            _this.user = data;
 	        });
 	    }
 	    ArticleFullPageComponent.prototype.ngOnInit = function () {
 	    };
+	    ArticleFullPageComponent.prototype.getArticle = function () {
+	        return this.article;
+	    };
 	    ArticleFullPageComponent.prototype.addComment = function (comment) {
+	        var c = new comment_1.Comment(0, 0, this.user.id, comment.value, Number(this.Id));
+	        this.article.comments.push(c);
+	        console.log("comment: " + comment.value);
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -65679,7 +65689,7 @@
 	            },
 	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
 	        }), 
-	        __metadata('design:paramtypes', [app_service_hackerspulse_1.AppServiceHackersPulse])
+	        __metadata('design:paramtypes', [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
 	    ], ArticleFullPageComponent);
 	    return ArticleFullPageComponent;
 	}());
@@ -65688,6 +65698,52 @@
 
 /***/ },
 /* 618 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var Comment = (function () {
+	    function Comment(id, level, userID, content, articleID) {
+	        this.id = id;
+	        this.level = level;
+	        this.userID = userID;
+	        this.content = content;
+	        this.articleID = articleID;
+	        this.time = Date.now();
+	        this.time_ago = this.timeSince(this.time);
+	        this.deleted = false;
+	    }
+	    //crs 11/29/16 - support function to get time since this comment
+	    Comment.prototype.timeSince = function (date) {
+	        var seconds = Math.floor((Date.now() - date) / 1000);
+	        var interval = Math.floor(seconds / 31536000);
+	        if (interval > 1) {
+	            return interval + " years";
+	        }
+	        interval = Math.floor(seconds / 2592000);
+	        if (interval > 1) {
+	            return interval + " months";
+	        }
+	        interval = Math.floor(seconds / 86400);
+	        if (interval > 1) {
+	            return interval + " days";
+	        }
+	        interval = Math.floor(seconds / 3600);
+	        if (interval > 1) {
+	            return interval + " hours";
+	        }
+	        interval = Math.floor(seconds / 60);
+	        if (interval > 1) {
+	            return interval + " minutes";
+	        }
+	        return Math.floor(seconds) + " seconds";
+	    };
+	    return Comment;
+	}());
+	exports.Comment = Comment;
+
+
+/***/ },
+/* 619 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -69833,7 +69889,7 @@
 	}));
 
 /***/ },
-/* 619 */
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -69871,7 +69927,7 @@
 
 
 /***/ },
-/* 620 */
+/* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

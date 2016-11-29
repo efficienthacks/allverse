@@ -7,6 +7,7 @@ import { Article } from '../models/article';
 import {Location} from '@angular/common'; 
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
 import {User} from '../models/user';
+import {Comment} from '../models/comment';
 
 @Component({
   selector: 'app-articlefullpage',
@@ -19,13 +20,14 @@ import {User} from '../models/user';
 })
 export class ArticleFullPageComponent implements OnInit {
   @Input() article : Article; 
-
   service : AppServiceHackersPulse; 
   user : User; 
+  Id : string; 
 
-  constructor(private hpService: AppServiceHackersPulse)
+  constructor(private location : Location, private hpService: AppServiceHackersPulse)
   {
     this.service = hpService; 
+    this.Id = location.path().split('/')[2]; 
 
     this.service.GetUser().subscribe( (data) => {
       this.user = data; 
@@ -37,10 +39,16 @@ export class ArticleFullPageComponent implements OnInit {
 
   }
 
-  addComment(comment : HTMLElement)
+  getArticle() : Article
   {
+    return this.article; 
+  }
 
-
+  addComment(comment : HTMLInputElement)
+  {
+    var c : Comment = new Comment(0,0,this.user.id,comment.value,Number(this.Id));
+    this.article.comments.push(c); 
+    console.log("comment: " + comment.value); 
   }
 
 }
