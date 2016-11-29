@@ -18,6 +18,7 @@ export class Article {
     this.subverse = subverse; 
     this.userID = userID; 
     this.votes = votes || 0;
+    this.comments = new Array<Comment>(); 
   }
 
   log() : void{

@@ -14,7 +14,7 @@ import {Observable} from 'rxjs/Observable';
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-subverse',
   templateUrl: './app/subverse/subverse.component.html',
   styleUrls: ['./app/subverse/subverse.component.css'],
   host: {

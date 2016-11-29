@@ -48345,6 +48345,7 @@
 	        this.subverse = subverse;
 	        this.userID = userID;
 	        this.votes = votes || 0;
+	        this.comments = new Array();
 	    }
 	    Article.prototype.log = function () {
 	        console.log("Title: " + this.title + " Link: " + this.link + " subverse: " + this.subverse);
@@ -48421,7 +48422,7 @@
 	    };
 	    SubverseComponent = __decorate([
 	        core_1.Component({
-	            selector: 'app-root',
+	            selector: 'app-subverse',
 	            templateUrl: './app/subverse/subverse.component.html',
 	            styleUrls: ['./app/subverse/subverse.component.css'],
 	            host: {
@@ -48509,7 +48510,7 @@
 	    AppServiceHackersPulse.prototype.GetArticles = function (subverse) {
 	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse);
 	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse)
-	            .map(this.extractArticlesData)
+	            .map(this.extractData)
 	            .catch(this.handleError);
 	    };
 	    AppServiceHackersPulse.prototype.extractUserData = function (res) {
@@ -48528,13 +48529,12 @@
 	    AppServiceHackersPulse.prototype.extractArticlesData = function (res) {
 	        var body = res.json();
 	        var articles = new Array();
-	        body.each(function (b) {
-	            var a = new article_1.Article(b.title, b.link, b.subverse, b.text, b.userID, b.votes);
+	        for (var b in body) {
+	            var a = new article_1.Article(body[b].title, body[b].link, body[b].subverse, body[b].text, body[b].userID, body[b].votes);
 	            articles.push(a);
-	        });
+	        }
 	        return articles;
 	    };
-	    //note: probably should not be used, but kept as an example 
 	    AppServiceHackersPulse.prototype.extractData = function (res) {
 	        var body = res.json();
 	        return body;
@@ -65569,7 +65569,7 @@
 	    };
 	    HomeComponent = __decorate([
 	        core_1.Component({
-	            selector: 'app-root',
+	            selector: 'app-home',
 	            templateUrl: './app/home/home.component.html',
 	            styleUrls: ['./app/home/home.component.css'],
 	            host: {

@@ -1,23 +1,25 @@
-Article! 
+<div class="ui large segment"> 
+<div class="field">
+  Article Title: {{article.title}}
+</div> 
+<div class="field">
+  Article Link: <a href="{{article.link}}">{{article.link}}</a>
+</div> 
+<div class="field">
+  User Text: {{article.text}}
+</div> 
+<div class="field">
+  Subverse: {{article.subverse}}
+</div> 
+<div class="field">
+  Votes: {{article.votes}}
+</div> 
+</div> 
+<br/><br/> 
 
-<div class="item">
-  {{article.title}}
-</div> 
-<div class="item">
-  {{article.link}}
-</div> 
-<div class="item">
-  {{article.text}}
-</div> 
-<div class="item">
-  {{article.subverse}}
-</div> 
-<div class="item">
-  {{article.votes}}
-</div> 
-
+<div class="ui large segment">
 Add comment 
-<form>
+<form class="form ui large segment">
 <textarea rows="10" cols="10" #comment>
 
 </textarea>
@@ -27,6 +29,7 @@ Add comment
     Submit link  
   </button>  
 </form> 
+</div> 
 
-<app-comment-tree [commentTree]="article.comments"></app-comment-tree>
+<app-comment-tree [commentTree]="this.article.comments"></app-comment-tree>
 

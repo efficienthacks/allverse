@@ -3,6 +3,7 @@ import {Http, Response } from '@angular/http';
 import {HttpHelpers} from '../utils/HttpHelpers';
 import {Observable} from 'rxjs/Observable';
 import {User} from '../models/user';
+import {Comment} from '../models/comment';
 import 'rxjs/Rx';
 
 import { Article } from '../models/article';
@@ -68,7 +69,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
         console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse);
 
         return this.http.get(this._getArticlesUrl + "/?subverse="+subverse)
-                    .map(this.extractArticlesData)
+                    .map(this.extractData)
                     .catch(this.handleError);
 
     }
@@ -96,21 +97,19 @@ export class AppServiceHackersPulse extends HttpHelpers {
         let body = res.json();
         var articles : Article[] = new Array<Article>(); 
 
-        body.each(function(b){
-            var a : Article = new Article(b.title,b.link,b.subverse,b.text,b.userID,b.votes);
+        for (var b in body)
+        {
+            var a : Article = new Article(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].votes);
             articles.push(a);  
-        });
+        }
 
         return articles;
     }
-
-    //note: probably should not be used, but kept as an example 
     private extractData(res: Response) 
     {
         let body = res.json();
         return body;
     }
-
     private handleError (error: Response | any) 
     {
         // In a real world app, we might use a remote logging infrastructure

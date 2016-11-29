@@ -7,7 +7,7 @@ import { Article } from '../models/article';
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
 import {Observable} from 'rxjs/Observable';
 @Component({
-  selector: 'app-root',
+  selector: 'app-home',
   templateUrl: './app/home/home.component.html',
   styleUrls: ['./app/home/home.component.css'],
   host: {
