@@ -69,7 +69,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
         console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse);
 
         return this.http.get(this._getArticlesUrl + "/?subverse="+subverse)
-                    .map(this.extractData)
+                    .map(this.extractArticlesData)
                     .catch(this.handleError);
 
     }

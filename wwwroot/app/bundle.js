@@ -48510,7 +48510,7 @@
 	    AppServiceHackersPulse.prototype.GetArticles = function (subverse) {
 	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse);
 	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse)
-	            .map(this.extractData)
+	            .map(this.extractArticlesData)
 	            .catch(this.handleError);
 	    };
 	    AppServiceHackersPulse.prototype.extractUserData = function (res) {

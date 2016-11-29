@@ -13,7 +13,7 @@
     {{ article.title }}
   </a>
   <div class="subverse">{{ article.subverse }}</div> 
-  <div class="meta">({{article.link}})</div>
+  <div class="meta">({{article.domain()}})</div>
   <ul class="ui big horizontal list voters">
     <li class="item">
       <a href (click)="voteUp()">
