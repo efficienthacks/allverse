@@ -15,3 +15,18 @@ Article!
 <div class="item">
   {{article.votes}}
 </div> 
+
+Add comment 
+<form>
+<textarea rows="10" cols="10" #comment>
+
+</textarea>
+  <!-- added this button -->
+  <button (click)="addComment(comment)"  
+          class="ui positive right floated button">  
+    Submit link  
+  </button>  
+</form> 
+
+<app-comment-tree [commentTree]="article.comments"></app-comment-tree>
+

@@ -48294,7 +48294,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
-	var article_model_1 = __webpack_require__(286);
+	var article_1 = __webpack_require__(286);
 	var ArticleComponent = (function () {
 	    function ArticleComponent() {
 	    }
@@ -48310,7 +48310,7 @@
 	    };
 	    __decorate([
 	        core_1.Input(), 
-	        __metadata('design:type', article_model_1.Article)
+	        __metadata('design:type', article_1.Article)
 	    ], ArticleComponent.prototype, "article", void 0);
 	    ArticleComponent = __decorate([
 	        core_1.Component({
@@ -48379,7 +48379,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
-	var article_model_1 = __webpack_require__(286);
+	var article_1 = __webpack_require__(286);
 	var common_1 = __webpack_require__(277);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var SubverseComponent = (function () {
@@ -48402,7 +48402,7 @@
 	    SubverseComponent.prototype.addArticle = function (title, link, text) {
 	        var UID = this.user.id;
 	        console.log(("Adding article title: " + title.value + " and link: " + link.value + " and uid ") + UID);
-	        var a = new article_model_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.id, 0);
+	        var a = new article_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.id, 0);
 	        console.log("Service add article");
 	        a = this.service.AddArticle(a); //should return with article id 
 	        this.articles.push(a);
@@ -65605,7 +65605,7 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
-	var article_model_1 = __webpack_require__(286);
+	var article_1 = __webpack_require__(286);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var ArticleFullPageComponent = (function () {
 	    function ArticleFullPageComponent(hpService) {
@@ -65616,7 +65616,7 @@
 	    };
 	    __decorate([
 	        core_1.Input(), 
-	        __metadata('design:type', article_model_1.Article)
+	        __metadata('design:type', article_1.Article)
 	    ], ArticleFullPageComponent.prototype, "article", void 0);
 	    ArticleFullPageComponent = __decorate([
 	        core_1.Component({

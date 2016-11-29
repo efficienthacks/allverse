@@ -4,7 +4,7 @@ import {
   Input, 
   Injectable
 } from '@angular/core';
-import { Article } from '../article/article.model';
+import { Article } from '../models/article';
 import { User } from '../models/user'; 
 
 

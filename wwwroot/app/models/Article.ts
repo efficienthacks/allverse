@@ -1,3 +1,5 @@
+import {Comment} from './comment'; 
+
 export class Article {
   id : number; 
   isanon : boolean; 
@@ -7,6 +9,7 @@ export class Article {
   subverse : string;
   userID : string;  
   votes: number;
+  comments : Comment[]; 
 
   constructor(title: string, link: string, subverse : string, text : string, userID : string, votes?: number) {
     this.title = title;

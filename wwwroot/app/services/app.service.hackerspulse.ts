@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {User} from '../models/user';
 import 'rxjs/Rx';
 
-import {Article} from '../article/article.model'; 
+import { Article } from '../models/article';
 
 @Injectable()
 export class AppServiceHackersPulse extends HttpHelpers {

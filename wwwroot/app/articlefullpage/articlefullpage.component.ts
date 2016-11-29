@@ -3,7 +3,7 @@ import {
   OnInit,
   Input
 } from '@angular/core';
-import { Article } from '../article/article.model';
+import { Article } from '../models/article';
 import {Location} from '@angular/common'; 
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
 
