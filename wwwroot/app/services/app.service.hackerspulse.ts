@@ -57,7 +57,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
         console.log("GetArticles URL: " + this._getArticleCommentsUrl + "/?ArticleID="+ArticleID);
 
         return this.http.get(this._getArticleCommentsUrl + "/?ArticleID="+ArticleID)
-                    .map(this.extractCommentsData)
+                    .map(this.extractData)
                     .catch(this.handleError);
 
     }
