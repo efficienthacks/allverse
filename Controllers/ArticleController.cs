@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication.Models.app; 
 using NPoco; 
 using Npgsql;
+using Newtonsoft.Json; 
 
 namespace WebApplication.Controllers
 {
@@ -100,6 +101,7 @@ namespace WebApplication.Controllers
             try
             {
                 List<CommentModel> comments = null; 
+                List<CommentModel> rootNodes = null; 
 
                 using(IDatabase db = GetDB())
                 {
@@ -107,46 +109,50 @@ namespace WebApplication.Controllers
                     // fetch all comments in article 
                     comments = db.Fetch<CommentModel>(sqlCommand); 
                     // form comments into comment tree
-                    comments = commentTree(comments); 
+                    rootNodes = commentTree(comments); 
                 }
 
-                return Json(comments); 
+                return Json(rootNodes); 
+                //return JsonConvert.SerializeObject(rootNodes); 
             }
             catch(Exception ex)
             {
                 throw ex; 
             }
         }
-    }
-
-    private List<CommentModel> commentTree(List<CommentModel> comments)
-    {
-        Dictionary<Int64, CommentModel> dict = new Dictionary<Int64, CommentModel>();
-
-        foreach(var c in comments)
+    
+        private List<CommentModel> commentTree(List<CommentModel> comments)
         {
-            dict.Add(c.id,c); 
-            c.comments = new List<CommentModel>(); 
-        }
+            Dictionary<Int64, CommentModel> dict = new Dictionary<Int64, CommentModel>();
 
-        List<CommentModel> rootNodes = new List<CommentModel>(); 
-
-        foreach(var c in comments)
-        {
-            //if parent
-            if (c.level==0)
+            foreach(var c in comments)
             {
-                rootNodes.Add(c); 
+                dict.Add(c.id,c); 
+                c.comments = new List<CommentModel>(); 
             }
-            else
+
+            List<CommentModel> rootNodes = new List<CommentModel>(); 
+
+            foreach(var node in comments)
             {
-                if (!dict.ContainsKey(c.parentCommentID))
+                //if parent
+                if (node.level==0)
                 {
-                    
+                    rootNodes.Add(node); 
+                }
+                else
+                {
+                    if (!dict.ContainsKey(node.parentCommentID))
+                    {
+                        continue; 
+                    }
+
+                    node.parent = dict[node.parentCommentID];
+                    node.parent.comments.Add(node); 
                 }
             }
-        }
 
-        return rootNodes; 
+            return rootNodes; 
+        }
     }
 }

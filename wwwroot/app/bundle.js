@@ -48531,6 +48531,7 @@
 	    AppServiceHackersPulse.prototype.extractCommentsData = function (res) {
 	        var body = res.json();
 	        var comments = new Array();
+	        console.log("Extract comments data");
 	        for (var b in body) {
 	            var c = new comment_1.Comment(body[b].level, body[b].userID, body[b].userName, body[b].content, body[b].articleID, body[b].parentCommentID);
 	            var c = new comment_1.Comment(body[b].level, body[b].userID, body[b].userName, body[b].content, body[b].articleID, body[b].parentCommentID);
@@ -69931,7 +69932,7 @@
 	        var c = new comment_1.Comment(this.comment.level + 1, this.user.id, this.user.name, elem.value, Number(this.Id), this.comment.id);
 	        this.service.AddComment(c).subscribe(function (data) {
 	            c.id = data.json().id;
-	            _this.reply.emit(c);
+	            _this.comment.comments.push(c);
 	        });
 	    };
 	    CommentComponent.prototype.ngOnInit = function () {
@@ -69979,10 +69980,6 @@
 	    }
 	    CommentTreeComponent.prototype.ngOnInit = function () {
 	        console.log("CommentTree length: " + this.commentTree.length);
-	    };
-	    CommentTreeComponent.prototype.reply = function (c) {
-	        console.log("emitter comment push val " + c.content);
-	        this.commentTree.push(c);
 	    };
 	    __decorate([
 	        core_1.Input(), 

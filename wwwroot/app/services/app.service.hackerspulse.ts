@@ -100,7 +100,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     {
         let body = res.json();
         var comments : Comment[] = new Array<Comment>(); 
-
+        console.log("Extract comments data"); 
         for (var b in body)
         {
             var c : Comment = new Comment(body[b].level,body[b].userID,body[b].userName,body[b].content,body[b].articleID,body[b].parentCommentID,);            var c : Comment = new Comment(body[b].level,body[b].userID,body[b].userName,body[b].content,body[b].articleID,body[b].parentCommentID);
