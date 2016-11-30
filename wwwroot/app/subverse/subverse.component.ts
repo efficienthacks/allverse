@@ -57,8 +57,12 @@ export class SubverseComponent implements OnInit {
     var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,this.user.id,0);
     
     console.log("Service add article"); 
-    a = this.service.AddArticle(a); //should return with article id 
-    this.articles.push(a);
+    this.service.AddArticle(a).subscribe( (res) => {
+      var r = res.json(); 
+      a.id = r.id; 
+      console.log("Article ID: " + a.id); 
+      this.articles.push(a);
+    }); 
     
     title.value = '';
     link.value = '';

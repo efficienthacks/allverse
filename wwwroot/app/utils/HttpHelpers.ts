@@ -28,20 +28,9 @@ export class HttpHelpers {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
-        console.log("body is: " + body); 
+        console.log("posting: " + body); 
 
         return this._http.post(path, body, options);
-        /*
-            .map(m => {
-                var jsonresult = <Models.ViewModel.JSONReturnVM<T>>m.json();
-
-                if (jsonresult.haserror) {
-                    this.errormsg = jsonresult.errormessage;
-                }
-
-                return jsonresult;
-            })
-            .catch(this._handleError);*/
     }
 
     private _handleError(error: Response) {
