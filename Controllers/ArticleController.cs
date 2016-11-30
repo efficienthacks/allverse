@@ -42,6 +42,24 @@ namespace WebApplication.Controllers
             return Json(article); 
         }
 
+        [HttpPost]
+        public JsonResult PostComment([FromBody] CommentModel comment)
+        {
+            using(IDatabase db = GetDB())
+            {
+                try
+                {
+                    comment.id = (long)db.Insert(comment); 
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message;
+                    string im = ex.InnerException.ToString(); 
+                }
+            }
+            return Json(comment); 
+        }
+
         [HttpGet]
         public JsonResult GetArticle(long id)
         {

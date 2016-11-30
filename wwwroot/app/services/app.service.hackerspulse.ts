@@ -15,7 +15,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getArticlesUrl = 'Article/GetArticles'; 
     private _getArticleUrl = 'Article/GetArticle'; 
     private _getUserUrl = 'Manage/GetUser';
-
+    private _getCommentPostUrl = 'Article/PostComment'; 
 
     //private _todolist: Models.List[]; 
     private http : Http; 
@@ -105,6 +105,9 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     AddArticle(article: Article) : Observable<Response> {
         return this.postaction(article, this._getArticlePostUrl);
-            //return a; 
+    }
+
+    AddComment(comment : Comment) : Observable<Response> {
+        return this.postaction(comment, this._getCommentPostUrl); 
     }
 }

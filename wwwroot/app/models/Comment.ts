@@ -14,11 +14,12 @@ export class Comment
     //ME
     articleID : number; 
 
-    constructor(id:number,level:number,userID:string,content:string,articleID:number)
+    constructor(id:number,level:number,userID:string,userName:string,content:string,articleID:number)
     {
         this.id=id;
         this.level=level; 
         this.userID=userID; 
+        this.userName = userName; 
         this.content = content; 
         this.articleID = articleID; 
         
