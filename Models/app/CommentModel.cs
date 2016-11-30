@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic; 
 using Newtonsoft.Json; 
 using NPoco; 
 
@@ -6,7 +7,7 @@ namespace WebApplication.Models.app
 {
     [JsonObject(MemberSerialization.OptOut)]
     [TableName("comment")]
-    [PrimaryKey("id")]   
+    [PrimaryKey("id", AutoIncrement=true)] 
     [ExplicitColumns]  
     public class CommentModel
     {
@@ -17,13 +18,19 @@ namespace WebApplication.Models.app
         [Column]  
         public Int64 parentCommentID;
         [Column]  
-        public string text;
+        public string content;
         [Column] 
         public string userID;
+        [Column] 
+        public string userName;
         [Column]  
         public int votes;
         [Column] 
-        public bool isanon=false; 
+        public int isanon=0; 
+        [Column]
+        public int level=0; 
 
+        public List<CommentModel> comments; 
+        public CommentModel parent; 
     }
 }

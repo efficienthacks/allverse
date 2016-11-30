@@ -1,17 +1,8 @@
-$mobile-only: "only screen and (max-width : 768px)";
-$laptop-only: "only screen and (min-width : 769px)";
-$tablet-only: "only screen and (max-width: 1024px)";
-
-:host >>> {
-  a {
+a {
     color: #b92b27;
     font-weight: bold;
     text-decoration: none;
-    &:hover {
-      text-decoration: underline;
-    }
   }
-}
 
 .meta {
   font-size: 13px;
@@ -19,28 +10,6 @@ $tablet-only: "only screen and (max-width: 1024px)";
   font-weight: bold;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
-  a {
-    color: #b92b27;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  .time {
-    padding-left: 5px;
-  }
-}
-
-@media #{$mobile-only} {
-  .meta {
-    font-size: 14px;
-    margin-bottom: 10px;
-    .time {
-      padding: 0;
-      float: right;
-    }
-  }
 }
 
 .meta-collapse {
@@ -53,10 +22,6 @@ $tablet-only: "only screen and (max-width: 1024px)";
   font-weight: bold;
   letter-spacing: 0.5px;
   margin: 30px 0;
-  a {
-    color: #b92b27;
-    text-decoration: none;
-  }
 }
 
 .collapse {
@@ -67,12 +32,6 @@ $tablet-only: "only screen and (max-width: 1024px)";
 
 .comment-tree {
   margin-left: 24px;
-}
-
-@media #{$tablet-only} {
-  .comment-tree {
-    margin-left: 8px;
-  }
 }
 
 .comment-text {

@@ -17,7 +17,7 @@
 </div> 
 <br/><br/> 
 
-<div class="ui large segment">
+<div class="ui large segment" *ngIf="user && user.isAuthenticated">
 Add comment 
 <form class="form ui large segment" >
   <textarea rows="10" cols="10" #comment>
@@ -31,5 +31,5 @@ Add comment
 </form> 
 </div> 
 
-<app-comment-tree *ngIf="article" [commentTree]="article.comments"></app-comment-tree>
+<app-comment-tree *ngIf="article && article.comments.length > 0" [commentTree]="article.comments"></app-comment-tree>
 

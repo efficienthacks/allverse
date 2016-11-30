@@ -94,5 +94,59 @@ namespace WebApplication.Controllers
             //return Json(""); 
         }
 
+        [HttpGet] 
+        public JsonResult GetComments(Int64 ArticleID)
+        {
+            try
+            {
+                List<CommentModel> comments = null; 
+
+                using(IDatabase db = GetDB())
+                {
+                    string sqlCommand=@"SELECT * FROM public.comment where ""articleID""="+ArticleID.ToString();
+                    // fetch all comments in article 
+                    comments = db.Fetch<CommentModel>(sqlCommand); 
+                    // form comments into comment tree
+                    comments = commentTree(comments); 
+                }
+
+                return Json(comments); 
+            }
+            catch(Exception ex)
+            {
+                throw ex; 
+            }
+        }
+    }
+
+    private List<CommentModel> commentTree(List<CommentModel> comments)
+    {
+        Dictionary<Int64, CommentModel> dict = new Dictionary<Int64, CommentModel>();
+
+        foreach(var c in comments)
+        {
+            dict.Add(c.id,c); 
+            c.comments = new List<CommentModel>(); 
+        }
+
+        List<CommentModel> rootNodes = new List<CommentModel>(); 
+
+        foreach(var c in comments)
+        {
+            //if parent
+            if (c.level==0)
+            {
+                rootNodes.Add(c); 
+            }
+            else
+            {
+                if (!dict.ContainsKey(c.parentCommentID))
+                {
+                    
+                }
+            }
+        }
+
+        return rootNodes; 
     }
 }

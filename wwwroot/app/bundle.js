@@ -41768,9 +41768,9 @@
 	var app_component_1 = __webpack_require__(284);
 	var article_component_1 = __webpack_require__(285);
 	var subverse_component_1 = __webpack_require__(287);
-	var home_component_1 = __webpack_require__(615);
-	var articlepage_component_1 = __webpack_require__(616);
-	var articlefullpage_component_1 = __webpack_require__(617);
+	var home_component_1 = __webpack_require__(616);
+	var articlepage_component_1 = __webpack_require__(617);
+	var articlefullpage_component_1 = __webpack_require__(618);
 	var router_1 = __webpack_require__(619);
 	var comment_component_1 = __webpack_require__(620);
 	var comment_tree_component_1 = __webpack_require__(621);
@@ -48466,6 +48466,7 @@
 	var HttpHelpers_1 = __webpack_require__(289);
 	var Observable_1 = __webpack_require__(260);
 	var user_1 = __webpack_require__(614);
+	var comment_1 = __webpack_require__(615);
 	__webpack_require__(290);
 	var article_1 = __webpack_require__(286);
 	var AppServiceHackersPulse = (function (_super) {
@@ -48475,7 +48476,9 @@
 	        this._getArticlePostUrl = 'Article/Post';
 	        this._getArticlesUrl = 'Article/GetArticles';
 	        this._getArticleUrl = 'Article/GetArticle';
+	        this._getArticleCommentsUrl = 'Article/GetComments';
 	        this._getUserUrl = 'Manage/GetUser';
+	        this._getCommentPostUrl = 'Article/PostComment';
 	        this.http = http;
 	    }
 	    AppServiceHackersPulse.prototype.GetUser = function () {
@@ -48493,6 +48496,12 @@
 	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse);
 	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse)
 	            .map(this.extractArticlesData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.GetComments = function (ArticleID) {
+	        console.log("GetArticles URL: " + this._getArticleCommentsUrl + "/?ArticleID=" + ArticleID);
+	        return this.http.get(this._getArticleCommentsUrl + "/?ArticleID=" + ArticleID)
+	            .map(this.extractCommentsData)
 	            .catch(this.handleError);
 	    };
 	    AppServiceHackersPulse.prototype.extractUserData = function (res) {
@@ -48519,6 +48528,18 @@
 	        }
 	        return articles;
 	    };
+	    AppServiceHackersPulse.prototype.extractCommentsData = function (res) {
+	        var body = res.json();
+	        var comments = new Array();
+	        for (var b in body) {
+	            var c = new comment_1.Comment(body[b].level, body[b].userID, body[b].userName, body[b].content, body[b].articleID, body[b].parentCommentID);
+	            var c = new comment_1.Comment(body[b].level, body[b].userID, body[b].userName, body[b].content, body[b].articleID, body[b].parentCommentID);
+	            c.id = body[b].id;
+	            comments.push(c);
+	            console.log("pushed cid: " + c.id);
+	        }
+	        return comments;
+	    };
 	    AppServiceHackersPulse.prototype.extractData = function (res) {
 	        var body = res.json();
 	        return body;
@@ -48539,7 +48560,9 @@
 	    };
 	    AppServiceHackersPulse.prototype.AddArticle = function (article) {
 	        return this.postaction(article, this._getArticlePostUrl);
-	        //return a; 
+	    };
+	    AppServiceHackersPulse.prototype.AddComment = function (comment) {
+	        return this.postaction(comment, this._getCommentPostUrl);
 	    };
 	    AppServiceHackersPulse = __decorate([
 	        core_1.Injectable(), 
@@ -65501,6 +65524,54 @@
 
 /***/ },
 /* 615 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var Comment = (function () {
+	    function Comment(level, userID, userName, content, articleID, parentCommentID) {
+	        this.id = -1;
+	        this.level = level;
+	        this.userID = userID;
+	        this.userName = userName;
+	        this.content = content;
+	        this.articleID = articleID;
+	        this.parentCommentID = parentCommentID;
+	        this.time = Date.now();
+	        this.time_ago = this.timeSince(this.time);
+	        this.deleted = false;
+	    }
+	    //crs 11/29/16 - support function to get time since this comment
+	    Comment.prototype.timeSince = function (date) {
+	        var seconds = Math.floor((Date.now() - date) / 1000);
+	        var interval = Math.floor(seconds / 31536000);
+	        if (interval > 1) {
+	            return interval + " years";
+	        }
+	        interval = Math.floor(seconds / 2592000);
+	        if (interval > 1) {
+	            return interval + " months";
+	        }
+	        interval = Math.floor(seconds / 86400);
+	        if (interval > 1) {
+	            return interval + " days";
+	        }
+	        interval = Math.floor(seconds / 3600);
+	        if (interval > 1) {
+	            return interval + " hours";
+	        }
+	        interval = Math.floor(seconds / 60);
+	        if (interval > 1) {
+	            return interval + " minutes";
+	        }
+	        return Math.floor(seconds) + " seconds";
+	    };
+	    return Comment;
+	}());
+	exports.Comment = Comment;
+
+
+/***/ },
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65553,7 +65624,7 @@
 
 
 /***/ },
-/* 616 */
+/* 617 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65578,6 +65649,10 @@
 	        console.log("Article: " + this.Id);
 	        this.service.GetArticle(this.Id).subscribe(function (data) {
 	            _this.article = data;
+	            console.log("Get Article Comments");
+	            _this.service.GetComments(_this.article.id).subscribe(function (data) {
+	                _this.article.comments = data;
+	            });
 	            console.log(_this.article.title);
 	        });
 	    }
@@ -65604,7 +65679,7 @@
 
 
 /***/ },
-/* 617 */
+/* 618 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -65621,7 +65696,7 @@
 	var article_1 = __webpack_require__(286);
 	var common_1 = __webpack_require__(277);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
-	var comment_1 = __webpack_require__(618);
+	var comment_1 = __webpack_require__(615);
 	var ArticleFullPageComponent = (function () {
 	    function ArticleFullPageComponent(location, hpService) {
 	        var _this = this;
@@ -65639,9 +65714,14 @@
 	        return this.article;
 	    };
 	    ArticleFullPageComponent.prototype.addComment = function (comment) {
-	        var c = new comment_1.Comment(0, 0, this.user.id, comment.value, Number(this.Id));
-	        this.article.comments.push(c);
-	        console.log("comment: " + comment.value);
+	        var _this = this;
+	        var c = new comment_1.Comment(0, this.user.id, this.user.name, comment.value, Number(this.Id), 0);
+	        this.service.AddComment(c).subscribe(function (res) {
+	            var r = res.json();
+	            c.id = r.id;
+	            _this.article.comments.push(c);
+	            console.log("comment: " + c.content + " cid: " + c.id);
+	        });
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -65662,52 +65742,6 @@
 	    return ArticleFullPageComponent;
 	}());
 	exports.ArticleFullPageComponent = ArticleFullPageComponent;
-
-
-/***/ },
-/* 618 */
-/***/ function(module, exports) {
-
-	"use strict";
-	var Comment = (function () {
-	    function Comment(id, level, userID, content, articleID) {
-	        this.id = id;
-	        this.level = level;
-	        this.userID = userID;
-	        this.content = content;
-	        this.articleID = articleID;
-	        this.time = Date.now();
-	        this.time_ago = this.timeSince(this.time);
-	        this.deleted = false;
-	    }
-	    //crs 11/29/16 - support function to get time since this comment
-	    Comment.prototype.timeSince = function (date) {
-	        var seconds = Math.floor((Date.now() - date) / 1000);
-	        var interval = Math.floor(seconds / 31536000);
-	        if (interval > 1) {
-	            return interval + " years";
-	        }
-	        interval = Math.floor(seconds / 2592000);
-	        if (interval > 1) {
-	            return interval + " months";
-	        }
-	        interval = Math.floor(seconds / 86400);
-	        if (interval > 1) {
-	            return interval + " days";
-	        }
-	        interval = Math.floor(seconds / 3600);
-	        if (interval > 1) {
-	            return interval + " hours";
-	        }
-	        interval = Math.floor(seconds / 60);
-	        if (interval > 1) {
-	            return interval + " minutes";
-	        }
-	        return Math.floor(seconds) + " seconds";
-	    };
-	    return Comment;
-	}());
-	exports.Comment = Comment;
 
 
 /***/ },
@@ -69871,23 +69905,54 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(258);
+	var comment_1 = __webpack_require__(615);
+	var app_service_hackerspulse_1 = __webpack_require__(288);
+	var common_1 = __webpack_require__(277);
 	var CommentComponent = (function () {
-	    function CommentComponent() {
+	    function CommentComponent(location, hpService) {
+	        var _this = this;
+	        this.location = location;
+	        this.reply = new core_1.EventEmitter();
+	        this.service = hpService;
+	        this.Id = location.path().split('/')[2];
+	        //sigh: find better way then to get user for every comment load? 
+	        this.service.GetUser().subscribe(function (data) {
+	            _this.user = data;
+	        });
+	        //console.log("Comment content: " + this.comment.content); 
 	    }
+	    CommentComponent.prototype.showReplyForm = function (form) {
+	        form.style.cssText = "";
+	        return false;
+	    };
+	    CommentComponent.prototype.addReply = function (form, elem) {
+	        var _this = this;
+	        form.style.cssText = "display: none";
+	        var c = new comment_1.Comment(this.comment.level + 1, this.user.id, this.user.name, elem.value, Number(this.Id), this.comment.id);
+	        this.service.AddComment(c).subscribe(function (data) {
+	            c.id = data.json().id;
+	            _this.reply.emit(c);
+	        });
+	    };
 	    CommentComponent.prototype.ngOnInit = function () {
 	        this.collapse = false;
 	    };
 	    __decorate([
 	        core_1.Input(), 
-	        __metadata('design:type', Object)
+	        __metadata('design:type', comment_1.Comment)
 	    ], CommentComponent.prototype, "comment", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', Object)
+	    ], CommentComponent.prototype, "reply", void 0);
 	    CommentComponent = __decorate([
 	        core_1.Component({
 	            selector: 'app-comment',
-	            templateUrl: './comment.component.html',
-	            styleUrls: ['./comment.component.scss']
+	            templateUrl: './app/comment/comment.component.html',
+	            styleUrls: ['./app/comment/comment.component.css'],
+	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
 	    ], CommentComponent);
 	    return CommentComponent;
 	}());
@@ -69913,16 +69978,21 @@
 	    function CommentTreeComponent() {
 	    }
 	    CommentTreeComponent.prototype.ngOnInit = function () {
+	        console.log("CommentTree length: " + this.commentTree.length);
+	    };
+	    CommentTreeComponent.prototype.reply = function (c) {
+	        console.log("emitter comment push val " + c.content);
+	        this.commentTree.push(c);
 	    };
 	    __decorate([
 	        core_1.Input(), 
-	        __metadata('design:type', Object)
+	        __metadata('design:type', Array)
 	    ], CommentTreeComponent.prototype, "commentTree", void 0);
 	    CommentTreeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'app-comment-tree',
-	            templateUrl: './comment-tree.component.html',
-	            styleUrls: ['./comment-tree.component.scss']
+	            templateUrl: './app/comment-tree/comment-tree.component.html',
+	            styleUrls: ['./app/comment-tree/comment-tree.component.css']
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], CommentTreeComponent);

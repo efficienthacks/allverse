@@ -13,20 +13,21 @@ export class Comment
     deleted : boolean; 
     //ME
     articleID : number; 
+    parentCommentID : number; 
 
-    constructor(id:number,level:number,userID:string,userName:string,content:string,articleID:number)
+    constructor(level:number,userID:string,userName:string,content:string,articleID:number,parentCommentID:number)
     {
-        this.id=id;
+        this.id=-1; 
         this.level=level; 
         this.userID=userID; 
         this.userName = userName; 
         this.content = content; 
         this.articleID = articleID; 
+        this.parentCommentID = parentCommentID; 
         
         this.time = Date.now(); 
         this.time_ago = this.timeSince(this.time); 
         this.deleted = false; 
-
     }
 
     //crs 11/29/16 - support function to get time since this comment

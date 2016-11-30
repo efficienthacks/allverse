@@ -46,9 +46,13 @@ export class ArticleFullPageComponent implements OnInit {
 
   addComment(comment : HTMLInputElement)
   {
-    var c : Comment = new Comment(0,0,this.user.id,this.user.name,comment.value,Number(this.Id));
-    this.article.comments.push(c); 
-    console.log("comment: " + comment.value); 
+    var c : Comment = new Comment(0,this.user.id,this.user.name,comment.value,Number(this.Id),0);
+    this.service.AddComment(c).subscribe((res) => {
+      var r = res.json(); 
+      c.id = r.id; 
+      this.article.comments.push(c); 
+      console.log("comment: " + c.content + " cid: " + c.id); 
+    });
   }
 
 }

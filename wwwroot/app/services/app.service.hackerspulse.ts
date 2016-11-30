@@ -14,6 +14,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getArticlePostUrl = 'Article/Post';
     private _getArticlesUrl = 'Article/GetArticles'; 
     private _getArticleUrl = 'Article/GetArticle'; 
+    private _getArticleCommentsUrl = 'Article/GetComments';
     private _getUserUrl = 'Manage/GetUser';
     private _getCommentPostUrl = 'Article/PostComment'; 
 
@@ -50,6 +51,17 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     }
 
+    
+    GetComments(ArticleID : number) : Observable<Comment[]>
+    {
+        console.log("GetArticles URL: " + this._getArticleCommentsUrl + "/?ArticleID="+ArticleID);
+
+        return this.http.get(this._getArticleCommentsUrl + "/?ArticleID="+ArticleID)
+                    .map(this.extractCommentsData)
+                    .catch(this.handleError);
+
+    }
+
     private extractUserData(res: Response) 
     {
         var u : User = new User(); 
@@ -82,6 +94,22 @@ export class AppServiceHackersPulse extends HttpHelpers {
         }
 
         return articles;
+    }
+
+    private extractCommentsData(res: Response) 
+    {
+        let body = res.json();
+        var comments : Comment[] = new Array<Comment>(); 
+
+        for (var b in body)
+        {
+            var c : Comment = new Comment(body[b].level,body[b].userID,body[b].userName,body[b].content,body[b].articleID,body[b].parentCommentID,);            var c : Comment = new Comment(body[b].level,body[b].userID,body[b].userName,body[b].content,body[b].articleID,body[b].parentCommentID);
+            c.id = body[b].id; 
+            comments.push(c); 
+            console.log("pushed cid: " + c.id);  
+        }
+
+        return comments;
     }
     private extractData(res: Response) 
     {
