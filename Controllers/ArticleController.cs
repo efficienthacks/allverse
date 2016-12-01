@@ -163,8 +163,9 @@ namespace WebApplication.Controllers
             const int HOUR = 60 * MINUTE;
             const int DAY = 24 * HOUR;
             const int MONTH = 30 * DAY;
+            long nowTime = ((date * 10000) + 621355968000000000);
 
-            var ts = new TimeSpan(DateTime.UtcNow.Ticks - date);
+            var ts = new TimeSpan(DateTime.UtcNow.Ticks - nowTime);
             double delta = Math.Abs(ts.TotalSeconds);
 
             if (delta < 1 * MINUTE)
