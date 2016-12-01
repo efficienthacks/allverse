@@ -18,6 +18,9 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getUserUrl = 'Manage/GetUser';
     private _getCommentPostUrl = 'Article/PostComment'; 
 
+    //vars
+    public user : User; 
+
     //private _todolist: Models.List[]; 
     private http : Http; 
 
@@ -70,7 +73,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
         u.id = body.id; 
         u.isAuthenticated = body.isAuthenticated;
         u.name = body.name;
-
+        this.user=u; 
         return u;
     }
 

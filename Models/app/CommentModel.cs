@@ -38,8 +38,14 @@ namespace WebApplication.Models.app
         [Column]
         [JsonPropertyAttribute]
         public int level=0; 
+        [Column]
+        [JsonPropertyAttribute]
+        public Int64 time=0; 
         [JsonPropertyAttribute]
         public List<CommentModel> comments; 
+        [JsonPropertyAttribute]
+        public string time_ago; 
+
         public CommentModel parent; 
     }
 }

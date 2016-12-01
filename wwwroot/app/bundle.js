@@ -48510,6 +48510,7 @@
 	        u.id = body.id;
 	        u.isAuthenticated = body.isAuthenticated;
 	        u.name = body.name;
+	        this.user = u;
 	        return u;
 	    };
 	    AppServiceHackersPulse.prototype.extractArticleData = function (res) {
@@ -69867,7 +69868,6 @@
 	    function CommentComponent(location, hpService) {
 	        var _this = this;
 	        this.location = location;
-	        this.reply = new core_1.EventEmitter();
 	        this.service = hpService;
 	        this.Id = location.path().split('/')[2];
 	        //sigh: find better way then to get user for every comment load? 
@@ -69896,10 +69896,6 @@
 	        core_1.Input(), 
 	        __metadata('design:type', comment_1.Comment)
 	    ], CommentComponent.prototype, "comment", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', Object)
-	    ], CommentComponent.prototype, "reply", void 0);
 	    CommentComponent = __decorate([
 	        core_1.Component({
 	            selector: 'app-comment',

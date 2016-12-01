@@ -11,7 +11,6 @@ import {Location} from '@angular/common';
 })
 export class CommentComponent implements OnInit {
   @Input() comment : Comment;
-  @Output() reply = new EventEmitter<Comment>(); 
 
   collapse: boolean;
   service : AppServiceHackersPulse; 
