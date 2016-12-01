@@ -29,7 +29,15 @@ export class CommentComponent implements OnInit {
 
   showReplyForm(form : HTMLFormElement)
   {
-    form.style.cssText = ""; 
+    if (form.style.cssText.trim()=="")
+    {
+        form.style.cssText = "display:none"; 
+    }
+    else
+    {
+        form.style.cssText = ""; 
+    }
+    
     return false; 
   }
 

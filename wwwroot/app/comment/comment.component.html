@@ -7,11 +7,11 @@
   <div class="comment-tree">
     <div [hidden]="collapse">
       <p class="comment-text" [innerHTML]="comment.content"></p>
-      <div class="reply">
+      <div class="reply" *ngIf="user && user.isAuthenticated">
           <a href="#" (click)="showReplyForm(replyform)">Reply</a> 
           
           <form #replyform style="display: none">
-            <textarea id="reply" cols="20" rows="5" #replybox></textarea> 
+            <textarea id="reply" cols="1" rows="1" #replybox style="width:500px;height:100px"></textarea> <br/>
             <button (click)="addReply(replyform, replybox)">Submit Reply</button>
           </form>
           

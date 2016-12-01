@@ -69877,7 +69877,12 @@
 	        //console.log("Comment content: " + this.comment.content); 
 	    }
 	    CommentComponent.prototype.showReplyForm = function (form) {
-	        form.style.cssText = "";
+	        if (form.style.cssText.trim() == "") {
+	            form.style.cssText = "display:none";
+	        }
+	        else {
+	            form.style.cssText = "";
+	        }
 	        return false;
 	    };
 	    CommentComponent.prototype.addReply = function (form, elem) {
