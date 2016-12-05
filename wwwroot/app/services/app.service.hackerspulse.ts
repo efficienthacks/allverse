@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Http, Response } from '@angular/http';
 import {HttpHelpers} from '../utils/HttpHelpers';
-import {Observable} from 'rxjs/Observable';
+import {Observable,} from 'rxjs/Observable';
 import {User} from '../models/user';
 import {Comment} from '../models/comment';
-import 'rxjs/Rx';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 import { Article } from '../models/article';
 
 @Injectable()
 export class AppServiceHackersPulse extends HttpHelpers {
-
     private _getArticlePostUrl = 'Article/Post';
     private _getArticlesUrl = 'Article/GetArticles'; 
     private _getArticleUrl = 'Article/GetArticle'; 
@@ -19,7 +18,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getCommentPostUrl = 'Article/PostComment'; 
 
     //vars
-    public user : User; 
+    public static user : User; 
 
     //private _todolist: Models.List[]; 
     private http : Http; 
@@ -73,7 +72,8 @@ export class AppServiceHackersPulse extends HttpHelpers {
         u.id = body.id; 
         u.isAuthenticated = body.isAuthenticated;
         u.name = body.name;
-        this.user=u; 
+        AppServiceHackersPulse.user = u; 
+        console.log("Extract user: " + u.name);
         return u;
     }
 

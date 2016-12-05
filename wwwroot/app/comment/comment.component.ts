@@ -20,11 +20,10 @@ export class CommentComponent implements OnInit {
   constructor(private location : Location, hpService : AppServiceHackersPulse) {
     this.service = hpService; 
     this.Id = location.path().split('/')[2]; 
+    this.user = AppServiceHackersPulse.user; 
+
     //sigh: find better way then to get user for every comment load? 
-    this.service.GetUser().subscribe( (data) => {
-      this.user = data; 
-    }); 
-    //console.log("Comment content: " + this.comment.content); 
+    console.log("User name: " + AppServiceHackersPulse.user.name); 
   }
 
   showReplyForm(form : HTMLFormElement)
@@ -55,4 +54,6 @@ export class CommentComponent implements OnInit {
   ngOnInit() {
     this.collapse = false;
   }
+
+
 }

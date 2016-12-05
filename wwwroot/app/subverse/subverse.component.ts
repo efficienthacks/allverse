@@ -40,6 +40,7 @@ export class SubverseComponent implements OnInit {
 
       this.service.GetUser().subscribe( (data) => {
         this.user = data; 
+        AppServiceHackersPulse.user = data; 
       }); 
 
 
