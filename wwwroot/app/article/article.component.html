@@ -19,12 +19,12 @@
     <ul class="ui big horizontal list voters">
       <li class="item" *ngIf="user">
         <a href (click)="voteUp(upvote)">
-          <i class="arrow up icon" #upvote></i>
+          <i class="arrow up icon" #upvote [ngClass]="{'circle' : article.userVote > 0}"></i>
           </a>
       </li>
       <li class="item" *ngIf="user"> 
         <a href (click)="voteDown(downvote)">
-          <i class="arrow down icon" #downvote></i>
+          <i class="arrow down icon" #downvote [ngClass]="{'circle' : article.userVote < 0}"></i>
           
         </a>
       </li>
