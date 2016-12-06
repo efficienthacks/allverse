@@ -40,13 +40,11 @@ export class SubverseComponent implements OnInit {
 
       this.service.GetUser().subscribe( (data) => {
         this.user = data; 
-        AppServiceHackersPulse.user = data; 
+
+        this.service.GetArticles(this.subverseStr, this.user.id).subscribe( (data)=>{
+          this.articles = data; 
+        });
       }); 
-
-
-      this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
-        this.articles = data; 
-      });
 
   }
 
@@ -55,7 +53,7 @@ export class SubverseComponent implements OnInit {
     var UID : string = this.user.id; 
     console.log(`Adding article title: ${title.value} and link: ${link.value} and uid ` + UID);
     
-    var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,this.user.id,0);
+    var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,this.user.id,0,0);
     
     console.log("Service add article"); 
     this.service.AddArticle(a).subscribe( (res) => {

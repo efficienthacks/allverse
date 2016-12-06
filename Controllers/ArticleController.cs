@@ -62,18 +62,33 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetArticle(long id)
+        public JsonResult GetArticle(long id, string userID)
         {
             ArticleModel a = null; 
+            VoteModel v = null; 
             using (IDatabase db = GetDB())
             {
                 a = db.SingleById<ArticleModel>(id); 
+
+                if (userID != null)
+                {
+                    try
+                    {
+                        v = db.First<VoteModel>("select * from uservotes where \"articleid\"=" + id + " and \"userid\"='"+userID+"'"); 
+                        a.userVote = v.vote; 
+                    }
+                    catch(Exception ex)
+                    {
+                        string m = ex.Message;
+                    }
+                }
+
             }
             return Json(a); 
         }
 
         [HttpGet] 
-        public JsonResult GetArticles(string subverse)
+        public JsonResult GetArticles(string subverse, string userID)
         {
             try
             {
@@ -83,6 +98,24 @@ namespace WebApplication.Controllers
                 {
                     string sqlCommand=@"SELECT * FROM public.article where subverse='"+subverse+"'";
                     articles = db.Fetch<ArticleModel>(sqlCommand); 
+
+                    if (userID != null)
+                    {
+                        foreach(var a in articles)
+                        {
+                            try
+                            {
+                                VoteModel v = db.First<VoteModel>("select * from uservotes where \"articleid\"=" + a.id + " and \"userid\"='"+userID+"'"); 
+                                a.userVote = v.vote; 
+                            }
+                            catch(Exception ex)
+                            {
+                                string m = ex.Message; 
+                            }
+
+                        }
+                    }
+
                 }
 
                 return Json(articles); 

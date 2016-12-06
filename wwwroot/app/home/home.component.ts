@@ -35,8 +35,8 @@ constructor(private hpService: AppServiceHackersPulse)
 
       console.log("Subverse is: " + this.subverseStr);
     
-      this.service.GetArticles(this.subverseStr).subscribe( (data)=>{
-        this.articles = <Article[]>data; 
+      this.service.GetArticles(this.subverseStr,AppServiceHackersPulse.user.id).subscribe( (data)=>{
+        this.articles = data; 
       }); 
   }
 

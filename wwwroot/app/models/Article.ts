@@ -9,16 +9,18 @@ export class Article {
   subverse : string;
   userID : string;  
   votes: number;
-  comments : Comment[]; 
+  comments : Comment[];
+  userVote : number;  
 
-  constructor(title: string, link: string, subverse : string, text : string, userID : string, votes?: number) {
+  constructor(title: string, link: string, subverse : string, text : string, userID : string,userVote:number,votes: number) {
     this.title = title;
     this.link = link;
     this.text = text; 
     this.subverse = subverse; 
     this.userID = userID; 
     this.votes = votes || 0;
-    this.comments = new Array<Comment>(); 
+    this.userVote = userVote;
+    this.comments = new Array<Comment>();
   }
 
   log() : void{

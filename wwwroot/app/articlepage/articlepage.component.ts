@@ -27,7 +27,7 @@ export class ArticlePageComponent implements OnInit {
     this.service = hpService; 
     this.Id = location.path().split('/')[2]; 
     console.log("Article: " + this.Id);
-    this.service.GetArticle(this.Id).subscribe((data) =>{
+    this.service.GetArticle(this.Id,AppServiceHackersPulse.user.id).subscribe((data) =>{
       this.article = data; 
       console.log("Get Article Comments"); 
       this.service.GetComments(this.article.id).subscribe((data) => {

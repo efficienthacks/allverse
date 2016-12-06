@@ -48345,7 +48345,6 @@
 	        else {
 	            this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
 	                _this.article.votes += 1;
-	                ;
 	                voteElement.className = "arrow down icon";
 	            });
 	        }
@@ -48380,13 +48379,14 @@
 
 	"use strict";
 	var Article = (function () {
-	    function Article(title, link, subverse, text, userID, votes) {
+	    function Article(title, link, subverse, text, userID, userVote, votes) {
 	        this.title = title;
 	        this.link = link;
 	        this.text = text;
 	        this.subverse = subverse;
 	        this.userID = userID;
 	        this.votes = votes || 0;
+	        this.userVote = userVote;
 	        this.comments = new Array();
 	    }
 	    Article.prototype.log = function () {
@@ -48457,14 +48457,14 @@
 	            .map(this.extractUserData)
 	            .catch(this.handleError);
 	    };
-	    AppServiceHackersPulse.prototype.GetArticle = function (id) {
-	        return this.http.get(this._getArticleUrl + "/" + id)
+	    AppServiceHackersPulse.prototype.GetArticle = function (id, userID) {
+	        return this.http.get(this._getArticleUrl + "/" + id + "&userID=" + userID)
 	            .map(this.extractArticleData)
 	            .catch(this.handleError);
 	    };
-	    AppServiceHackersPulse.prototype.GetArticles = function (subverse) {
-	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse);
-	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse)
+	    AppServiceHackersPulse.prototype.GetArticles = function (subverse, userID) {
+	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse + "&userID=" + userID);
+	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse + "&userID=" + userID)
 	            .map(this.extractArticlesData)
 	            .catch(this.handleError);
 	    };
@@ -48494,7 +48494,7 @@
 	    };
 	    AppServiceHackersPulse.prototype.extractArticleData = function (res) {
 	        var b = res.json();
-	        var a = new article_1.Article(b.title, b.link, b.subverse, b.text, b.userID, b.votes);
+	        var a = new article_1.Article(b.title, b.link, b.subverse, b.text, b.userID, b.userVote, b.votes);
 	        a.id = b.id;
 	        return a;
 	    };
@@ -48502,7 +48502,7 @@
 	        var body = res.json();
 	        var articles = new Array();
 	        for (var b in body) {
-	            var a = new article_1.Article(body[b].title, body[b].link, body[b].subverse, body[b].text, body[b].userID, body[b].votes);
+	            var a = new article_1.Article(body[b].title, body[b].link, body[b].subverse, body[b].text, body[b].userID, body[b].userVote, body[b].votes);
 	            a.id = body[b].id;
 	            articles.push(a);
 	        }
@@ -65594,17 +65594,16 @@
 	        console.log("Subverse is: " + this.subverseStr);
 	        this.service.GetUser().subscribe(function (data) {
 	            _this.user = data;
-	            app_service_hackerspulse_1.AppServiceHackersPulse.user = data;
-	        });
-	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
-	            _this.articles = data;
+	            _this.service.GetArticles(_this.subverseStr, _this.user.id).subscribe(function (data) {
+	                _this.articles = data;
+	            });
 	        });
 	    };
 	    SubverseComponent.prototype.addArticle = function (title, link, text) {
 	        var _this = this;
 	        var UID = this.user.id;
 	        console.log(("Adding article title: " + title.value + " and link: " + link.value + " and uid ") + UID);
-	        var a = new article_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.id, 0);
+	        var a = new article_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.id, 0, 0);
 	        console.log("Service add article");
 	        this.service.AddArticle(a).subscribe(function (res) {
 	            var r = res.json();
@@ -65666,7 +65665,7 @@
 	        //load articles based off of subverse 
 	        var RouteStr;
 	        console.log("Subverse is: " + this.subverseStr);
-	        this.service.GetArticles(this.subverseStr).subscribe(function (data) {
+	        this.service.GetArticles(this.subverseStr, app_service_hackerspulse_1.AppServiceHackersPulse.user.id).subscribe(function (data) {
 	            _this.articles = data;
 	        });
 	    };
@@ -65715,7 +65714,7 @@
 	        this.service = hpService;
 	        this.Id = location.path().split('/')[2];
 	        console.log("Article: " + this.Id);
-	        this.service.GetArticle(this.Id).subscribe(function (data) {
+	        this.service.GetArticle(this.Id, app_service_hackerspulse_1.AppServiceHackersPulse.user.id).subscribe(function (data) {
 	            _this.article = data;
 	            console.log("Get Article Comments");
 	            _this.service.GetComments(_this.article.id).subscribe(function (data) {

@@ -73,7 +73,7 @@ export class ArticleComponent implements OnInit {
     else
     {
       this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
-        this.article.votes+=1;;
+        this.article.votes+=1;
         voteElement.className = "arrow down icon"; 
       });
     }

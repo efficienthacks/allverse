@@ -27,5 +27,6 @@ namespace WebApplication.Models.app
         [Column] 
         public int isanon=0; 
 
+        public int userVote=0; 
     }
 }

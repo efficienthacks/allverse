@@ -40,18 +40,18 @@ export class AppServiceHackersPulse extends HttpHelpers {
                     .catch(this.handleError);
     }
 
-    GetArticle(id : string) : Observable<Article>
+    GetArticle(id : string, userID) : Observable<Article>
     {
-        return this.http.get(this._getArticleUrl + "/"+id)
+        return this.http.get(this._getArticleUrl + "/"+id+"&userID="+userID)
                     .map(this.extractArticleData)
                     .catch(this.handleError);        
     }
 
-    GetArticles(subverse : string) : Observable<Article[]>
+    GetArticles(subverse : string, userID : string) : Observable<Article[]>
     {
-        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse);
+        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse + "&userID="+userID);
 
-        return this.http.get(this._getArticlesUrl + "/?subverse="+subverse)
+        return this.http.get(this._getArticlesUrl + "/?subverse="+subverse+ "&userID="+userID)
                     .map(this.extractArticlesData)
                     .catch(this.handleError);
 
@@ -98,7 +98,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private extractArticleData(res: Response) 
     {
         let b = res.json();
-        var a : Article = new Article(b.title,b.link,b.subverse,b.text,b.userID,b.votes); 
+        var a : Article = new Article(b.title,b.link,b.subverse,b.text,b.userID,b.userVote,b.votes); 
         a.id = b.id; 
         return a;
     }
@@ -109,7 +109,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
         for (var b in body)
         {
-            var a : Article = new Article(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].votes);
+            var a : Article = new Article(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
             a.id = body[b].id; 
             articles.push(a);  
         }
