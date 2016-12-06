@@ -2,10 +2,11 @@ import {Injectable} from '@angular/core';
 import {Http, Response } from '@angular/http';
 import {HttpHelpers} from '../utils/HttpHelpers';
 import {Observable,} from 'rxjs/Observable';
-import {User} from '../models/user';
-import {Comment} from '../models/comment';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
+import {User} from '../models/user';
+import {Comment} from '../models/comment';
+import {Vote} from '../models/vote';
 import { Article } from '../models/article';
 
 @Injectable()
@@ -16,6 +17,9 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getArticleCommentsUrl = 'Article/GetComments';
     private _getUserUrl = 'Manage/GetUser';
     private _getCommentPostUrl = 'Article/PostComment'; 
+    private _getVoteDeleteUrl = 'User/DeleteVote';
+    private _getVotePostUrl = 'User/PostVote';
+
 
     //vars
     public static user : User; 
@@ -63,6 +67,20 @@ export class AppServiceHackersPulse extends HttpHelpers {
                     .catch(this.handleError);
 
     }
+
+    DeleteVote(ArticleID : number, userID : string)
+    {
+        return this.http.get(this._getVoteDeleteUrl + "/?ArticleID="+ArticleID + "&userID="+userID)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+    }
+
+    PostVote(v : Vote)
+    {
+        return this.postaction(v, this._getVotePostUrl);
+    }
+
+
 
     private extractUserData(res: Response) 
     {

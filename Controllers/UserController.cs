@@ -51,16 +51,22 @@ namespace WebApplication.Controllers
             return Json(user); 
         }
 
-        // vote up or down article or comment 
-        public JsonResult UserCastVote(string userID, long articleID,long commentID, int vote)
+        [HttpGet]
+        public JsonResult DeleteVote(long ArticleID, string userID)
         {
-            // either articleID or commentID is 0, the other is the ID 
-            VoteModel v = new VoteModel(); 
-            v.articleid = articleID; 
-            v.userid = userID; 
-            v.commentid = commentID;
-            v.vote = vote; // vote should be either 1 or -1
+            int result=0; 
+            using(IDatabase db = GetDB())
+            {
+                string query = String.Format(@"delete from uservotes where ""articleid""=""{0}"" and ""userid""=""{1}""",articleid,userID); 
+                result = db.Execute(query); 
+            }
+            return Json(result); 
+        }
 
+        // vote up or down article or comment 
+        [HttpPost]
+        public JsonResult PostVote([FromBody] VoteModel v)
+        {
             // insert vote 
             using(IDatabase db = GetDB())
             {
@@ -76,14 +82,14 @@ namespace WebApplication.Controllers
 
                 //apply to comment or article 
                 //commentid==0 mean article 
-                if (v.commentid == 0)
+                if (v.commentid == 0 && v.articleid > 0)
                 {
                     ArticleModel a = db.Single<ArticleModel>(@"select * from article where id="+v.articleid);
                     a.votes += v.vote; 
                     db.Update(a);  
                 }
                 //otherwise comment 
-                else
+                else if (v.commentid > 0)
                 {
                     CommentModel c = db.Single<CommentModel>(@"select * from comment where id="+v.commentid); 
                     c.votes += v.vote; 
