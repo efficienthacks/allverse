@@ -23,7 +23,7 @@
           </a>
       </li>
       <li class="item" *ngIf="user"> 
-        <a href (click)="voteDown(downvote)">
+        <a href (click)="voteDown(downvote)"> 
           <i class="arrow down icon" #downvote [ngClass]="{'circle' : article.userVote < 0}"></i>
           
         </a>
