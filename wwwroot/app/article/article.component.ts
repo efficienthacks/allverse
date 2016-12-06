@@ -31,23 +31,25 @@ export class ArticleComponent implements OnInit {
   voteUp(voteElement : HTMLElement): boolean {
     
     // vote not yet cast 
-    if (voteElement.style.cssText.indexOf("circle") !== -1)
+    if (voteElement.className.indexOf("circle") == -1)
     {
         var v : Vote = new Vote(); 
         v.articleid = this.article.id; 
         v.vote = 1; 
         v.userid = this.user.id; 
 
-      this.service.PostVote(v).subscribe(voteResult => {
+      this.service.PostVote(v).subscribe((voteResult) => {
         this.article.votes+=1;
-        voteElement.style.cssText += "circle"; 
+        voteElement.className += " circle"; 
+        console.log("Posted vote"); 
       }); 
     }
     else
     {
-      this.service.DeleteVote(this.article.id, this.user.id).subscribe(vote => {
+      this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
         this.article.votes-=1;
-        vote.style.cssText = "arrow up icon"; 
+        voteElement.className = "arrow up icon"; 
+        console.log("removed vote"); 
       });
     }
 
@@ -56,23 +58,23 @@ export class ArticleComponent implements OnInit {
 
   voteDown(voteElement : HTMLElement): boolean {
     // vote not yet cast 
-    if (voteElement.style.cssText.indexOf("circle") !== -1)
+    if (voteElement.className.indexOf("circle") == -1)
     {
       var v : Vote = new Vote(); 
       v.articleid = this.article.id; 
       v.vote = -1; 
       v.userid = this.user.id; 
 
-      this.service.PostVote(v).subscribe(voteResult => {
+      this.service.PostVote(v).subscribe((voteResult) => {
         this.article.votes-=1;
-        voteElement.style.cssText += "circle"; 
+        voteElement.className += " circle"; 
       }); 
     }
     else
     {
-      this.service.DeleteVote(this.article.id, this.user.id).subscribe(vote => {
+      this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
         this.article.votes+=1;;
-        vote.style.cssText = "arrow down icon"; 
+        voteElement.className = "arrow down icon"; 
       });
     }
     return false;

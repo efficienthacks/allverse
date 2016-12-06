@@ -57,8 +57,16 @@ namespace WebApplication.Controllers
             int result=0; 
             using(IDatabase db = GetDB())
             {
-                string query = String.Format(@"delete from uservotes where ""articleid""=""{0}"" and ""userid""=""{1}""",articleid,userID); 
-                result = db.Execute(query); 
+                string query = String.Format(@"delete from uservotes where ""articleid""={0} and ""userid""='{1}'",ArticleID,userID); 
+                try
+                {
+                    result = db.Execute(query);
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+                 
             }
             return Json(result); 
         }

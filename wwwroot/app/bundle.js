@@ -48309,20 +48309,22 @@
 	    ArticleComponent.prototype.voteUp = function (voteElement) {
 	        var _this = this;
 	        // vote not yet cast 
-	        if (voteElement.style.cssText.indexOf("circle") !== -1) {
+	        if (voteElement.className.indexOf("circle") == -1) {
 	            var v = new vote_1.Vote();
 	            v.articleid = this.article.id;
 	            v.vote = 1;
 	            v.userid = this.user.id;
 	            this.service.PostVote(v).subscribe(function (voteResult) {
 	                _this.article.votes += 1;
-	                voteElement.style.cssText += "circle";
+	                voteElement.className += " circle";
+	                console.log("Posted vote");
 	            });
 	        }
 	        else {
-	            this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (vote) {
+	            this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
 	                _this.article.votes -= 1;
-	                vote.style.cssText = "arrow up icon";
+	                voteElement.className = "arrow up icon";
+	                console.log("removed vote");
 	            });
 	        }
 	        return false;
@@ -48330,21 +48332,21 @@
 	    ArticleComponent.prototype.voteDown = function (voteElement) {
 	        var _this = this;
 	        // vote not yet cast 
-	        if (voteElement.style.cssText.indexOf("circle") !== -1) {
+	        if (voteElement.className.indexOf("circle") == -1) {
 	            var v = new vote_1.Vote();
 	            v.articleid = this.article.id;
 	            v.vote = -1;
 	            v.userid = this.user.id;
 	            this.service.PostVote(v).subscribe(function (voteResult) {
 	                _this.article.votes -= 1;
-	                voteElement.style.cssText += "circle";
+	                voteElement.className += " circle";
 	            });
 	        }
 	        else {
-	            this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (vote) {
+	            this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
 	                _this.article.votes += 1;
 	                ;
-	                vote.style.cssText = "arrow down icon";
+	                voteElement.className = "arrow down icon";
 	            });
 	        }
 	        return false;
