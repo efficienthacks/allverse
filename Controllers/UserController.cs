@@ -71,6 +71,26 @@ namespace WebApplication.Controllers
             return Json(result); 
         }
 
+        [HttpGet]
+        public JsonResult DeleteCommentVote(long CommentID, string userID)
+        {
+            int result=0; 
+            using(IDatabase db = GetDB())
+            {
+                string query = String.Format(@"delete from uservotes where ""commentid""={0} and ""userid""='{1}'",CommentID,userID); 
+                try
+                {
+                    result = db.Execute(query);
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+                 
+            }
+            return Json(result); 
+        }
+
         // vote up or down article or comment 
         [HttpPost]
         public JsonResult PostVote([FromBody] VoteModel v)

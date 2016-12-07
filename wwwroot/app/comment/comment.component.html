@@ -6,6 +6,20 @@
   </div>
   <div class="comment-tree">
     <div [hidden]="collapse">
+
+    <ul class="ui big horizontal list voters">
+      <li class="item" *ngIf="user">
+        <a href (click)="voteUp(upvote)">
+          <i class="arrow up icon" #upvote [ngClass]="{'circle' : comment.userVote > 0}"></i>
+          </a>
+      </li>
+      <li class="item" *ngIf="user"> 
+        <a href (click)="voteDown(downvote)"> 
+          <i class="arrow down icon" #downvote [ngClass]="{'circle' : comment.userVote < 0}"></i>
+        </a>
+      </li>
+    </ul>
+
       <p class="comment-text" [innerHTML]="comment.content"></p>
       <div class="reply" *ngIf="user && user.isAuthenticated">
           <a href="#" (click)="showReplyForm(replyform)">Reply</a> 

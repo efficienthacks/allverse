@@ -1,8 +1,11 @@
 import { Component, Input,Output,EventEmitter, OnInit } from '@angular/core';
-import {Comment} from '../models/comment'; 
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse';
-import {User} from '../models/user';
 import {Location} from '@angular/common'; 
+
+import {Comment} from '../models/comment'; 
+import {User} from '../models/user';
+import {Vote} from '../models/vote'; 
+
 @Component({
   selector: 'app-comment',
   templateUrl: './app/comment/comment.component.html',
@@ -25,6 +28,59 @@ export class CommentComponent implements OnInit {
     //sigh: find better way then to get user for every comment load? 
     console.log("User name: " + AppServiceHackersPulse.user.name); 
   }
+
+  voteUp(voteElement : HTMLElement): boolean 
+  {
+    // vote not yet cast 
+    if (voteElement.className.indexOf("circle") == -1)
+    {
+        var v : Vote = new Vote(); 
+        v.commentid = this.comment.id; 
+        v.vote = 1; 
+        v.userid = this.user.id; 
+
+      this.service.PostVote(v).subscribe((voteResult) => {
+        this.comment.votes+=1;
+        voteElement.className += " circle"; 
+        console.log("Posted comment vote"); 
+      }); 
+    }
+    else
+    {
+      this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe((voteResult) => {
+        this.comment.votes-=1;
+        voteElement.className = "arrow up icon"; 
+        console.log("removed comment vote"); 
+      });
+    }
+
+    return false;
+  }
+
+  voteDown(voteElement : HTMLElement): boolean {
+    // vote not yet cast 
+    if (voteElement.className.indexOf("circle") == -1)
+    {
+      var v : Vote = new Vote(); 
+      v.commentid = this.comment.id; 
+      v.vote = -1; 
+      v.userid = this.user.id; 
+
+      this.service.PostVote(v).subscribe((voteResult) => {
+        this.comment.votes-=1;
+        voteElement.className += " circle"; 
+      }); 
+    }
+    else
+    {
+      this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe((voteResult) => {
+        this.comment.votes+=1;
+        voteElement.className = "arrow down icon"; 
+      });
+    }
+    return false;
+  }
+
 
   showReplyForm(form : HTMLFormElement)
   {

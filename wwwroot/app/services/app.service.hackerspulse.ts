@@ -19,7 +19,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getCommentPostUrl = 'Article/PostComment'; 
     private _getVoteDeleteUrl = 'User/DeleteVote';
     private _getVotePostUrl = 'User/PostVote';
-
+    private _getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
 
     //vars
     public static user : User; 
@@ -71,6 +71,13 @@ export class AppServiceHackersPulse extends HttpHelpers {
     DeleteVote(ArticleID : number, userID : string)
     {
         return this.http.get(this._getVoteDeleteUrl + "/?ArticleID="+ArticleID + "&userID="+userID)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+    }
+
+    DeleteCommentVote(CommentID : number, userID : string)
+    {
+        return this.http.get(this._getCommentVoteDeleteUrl + "/?CommentID="+CommentID + "&userID="+userID)
                     .map(this.extractData)
                     .catch(this.handleError);
     }
