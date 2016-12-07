@@ -89,6 +89,7 @@ namespace WebApplication.Controllers
                  
             }
             return Json(result); 
+            
         }
 
         // vote up or down article or comment 

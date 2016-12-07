@@ -42,7 +42,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     GetArticle(id : string, userID) : Observable<Article>
     {
-        return this.http.get(this._getArticleUrl + "/"+id+"&userID="+userID)
+        return this.http.get(this._getArticleUrl + "/?id="+id+"&userID="+userID)
                     .map(this.extractArticleData)
                     .catch(this.handleError);        
     }
@@ -58,11 +58,11 @@ export class AppServiceHackersPulse extends HttpHelpers {
     }
 
     
-    GetComments(ArticleID : number) : Observable<Comment[]>
+    GetComments(ArticleID : number, userID : string) : Observable<Comment[]>
     {
-        console.log("GetArticles URL: " + this._getArticleCommentsUrl + "/?ArticleID="+ArticleID);
+        console.log("GetArticles URL: " + this._getArticleCommentsUrl + "/?ArticleID="+ArticleID+ "&userID="+userID);
 
-        return this.http.get(this._getArticleCommentsUrl + "/?ArticleID="+ArticleID)
+        return this.http.get(this._getArticleCommentsUrl + "/?ArticleID="+ArticleID + "&userID="+userID)
                     .map(this.extractData)
                     .catch(this.handleError);
 

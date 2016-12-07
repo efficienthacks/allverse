@@ -8,6 +8,9 @@
     <div [hidden]="collapse">
 
     <ul class="ui big horizontal list voters">
+      <li class="item">
+        Votes: {{comment.votes}} 
+      </li>
       <li class="item" *ngIf="user">
         <a href (click)="voteUp(upvote)">
           <i class="arrow up icon" #upvote [ngClass]="{'circle' : comment.userVote > 0}"></i>

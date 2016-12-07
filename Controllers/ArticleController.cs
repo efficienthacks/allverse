@@ -144,7 +144,7 @@ namespace WebApplication.Controllers
                     // get user vote for each comment 
                     if (userID != "")
                     {
-                        comments = fetchUserVotes(comments); 
+                        comments = fetchUserVotes(comments, userID); 
                     }
                     // form comments into comment tree
                     rootNodes = commentTree(comments); 
