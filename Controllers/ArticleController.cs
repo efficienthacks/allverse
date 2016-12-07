@@ -129,7 +129,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet] 
-        public JsonResult GetComments(Int64 ArticleID)
+        public JsonResult GetComments(Int64 ArticleID, string userID)
         {
             try
             {
@@ -141,6 +141,11 @@ namespace WebApplication.Controllers
                     string sqlCommand=@"SELECT * FROM public.comment where ""articleID""="+ArticleID.ToString();
                     // fetch all comments in article 
                     comments = db.Fetch<CommentModel>(sqlCommand); 
+                    // get user vote for each comment 
+                    if (userID != "")
+                    {
+                        comments = fetchUserVotes(comments); 
+                    }
                     // form comments into comment tree
                     rootNodes = commentTree(comments); 
                 }
@@ -153,7 +158,28 @@ namespace WebApplication.Controllers
                 throw ex; 
             }
         }
-    
+
+        private List<CommentModel> fetchUserVotes(List<CommentModel> comments, string userID)
+        {
+            using (IDatabase db = GetDB())
+            {
+                foreach(var c in comments)
+                {
+                    try
+                    {
+                        VoteModel v = db.First<VoteModel>("select * from uservotes where \"commentid\"=" + c.id + " and \"userid\"='"+userID+"'");  
+                        c.userVote = v.vote; 
+                    }
+                    catch(Exception ex)
+                    {
+                        string m = ex.Message;
+                    }
+                }
+            }
+
+            return comments; 
+        }
+
         private List<CommentModel> commentTree(List<CommentModel> comments)
         {
             Dictionary<Int64, CommentModel> dict = new Dictionary<Int64, CommentModel>();

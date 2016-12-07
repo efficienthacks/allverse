@@ -46,6 +46,9 @@ namespace WebApplication.Models.app
         [JsonPropertyAttribute]
         public string time_ago; 
 
+        [JsonPropertyAttribute]
+        public int userVote=0; 
+
         public CommentModel parent; 
     }
 }
