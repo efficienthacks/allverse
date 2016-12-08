@@ -7740,7 +7740,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.3
+	 * @license Angular v2.2.4
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -7908,7 +7908,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v2.2.3
+	 * @license Angular v2.2.4
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -22377,7 +22377,7 @@
 	              return normalizedDirMeta;
 	          };
 	          if (nonNormalizedMetadata.isComponent) {
-	              var templateMeta = this._directiveNormalizer.normalizeTemplate({
+	              var templateMeta_1 = this._directiveNormalizer.normalizeTemplate({
 	                  componentType: directiveType,
 	                  moduleUrl: nonNormalizedMetadata.type.moduleUrl,
 	                  encapsulation: nonNormalizedMetadata.template.encapsulation,
@@ -22388,15 +22388,15 @@
 	                  animations: nonNormalizedMetadata.template.animations,
 	                  interpolation: nonNormalizedMetadata.template.interpolation
 	              });
-	              if (templateMeta.syncResult) {
-	                  createDirectiveMetadata(templateMeta.syncResult);
+	              if (templateMeta_1.syncResult) {
+	                  createDirectiveMetadata(templateMeta_1.syncResult);
 	                  return null;
 	              }
 	              else {
 	                  if (isSync) {
 	                      throw new ComponentStillLoadingError(directiveType);
 	                  }
-	                  return templateMeta.asyncResult.then(createDirectiveMetadata);
+	                  return function () { return templateMeta_1.asyncResult.then(createDirectiveMetadata); };
 	              }
 	          }
 	          else {
@@ -22618,7 +22618,10 @@
 	                      transitiveModule.directives.push(declaredIdentifier);
 	                      declaredDirectives.push(declaredIdentifier);
 	                      _this._addTypeToModule(declaredType, moduleType);
-	                      transitiveModule.directiveLoaders.push(function () { return _this._loadDirectiveMetadata(declaredType, isSync); });
+	                      var loader = _this._loadDirectiveMetadata(declaredType, isSync);
+	                      if (loader) {
+	                          transitiveModule.directiveLoaders.push(loader);
+	                      }
 	                  }
 	                  else if (_this._pipeResolver.isPipe(declaredType)) {
 	                      transitiveModule.pipesSet.add(declaredType);
@@ -26365,7 +26368,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.3
+	 * @license Angular v2.2.4
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -26441,6 +26444,7 @@
 	        return o !== null && (typeof o === 'function' || typeof o === 'object');
 	    }
 	    function print(obj) {
+	        // tslint:disable-next-line:no-console
 	        console.log(obj);
 	    }
 	    function warn(obj) {
@@ -37149,7 +37153,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.3
+	 * @license Angular v2.2.4
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -37663,6 +37667,7 @@
 	        };
 	        BrowserDomAdapter.prototype.log = function (error) {
 	            if (window.console) {
+	                // tslint:disable-next-line:no-console
 	                window.console.log && window.console.log(error);
 	            }
 	        };
@@ -39618,6 +39623,7 @@
 	        function AngularProfiler(ref) {
 	            this.appRef = ref.injector.get(_angular_core.ApplicationRef);
 	        }
+	        // tslint:disable:no-console
 	        /**
 	         * Exercises change detection in a loop and then prints the average amount of
 	         * time in milliseconds how long a single round of change detection takes for
@@ -39787,7 +39793,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.2.3
+	 * @license Angular v2.2.4
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -41825,7 +41831,7 @@
 	     * {@example common/pipes/ts/async_pipe.ts region='AsyncPipePromise'}
 	     *
 	     * It's also possible to use `async` with Observables. The example below binds the `time` Observable
-	     * to the view. The Observable continuesly updates the view with the current time.
+	     * to the view. The Observable continuously updates the view with the current time.
 	     *
 	     * {@example common/pipes/ts/async_pipe.ts region='AsyncPipeObservable'}
 	     *
@@ -41935,6 +41941,7 @@
 	    }());
 	    var DATE_FORMATS_SPLIT = /((?:[^yMLdHhmsazZEwGjJ']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|L+|d+|H+|h+|J+|j+|m+|s+|a|z|Z|G+|w+))(.*)/;
 	    var PATTERN_ALIASES = {
+	        // Keys are quoted so they do not get renamed during closure compilation.
 	        'yMMMdjms': datePartGetterFactory(combine([
 	            digitCondition('year', 1),
 	            nameCondition('month', 3),
@@ -41958,46 +41965,47 @@
 	        'jm': datePartGetterFactory(combine([digitCondition('hour', 1), digitCondition('minute', 1)]))
 	    };
 	    var DATE_FORMATS = {
-	        yyyy: datePartGetterFactory(digitCondition('year', 4)),
-	        yy: datePartGetterFactory(digitCondition('year', 2)),
-	        y: datePartGetterFactory(digitCondition('year', 1)),
-	        MMMM: datePartGetterFactory(nameCondition('month', 4)),
-	        MMM: datePartGetterFactory(nameCondition('month', 3)),
-	        MM: datePartGetterFactory(digitCondition('month', 2)),
-	        M: datePartGetterFactory(digitCondition('month', 1)),
-	        LLLL: datePartGetterFactory(nameCondition('month', 4)),
-	        L: datePartGetterFactory(nameCondition('month', 1)),
-	        dd: datePartGetterFactory(digitCondition('day', 2)),
-	        d: datePartGetterFactory(digitCondition('day', 1)),
-	        HH: digitModifier(hourExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 2), false)))),
-	        H: hourExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 1), false))),
-	        hh: digitModifier(hourExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 2), true)))),
-	        h: hourExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 1), true))),
-	        jj: datePartGetterFactory(digitCondition('hour', 2)),
-	        j: datePartGetterFactory(digitCondition('hour', 1)),
-	        mm: digitModifier(datePartGetterFactory(digitCondition('minute', 2))),
-	        m: datePartGetterFactory(digitCondition('minute', 1)),
-	        ss: digitModifier(datePartGetterFactory(digitCondition('second', 2))),
-	        s: datePartGetterFactory(digitCondition('second', 1)),
+	        // Keys are quoted so they do not get renamed.
+	        'yyyy': datePartGetterFactory(digitCondition('year', 4)),
+	        'yy': datePartGetterFactory(digitCondition('year', 2)),
+	        'y': datePartGetterFactory(digitCondition('year', 1)),
+	        'MMMM': datePartGetterFactory(nameCondition('month', 4)),
+	        'MMM': datePartGetterFactory(nameCondition('month', 3)),
+	        'MM': datePartGetterFactory(digitCondition('month', 2)),
+	        'M': datePartGetterFactory(digitCondition('month', 1)),
+	        'LLLL': datePartGetterFactory(nameCondition('month', 4)),
+	        'L': datePartGetterFactory(nameCondition('month', 1)),
+	        'dd': datePartGetterFactory(digitCondition('day', 2)),
+	        'd': datePartGetterFactory(digitCondition('day', 1)),
+	        'HH': digitModifier(hourExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 2), false)))),
+	        'H': hourExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 1), false))),
+	        'hh': digitModifier(hourExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 2), true)))),
+	        'h': hourExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 1), true))),
+	        'jj': datePartGetterFactory(digitCondition('hour', 2)),
+	        'j': datePartGetterFactory(digitCondition('hour', 1)),
+	        'mm': digitModifier(datePartGetterFactory(digitCondition('minute', 2))),
+	        'm': datePartGetterFactory(digitCondition('minute', 1)),
+	        'ss': digitModifier(datePartGetterFactory(digitCondition('second', 2))),
+	        's': datePartGetterFactory(digitCondition('second', 1)),
 	        // while ISO 8601 requires fractions to be prefixed with `.` or `,`
 	        // we can be just safely rely on using `sss` since we currently don't support single or two digit
 	        // fractions
-	        sss: datePartGetterFactory(digitCondition('second', 3)),
-	        EEEE: datePartGetterFactory(nameCondition('weekday', 4)),
-	        EEE: datePartGetterFactory(nameCondition('weekday', 3)),
-	        EE: datePartGetterFactory(nameCondition('weekday', 2)),
-	        E: datePartGetterFactory(nameCondition('weekday', 1)),
-	        a: hourClockExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 1), true))),
-	        Z: timeZoneGetter('short'),
-	        z: timeZoneGetter('long'),
-	        ww: datePartGetterFactory({}),
+	        'sss': datePartGetterFactory(digitCondition('second', 3)),
+	        'EEEE': datePartGetterFactory(nameCondition('weekday', 4)),
+	        'EEE': datePartGetterFactory(nameCondition('weekday', 3)),
+	        'EE': datePartGetterFactory(nameCondition('weekday', 2)),
+	        'E': datePartGetterFactory(nameCondition('weekday', 1)),
+	        'a': hourClockExtractor(datePartGetterFactory(hour12Modify(digitCondition('hour', 1), true))),
+	        'Z': timeZoneGetter('short'),
+	        'z': timeZoneGetter('long'),
+	        'ww': datePartGetterFactory({}),
 	        // first Thursday of the year. not support ?
-	        w: datePartGetterFactory({}),
+	        'w': datePartGetterFactory({}),
 	        // of the year not support ?
-	        G: datePartGetterFactory(nameCondition('era', 1)),
-	        GG: datePartGetterFactory(nameCondition('era', 2)),
-	        GGG: datePartGetterFactory(nameCondition('era', 3)),
-	        GGGG: datePartGetterFactory(nameCondition('era', 4))
+	        'G': datePartGetterFactory(nameCondition('era', 1)),
+	        'GG': datePartGetterFactory(nameCondition('era', 2)),
+	        'GGG': datePartGetterFactory(nameCondition('era', 3)),
+	        'GGGG': datePartGetterFactory(nameCondition('era', 4))
 	    };
 	    function digitModifier(inner) {
 	        return function (date, locale) {
@@ -42730,40 +42738,40 @@
 	var comment_tree_component_1 = __webpack_require__(623);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
-	    { path: 'r/:id', component: subverse_component_1.SubverseComponent },
+	    { path: 's/:id', component: subverse_component_1.SubverseComponent },
 	    { path: 'a/:id', component: articlepage_component_1.ArticlePageComponent }
 	];
 	var AppModule = (function () {
 	    function AppModule() {
 	    }
-	    AppModule = __decorate([
-	        core_1.NgModule({
-	            declarations: [
-	                app_component_1.AppComponent,
-	                article_component_1.ArticleComponent,
-	                articlepage_component_1.ArticlePageComponent,
-	                subverse_component_1.SubverseComponent,
-	                home_component_1.HomeComponent,
-	                articlefullpage_component_1.ArticleFullPageComponent,
-	                comment_component_1.CommentComponent,
-	                comment_tree_component_1.CommentTreeComponent
-	            ],
-	            imports: [
-	                platform_browser_1.BrowserModule,
-	                forms_1.FormsModule,
-	                http_1.HttpModule,
-	                router_1.RouterModule.forRoot(routes)
-	            ],
-	            providers: [],
-	            exports: [
-	                router_1.RouterModule
-	            ],
-	            bootstrap: [app_component_1.AppComponent]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], AppModule);
 	    return AppModule;
 	}());
+	AppModule = __decorate([
+	    core_1.NgModule({
+	        declarations: [
+	            app_component_1.AppComponent,
+	            article_component_1.ArticleComponent,
+	            articlepage_component_1.ArticlePageComponent,
+	            subverse_component_1.SubverseComponent,
+	            home_component_1.HomeComponent,
+	            articlefullpage_component_1.ArticleFullPageComponent,
+	            comment_component_1.CommentComponent,
+	            comment_tree_component_1.CommentTreeComponent
+	        ],
+	        imports: [
+	            platform_browser_1.BrowserModule,
+	            forms_1.FormsModule,
+	            http_1.HttpModule,
+	            router_1.RouterModule.forRoot(routes)
+	        ],
+	        providers: [],
+	        exports: [
+	            router_1.RouterModule
+	        ],
+	        bootstrap: [app_component_1.AppComponent]
+	    }),
+	    __metadata("design:paramtypes", [])
+	], AppModule);
 	exports.AppModule = AppModule;
 
 
@@ -42772,7 +42780,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v2.2.3
+	 * @license Angular v2.2.4
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -47414,7 +47422,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v2.2.3
+	 * @license Angular v2.2.4
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */
@@ -48411,7 +48419,7 @@
 	                        // responseText is the old-school way of retrieving response (supported by IE8 & 9)
 	                        // response/responseType properties were introduced in ResourceLoader Level2 spec
 	                        // (supported by IE10)
-	                        body = _xhr.response == null ? _xhr.responseText : _xhr.response;
+	                        body = (typeof _xhr.response === 'undefined') ? _xhr.responseText : _xhr.response;
 	                        // Implicitly strip a potential XSSI prefix.
 	                        if (typeof body === 'string') {
 	                            body = body.replace(XSSI_PREFIX, '');
@@ -49224,16 +49232,16 @@
 	    AppComponent.prototype.sortedArticles = function () {
 	        return this.articles.sort(function (a, b) { return b.votes - a.votes; });
 	    };
-	    AppComponent = __decorate([
-	        core_1.Component({
-	            selector: 'app-root',
-	            template: '<router-outlet></router-outlet>',
-	            styleUrls: ['./app/app.component.css']
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], AppComponent);
 	    return AppComponent;
 	}());
+	AppComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-root',
+	        template: '<router-outlet></router-outlet>',
+	        styleUrls: ['./app/app.component.css']
+	    }),
+	    __metadata("design:paramtypes", [])
+	], AppComponent);
 	exports.AppComponent = AppComponent;
 
 
@@ -49306,24 +49314,24 @@
 	    };
 	    ArticleComponent.prototype.ngOnInit = function () {
 	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', article_1.Article)
-	    ], ArticleComponent.prototype, "article", void 0);
-	    ArticleComponent = __decorate([
-	        core_1.Component({
-	            selector: 'app-article',
-	            templateUrl: './app/article/article.component.html',
-	            styleUrls: ['./app/article/article.component.css'],
-	            host: {
-	                class: 'row'
-	            },
-	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
-	        }), 
-	        __metadata('design:paramtypes', [app_service_hackerspulse_1.AppServiceHackersPulse])
-	    ], ArticleComponent);
 	    return ArticleComponent;
 	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", article_1.Article)
+	], ArticleComponent.prototype, "article", void 0);
+	ArticleComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-article',
+	        templateUrl: './app/article/article.component.html',
+	        styleUrls: ['./app/article/article.component.css'],
+	        host: {
+	            class: 'row'
+	        },
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [app_service_hackerspulse_1.AppServiceHackersPulse])
+	], ArticleComponent);
 	exports.ArticleComponent = ArticleComponent;
 
 
@@ -49391,20 +49399,21 @@
 	var user_1 = __webpack_require__(614);
 	var comment_1 = __webpack_require__(615);
 	var article_1 = __webpack_require__(287);
-	var AppServiceHackersPulse = (function (_super) {
+	var AppServiceHackersPulse = AppServiceHackersPulse_1 = (function (_super) {
 	    __extends(AppServiceHackersPulse, _super);
 	    function AppServiceHackersPulse(http) {
-	        _super.call(this, http);
-	        this._getArticlePostUrl = 'Article/Post';
-	        this._getArticlesUrl = 'Article/GetArticles';
-	        this._getArticleUrl = 'Article/GetArticle';
-	        this._getArticleCommentsUrl = 'Article/GetComments';
-	        this._getUserUrl = 'Manage/GetUser';
-	        this._getCommentPostUrl = 'Article/PostComment';
-	        this._getVoteDeleteUrl = 'User/DeleteVote';
-	        this._getVotePostUrl = 'User/PostVote';
-	        this._getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
-	        this.http = http;
+	        var _this = _super.call(this, http) || this;
+	        _this._getArticlePostUrl = 'Article/Post';
+	        _this._getArticlesUrl = 'Article/GetArticles';
+	        _this._getArticleUrl = 'Article/GetArticle';
+	        _this._getArticleCommentsUrl = 'Article/GetComments';
+	        _this._getUserUrl = 'Manage/GetUser';
+	        _this._getCommentPostUrl = 'Article/PostComment';
+	        _this._getVoteDeleteUrl = 'User/DeleteVote';
+	        _this._getVotePostUrl = 'User/PostVote';
+	        _this._getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
+	        _this.http = http;
+	        return _this;
 	    }
 	    AppServiceHackersPulse.prototype.GetUser = function () {
 	        console.log(this._getUserUrl);
@@ -49448,7 +49457,7 @@
 	        u.id = body.id;
 	        u.isAuthenticated = body.isAuthenticated;
 	        u.name = body.name;
-	        AppServiceHackersPulse.user = u;
+	        AppServiceHackersPulse_1.user = u;
 	        console.log("Extract user: " + u.name);
 	        return u;
 	    };
@@ -49505,13 +49514,14 @@
 	    AppServiceHackersPulse.prototype.AddComment = function (comment) {
 	        return this.postaction(comment, this._getCommentPostUrl);
 	    };
-	    AppServiceHackersPulse = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [http_1.Http])
-	    ], AppServiceHackersPulse);
 	    return AppServiceHackersPulse;
 	}(HttpHelpers_1.HttpHelpers));
+	AppServiceHackersPulse = AppServiceHackersPulse_1 = __decorate([
+	    core_1.Injectable(),
+	    __metadata("design:paramtypes", [http_1.Http])
+	], AppServiceHackersPulse);
 	exports.AppServiceHackersPulse = AppServiceHackersPulse;
+	var AppServiceHackersPulse_1;
 
 
 /***/ },
@@ -66549,6 +66559,7 @@
 	        this.location = location;
 	        this.hpService = hpService;
 	        this.service = hpService;
+	        this.isFormVisible = false;
 	        this.subverseStr = location.path().split('/')[2];
 	    }
 	    SubverseComponent.prototype.ngOnInit = function () {
@@ -66561,10 +66572,13 @@
 	            });
 	        });
 	    };
+	    SubverseComponent.prototype.toggleForm = function () {
+	        this.isFormVisible = !this.isFormVisible;
+	    };
 	    SubverseComponent.prototype.addArticle = function (title, link, text) {
 	        var _this = this;
 	        var UID = this.user.id;
-	        console.log(("Adding article title: " + title.value + " and link: " + link.value + " and uid ") + UID);
+	        console.log("Adding article title: " + title.value + " and link: " + link.value + " and uid " + UID);
 	        var a = new article_1.Article(title.value, link.value, this.subverseStr, text.value, this.user.id, 0, 0);
 	        console.log("Service add article");
 	        this.service.AddArticle(a).subscribe(function (res) {
@@ -66582,20 +66596,20 @@
 	        return this.articles;
 	        //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
 	    };
-	    SubverseComponent = __decorate([
-	        core_1.Component({
-	            selector: 'app-subverse',
-	            templateUrl: './app/subverse/subverse.component.html',
-	            styleUrls: ['./app/subverse/subverse.component.css'],
-	            host: {
-	                class: 'row'
-	            },
-	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
-	        }), 
-	        __metadata('design:paramtypes', [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
-	    ], SubverseComponent);
 	    return SubverseComponent;
 	}());
+	SubverseComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-subverse',
+	        templateUrl: './app/subverse/subverse.component.html',
+	        styleUrls: ['./app/subverse/subverse.component.css'],
+	        host: {
+	            class: 'row'
+	        },
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
+	], SubverseComponent);
 	exports.SubverseComponent = SubverseComponent;
 
 
@@ -66627,28 +66641,31 @@
 	        //load articles based off of subverse 
 	        var RouteStr;
 	        console.log("Subverse is: " + this.subverseStr);
-	        this.service.GetArticles(this.subverseStr, app_service_hackerspulse_1.AppServiceHackersPulse.user.id).subscribe(function (data) {
-	            _this.articles = data;
+	        this.service.GetUser().subscribe(function (data) {
+	            _this.user = data;
+	            _this.service.GetArticles(_this.subverseStr, _this.user.id).subscribe(function (data) {
+	                _this.articles = data;
+	            });
 	        });
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {
 	        return this.articles;
 	        //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
 	    };
-	    HomeComponent = __decorate([
-	        core_1.Component({
-	            selector: 'app-home',
-	            templateUrl: './app/home/home.component.html',
-	            styleUrls: ['./app/home/home.component.css'],
-	            host: {
-	                class: 'row'
-	            },
-	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
-	        }), 
-	        __metadata('design:paramtypes', [app_service_hackerspulse_1.AppServiceHackersPulse])
-	    ], HomeComponent);
 	    return HomeComponent;
 	}());
+	HomeComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-home',
+	        templateUrl: './app/home/home.component.html',
+	        styleUrls: ['./app/home/home.component.css'],
+	        host: {
+	            class: 'row'
+	        },
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [app_service_hackerspulse_1.AppServiceHackersPulse])
+	], HomeComponent);
 	exports.HomeComponent = HomeComponent;
 
 
@@ -66693,20 +66710,20 @@
 	    };
 	    ArticlePageComponent.prototype.ngOnInit = function () {
 	    };
-	    ArticlePageComponent = __decorate([
-	        core_1.Component({
-	            selector: 'app-articlepage',
-	            templateUrl: './app/articlepage/articlepage.component.html',
-	            styleUrls: ['./app/articlepage/articlepage.component.css'],
-	            host: {
-	                class: 'row'
-	            },
-	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
-	        }), 
-	        __metadata('design:paramtypes', [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
-	    ], ArticlePageComponent);
 	    return ArticlePageComponent;
 	}());
+	ArticlePageComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-articlepage',
+	        templateUrl: './app/articlepage/articlepage.component.html',
+	        styleUrls: ['./app/articlepage/articlepage.component.css'],
+	        host: {
+	            class: 'row'
+	        },
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
+	], ArticlePageComponent);
 	exports.ArticlePageComponent = ArticlePageComponent;
 
 
@@ -66755,24 +66772,24 @@
 	            console.log("comment: " + c.content + " cid: " + c.id);
 	        });
 	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', article_1.Article)
-	    ], ArticleFullPageComponent.prototype, "article", void 0);
-	    ArticleFullPageComponent = __decorate([
-	        core_1.Component({
-	            selector: 'app-articlefullpage',
-	            templateUrl: './app/articlefullpage/articlefullpage.component.html',
-	            styleUrls: ['./app/articlefullpage/articlefullpage.component.css'],
-	            host: {
-	                class: 'row'
-	            },
-	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
-	        }), 
-	        __metadata('design:paramtypes', [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
-	    ], ArticleFullPageComponent);
 	    return ArticleFullPageComponent;
 	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", article_1.Article)
+	], ArticleFullPageComponent.prototype, "article", void 0);
+	ArticleFullPageComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-articlefullpage',
+	        templateUrl: './app/articlefullpage/articlefullpage.component.html',
+	        styleUrls: ['./app/articlefullpage/articlefullpage.component.css'],
+	        host: {
+	            class: 'row'
+	        },
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
+	], ArticleFullPageComponent);
 	exports.ArticleFullPageComponent = ArticleFullPageComponent;
 
 
@@ -66781,7 +66798,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * @license Angular v3.2.3
+	 * @license Angular v3.2.4
 	 * (c) 2010-2016 Google, Inc. https://angular.io/
 	 * License: MIT
 	 */(function (global, factory) {
@@ -70995,13 +71012,13 @@
 	        return false;
 	    };
 	    CommentComponent.prototype.showReplyForm = function (form) {
+	        console.log("reply form: " + form);
 	        if (form.style.cssText.trim() == "") {
 	            form.style.cssText = "display:none";
 	        }
 	        else {
 	            form.style.cssText = "";
 	        }
-	        return false;
 	    };
 	    CommentComponent.prototype.addReply = function (form, elem) {
 	        var _this = this;
@@ -71015,21 +71032,21 @@
 	    CommentComponent.prototype.ngOnInit = function () {
 	        this.collapse = false;
 	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', comment_1.Comment)
-	    ], CommentComponent.prototype, "comment", void 0);
-	    CommentComponent = __decorate([
-	        core_1.Component({
-	            selector: 'app-comment',
-	            templateUrl: './app/comment/comment.component.html',
-	            styleUrls: ['./app/comment/comment.component.css'],
-	            providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
-	        }), 
-	        __metadata('design:paramtypes', [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
-	    ], CommentComponent);
 	    return CommentComponent;
 	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", comment_1.Comment)
+	], CommentComponent.prototype, "comment", void 0);
+	CommentComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-comment',
+	        templateUrl: './app/comment/comment.component.html',
+	        styleUrls: ['./app/comment/comment.component.css'],
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
+	], CommentComponent);
 	exports.CommentComponent = CommentComponent;
 
 
@@ -71054,20 +71071,20 @@
 	    CommentTreeComponent.prototype.ngOnInit = function () {
 	        console.log("CommentTree length: " + this.commentTree.length);
 	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], CommentTreeComponent.prototype, "commentTree", void 0);
-	    CommentTreeComponent = __decorate([
-	        core_1.Component({
-	            selector: 'app-comment-tree',
-	            templateUrl: './app/comment-tree/comment-tree.component.html',
-	            styleUrls: ['./app/comment-tree/comment-tree.component.css']
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], CommentTreeComponent);
 	    return CommentTreeComponent;
 	}());
+	__decorate([
+	    core_1.Input(),
+	    __metadata("design:type", Array)
+	], CommentTreeComponent.prototype, "commentTree", void 0);
+	CommentTreeComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-comment-tree',
+	        templateUrl: './app/comment-tree/comment-tree.component.html',
+	        styleUrls: ['./app/comment-tree/comment-tree.component.css']
+	    }),
+	    __metadata("design:paramtypes", [])
+	], CommentTreeComponent);
 	exports.CommentTreeComponent = CommentTreeComponent;
 
 

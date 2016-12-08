@@ -1,4 +1,9 @@
-<form class="ui large form segment" *ngIf="user">
+
+<button (click)="toggleForm()" class="ui positive right floated button" *ngIf="user">
+  Add Article
+</button> 
+
+<form #inputarticle class="ui large form segment" *ngIf="user" [hidden]="!isFormVisible">
   <h3 class="ui header">Add a Link</h3>
 
   <div class="field">

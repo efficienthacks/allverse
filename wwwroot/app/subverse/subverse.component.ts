@@ -27,11 +27,12 @@ export class SubverseComponent implements OnInit {
     subverseStr : string; 
     service : AppServiceHackersPulse; 
     user : User; 
+    isFormVisible : boolean; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
       this.service = hpService; 
-
+      this.isFormVisible = false; 
       this.subverseStr = location.path().split('/')[2]; 
   }
 
@@ -46,6 +47,11 @@ export class SubverseComponent implements OnInit {
         });
       }); 
 
+  }
+
+  toggleForm() 
+  {
+    this.isFormVisible = !this.isFormVisible; 
   }
 
   addArticle(title: HTMLInputElement, link: HTMLInputElement, text: HTMLInputElement): boolean {
