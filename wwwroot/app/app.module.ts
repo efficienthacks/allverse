@@ -19,7 +19,7 @@ import {CommentTreeComponent} from './comment-tree/comment-tree.component';
 
 const routes: Routes = [
     { path: '', component : HomeComponent },
-    { path: 'r/:id', component : SubverseComponent },
+    { path: 's/:id', component : SubverseComponent },
     { path: 'a/:id', component : ArticlePageComponent }
 ];
 
