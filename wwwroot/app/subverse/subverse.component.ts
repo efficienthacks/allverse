@@ -28,12 +28,27 @@ export class SubverseComponent implements OnInit {
     service : AppServiceHackersPulse; 
     user : User; 
     isFormVisible : boolean; 
+    noMods : boolean; 
+    mods : User[]; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
       this.service = hpService; 
       this.isFormVisible = false; 
       this.subverseStr = location.path().split('/')[2]; 
+      this.service.GetMods(this.subverseStr).subscribe((mods) =>
+      {
+        if (mods.length > 0)
+        {
+          this.noMods = false; 
+        }
+        else
+        {
+          this.noMods = true; 
+        }
+
+        this.mods = mods; 
+      });
   }
 
   ngOnInit() {

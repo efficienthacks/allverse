@@ -20,6 +20,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getVoteDeleteUrl = 'User/DeleteVote';
     private _getVotePostUrl = 'User/PostVote';
     private _getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
+    private _getModsUrl = 'User/GetMods'; 
 
     //vars
     public static user : User; 
@@ -30,6 +31,14 @@ export class AppServiceHackersPulse extends HttpHelpers {
     constructor(http: Http) {
         super(http);
         this.http = http; 
+    }
+
+    GetMods(subverse : string) : Observable<User>
+    {
+        console.log(this._getModsUrl + "/?subverse="+subverse); 
+        return this.http.get(this._getModsUrl + "/?subverse="+subverse)
+                    .map(this.extractModsData)
+                    .catch(this.handleError);
     }
 
     GetUser() : Observable<User>
@@ -122,6 +131,25 @@ export class AppServiceHackersPulse extends HttpHelpers {
         }
 
         return articles;
+    }
+
+    private extractModsData(res: Response) 
+    {
+        let body = res.json();
+        var mods : User[] = new Array<User>(); 
+
+        for (var b in body)
+        {
+            var u : User = new User();//(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
+            u.id = body[b].id; 
+            u.isMod = body[b].isMod; 
+            u.isAuthenticated = body[b].isAuthenticated; 
+            u.name = body[b].name; 
+
+            mods.push(u);  
+        }
+
+        return mods;
     }
 
     private extractCommentsData(res: Response) 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic; 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,18 @@ namespace WebApplication.Controllers
             string pgsqlConnStr = Startup.Configuration["PostgresConn"];
             IDatabase db = new Database(new NpgsqlConnection(pgsqlConnStr), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
             return db; 
+        }
+
+        [HttpGet]
+        public JsonResult GetMods(string subverse)
+        {
+            List<UserModel> mods = null; 
+            string query = String.Format("select * from usersubs where \"ismod\"=1 \"subverseName\"={0}", subverse);
+            using(IDatabase db = GetDB())
+            {
+                mods = db.Fetch<UserModel>(query);
+            } 
+            return Json(mods); 
         }
 
         [HttpGet]
