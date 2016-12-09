@@ -49412,9 +49412,16 @@
 	        _this._getVoteDeleteUrl = 'User/DeleteVote';
 	        _this._getVotePostUrl = 'User/PostVote';
 	        _this._getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
+	        _this._getModsUrl = 'User/GetMods';
 	        _this.http = http;
 	        return _this;
 	    }
+	    AppServiceHackersPulse.prototype.GetMods = function (subverse) {
+	        console.log(this._getModsUrl + "/?subverse=" + subverse);
+	        return this.http.get(this._getModsUrl + "/?subverse=" + subverse)
+	            .map(this.extractModsData)
+	            .catch(this.handleError);
+	    };
 	    AppServiceHackersPulse.prototype.GetUser = function () {
 	        console.log(this._getUserUrl);
 	        return this.http.get(this._getUserUrl)
@@ -49476,6 +49483,19 @@
 	            articles.push(a);
 	        }
 	        return articles;
+	    };
+	    AppServiceHackersPulse.prototype.extractModsData = function (res) {
+	        var body = res.json();
+	        var mods = new Array();
+	        for (var b in body) {
+	            var u = new user_1.User(); //(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
+	            u.id = body[b].id;
+	            u.isMod = body[b].isMod;
+	            u.isAuthenticated = body[b].isAuthenticated;
+	            u.name = body[b].name;
+	            mods.push(u);
+	        }
+	        return mods;
 	    };
 	    AppServiceHackersPulse.prototype.extractCommentsData = function (res) {
 	        var body = res.json();
@@ -66556,11 +66576,21 @@
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var SubverseComponent = (function () {
 	    function SubverseComponent(location, hpService) {
+	        var _this = this;
 	        this.location = location;
 	        this.hpService = hpService;
 	        this.service = hpService;
 	        this.isFormVisible = false;
 	        this.subverseStr = location.path().split('/')[2];
+	        this.service.GetMods(this.subverseStr).subscribe(function (mods) {
+	            if (mods.length > 0) {
+	                _this.noMods = false;
+	            }
+	            else {
+	                _this.noMods = true;
+	            }
+	            _this.mods = mods;
+	        });
 	    }
 	    SubverseComponent.prototype.ngOnInit = function () {
 	        var _this = this;
@@ -66742,10 +66772,13 @@
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(259);
-	var article_1 = __webpack_require__(287);
+	//angular imports 
 	var common_1 = __webpack_require__(278);
+	//my js classes 
+	var article_1 = __webpack_require__(287);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var comment_1 = __webpack_require__(615);
+	var vote_1 = __webpack_require__(616);
 	var ArticleFullPageComponent = (function () {
 	    function ArticleFullPageComponent(location, hpService) {
 	        var _this = this;
@@ -66761,6 +66794,50 @@
 	    };
 	    ArticleFullPageComponent.prototype.getArticle = function () {
 	        return this.article;
+	    };
+	    ArticleFullPageComponent.prototype.voteUp = function (voteElement) {
+	        var _this = this;
+	        // vote not yet cast 
+	        if (voteElement.className.indexOf("circle") == -1) {
+	            var v = new vote_1.Vote();
+	            v.articleid = this.article.id;
+	            v.vote = 1;
+	            v.userid = this.user.id;
+	            this.service.PostVote(v).subscribe(function (voteResult) {
+	                _this.article.votes += 1;
+	                voteElement.className += " circle";
+	                console.log("Posted vote");
+	            });
+	        }
+	        else {
+	            this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
+	                _this.article.votes -= 1;
+	                voteElement.className = "arrow up icon";
+	                console.log("removed vote");
+	            });
+	        }
+	        return false;
+	    };
+	    ArticleFullPageComponent.prototype.voteDown = function (voteElement) {
+	        var _this = this;
+	        // vote not yet cast 
+	        if (voteElement.className.indexOf("circle") == -1) {
+	            var v = new vote_1.Vote();
+	            v.articleid = this.article.id;
+	            v.vote = -1;
+	            v.userid = this.user.id;
+	            this.service.PostVote(v).subscribe(function (voteResult) {
+	                _this.article.votes -= 1;
+	                voteElement.className += " circle";
+	            });
+	        }
+	        else {
+	            this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
+	                _this.article.votes += 1;
+	                voteElement.className = "arrow down icon";
+	            });
+	        }
+	        return false;
 	    };
 	    ArticleFullPageComponent.prototype.addComment = function (comment) {
 	        var _this = this;
