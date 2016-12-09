@@ -42729,13 +42729,13 @@
 	var http_1 = __webpack_require__(284);
 	var app_component_1 = __webpack_require__(285);
 	var article_component_1 = __webpack_require__(286);
-	var subverse_component_1 = __webpack_require__(617);
-	var home_component_1 = __webpack_require__(618);
-	var articlepage_component_1 = __webpack_require__(619);
-	var articlefullpage_component_1 = __webpack_require__(620);
-	var router_1 = __webpack_require__(621);
-	var comment_component_1 = __webpack_require__(622);
-	var comment_tree_component_1 = __webpack_require__(623);
+	var subverse_component_1 = __webpack_require__(618);
+	var home_component_1 = __webpack_require__(619);
+	var articlepage_component_1 = __webpack_require__(620);
+	var articlefullpage_component_1 = __webpack_require__(621);
+	var router_1 = __webpack_require__(622);
+	var comment_component_1 = __webpack_require__(623);
+	var comment_tree_component_1 = __webpack_require__(624);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 's/:id', component: subverse_component_1.SubverseComponent },
@@ -49262,7 +49262,7 @@
 	var core_1 = __webpack_require__(259);
 	var article_1 = __webpack_require__(287);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
-	var vote_1 = __webpack_require__(616);
+	var vote_1 = __webpack_require__(617);
 	var ArticleComponent = (function () {
 	    function ArticleComponent(hpService) {
 	        this.service = hpService;
@@ -49399,6 +49399,7 @@
 	var user_1 = __webpack_require__(614);
 	var comment_1 = __webpack_require__(615);
 	var article_1 = __webpack_require__(287);
+	var usersub_1 = __webpack_require__(616);
 	var AppServiceHackersPulse = AppServiceHackersPulse_1 = (function (_super) {
 	    __extends(AppServiceHackersPulse, _super);
 	    function AppServiceHackersPulse(http) {
@@ -49413,6 +49414,7 @@
 	        _this._getVotePostUrl = 'User/PostVote';
 	        _this._getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
 	        _this._getModsUrl = 'User/GetMods';
+	        _this._getBecomeModURL = 'User/BecomeMod';
 	        _this.http = http;
 	        return _this;
 	    }
@@ -49474,6 +49476,16 @@
 	        a.id = b.id;
 	        return a;
 	    };
+	    AppServiceHackersPulse.prototype.extractModData = function (res) {
+	        var b = res.json();
+	        var u = new usersub_1.UserSub();
+	        u.id = b.id;
+	        u.ismod = b.ismod;
+	        u.subverseName = b.subverseName;
+	        u.userID = b.userID;
+	        u.userName = b.userName;
+	        return u;
+	    };
 	    AppServiceHackersPulse.prototype.extractArticlesData = function (res) {
 	        var body = res.json();
 	        var articles = new Array();
@@ -49488,11 +49500,12 @@
 	        var body = res.json();
 	        var mods = new Array();
 	        for (var b in body) {
-	            var u = new user_1.User(); //(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
+	            var u = new usersub_1.UserSub(); //(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
 	            u.id = body[b].id;
-	            u.isMod = body[b].isMod;
-	            u.isAuthenticated = body[b].isAuthenticated;
-	            u.name = body[b].name;
+	            u.ismod = body[b].ismod;
+	            u.subverseName = body[b].subversename;
+	            u.userID = body[b].userID;
+	            u.userName = body[b].userName;
 	            mods.push(u);
 	        }
 	        return mods;
@@ -49533,6 +49546,11 @@
 	    };
 	    AppServiceHackersPulse.prototype.AddComment = function (comment) {
 	        return this.postaction(comment, this._getCommentPostUrl);
+	    };
+	    AppServiceHackersPulse.prototype.BecomeMod = function (uid, userName, subverse) {
+	        return this.http.get(this._getBecomeModURL + "/?UserID=" + uid + "&UserName=" + userName + "&subverse=" + subverse)
+	            .map(this.extractModData)
+	            .catch(this.handleError);
 	    };
 	    return AppServiceHackersPulse;
 	}(HttpHelpers_1.HttpHelpers));
@@ -66548,6 +66566,19 @@
 /***/ function(module, exports) {
 
 	"use strict";
+	var UserSub = (function () {
+	    function UserSub() {
+	    }
+	    return UserSub;
+	}());
+	exports.UserSub = UserSub;
+
+
+/***/ },
+/* 617 */
+/***/ function(module, exports) {
+
+	"use strict";
 	var Vote = (function () {
 	    function Vote() {
 	    }
@@ -66557,7 +66588,7 @@
 
 
 /***/ },
-/* 617 */
+/* 618 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66579,19 +66610,25 @@
 	        var _this = this;
 	        this.location = location;
 	        this.hpService = hpService;
+	        this.isModButtonVisible = true;
 	        this.service = hpService;
 	        this.isFormVisible = false;
 	        this.subverseStr = location.path().split('/')[2];
-	        this.service.GetMods(this.subverseStr).subscribe(function (mods) {
-	            if (mods.length > 0) {
-	                _this.noMods = false;
+	        this.service.GetMods(this.subverseStr).subscribe(function (modsResult) {
+	            _this.mods = modsResult;
+	            if (_this.mods.length > 0) {
+	                _this.isModButtonVisible = false;
 	            }
-	            else {
-	                _this.noMods = true;
-	            }
-	            _this.mods = mods;
 	        });
 	    }
+	    SubverseComponent.prototype.becomeMod = function () {
+	        var _this = this;
+	        this.service.BecomeMod(this.user.id, this.user.name, this.subverseStr).subscribe(function (result) {
+	            _this.isModButtonVisible = false;
+	            console.log("Set mod visible: " + _this.isModButtonVisible);
+	            _this.mods.push(result);
+	        });
+	    };
 	    SubverseComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        console.log("Subverse is: " + this.subverseStr);
@@ -66644,7 +66681,7 @@
 
 
 /***/ },
-/* 618 */
+/* 619 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66700,7 +66737,7 @@
 
 
 /***/ },
-/* 619 */
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66758,7 +66795,7 @@
 
 
 /***/ },
-/* 620 */
+/* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -66778,7 +66815,7 @@
 	var article_1 = __webpack_require__(287);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var comment_1 = __webpack_require__(615);
-	var vote_1 = __webpack_require__(616);
+	var vote_1 = __webpack_require__(617);
 	var ArticleFullPageComponent = (function () {
 	    function ArticleFullPageComponent(location, hpService) {
 	        var _this = this;
@@ -66871,7 +66908,7 @@
 
 
 /***/ },
-/* 621 */
+/* 622 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -71017,7 +71054,7 @@
 	}));
 
 /***/ },
-/* 622 */
+/* 623 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -71034,7 +71071,7 @@
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var common_1 = __webpack_require__(278);
 	var comment_1 = __webpack_require__(615);
-	var vote_1 = __webpack_require__(616);
+	var vote_1 = __webpack_require__(617);
 	var CommentComponent = (function () {
 	    function CommentComponent(location, hpService) {
 	        this.location = location;
@@ -71128,7 +71165,7 @@
 
 
 /***/ },
-/* 623 */
+/* 624 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

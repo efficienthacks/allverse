@@ -1,11 +1,20 @@
 
-<button (click)="toggleForm()" class="ui positive right floated button" *ngIf="!user.isMod && noMods">
+<button (click)="becomeMod()" class="ui positive right floated button" *ngIf="user && isModButtonVisible">
   Become Mod! 
 </button> 
 
 <button (click)="toggleForm()" class="ui positive right floated button" *ngIf="user">
   Add Article
 </button> 
+
+<div *ngIf="user">
+  Sub mods are: 
+  <ul>
+      <li *ngFor="let mod of mods">
+        {{mod.userName}}
+      </li> 
+  </ul>
+</div>
 
 <form #inputarticle class="ui large form segment" *ngIf="user" [hidden]="!isFormVisible">
   <h3 class="ui header">Add a Link</h3>

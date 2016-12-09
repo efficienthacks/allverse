@@ -12,7 +12,7 @@ import {Location} from '@angular/common';
 import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
-
+import {UserSub} from '../models/usersub';
 @Component({
   selector: 'app-subverse',
   templateUrl: './app/subverse/subverse.component.html',
@@ -27,28 +27,35 @@ export class SubverseComponent implements OnInit {
     subverseStr : string; 
     service : AppServiceHackersPulse; 
     user : User; 
-    isFormVisible : boolean; 
+    isFormVisible : boolean;
+    isModButtonVisible : boolean;  
     noMods : boolean; 
-    mods : User[]; 
+    mods : UserSub[]; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
+      this.isModButtonVisible = true; 
       this.service = hpService; 
       this.isFormVisible = false; 
       this.subverseStr = location.path().split('/')[2]; 
-      this.service.GetMods(this.subverseStr).subscribe((mods) =>
+      this.service.GetMods(this.subverseStr).subscribe((modsResult) =>
       {
-        if (mods.length > 0)
+        this.mods = modsResult;   
+        if (this.mods.length > 0)
         {
-          this.noMods = false; 
-        }
-        else
-        {
-          this.noMods = true; 
-        }
-
-        this.mods = mods; 
+          this.isModButtonVisible = false; 
+        }     
       });
+  }
+
+  becomeMod()
+  {
+    this.service.BecomeMod(this.user.id,this.user.name, this.subverseStr).subscribe((result)=>{
+       this.isModButtonVisible = false; 
+       console.log("Set mod visible: " + this.isModButtonVisible); 
+       this.mods.push(result); 
+    });
+
   }
 
   ngOnInit() {

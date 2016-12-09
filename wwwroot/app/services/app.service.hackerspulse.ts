@@ -8,6 +8,7 @@ import {User} from '../models/user';
 import {Comment} from '../models/comment';
 import {Vote} from '../models/vote';
 import { Article } from '../models/article';
+import {UserSub} from '../models/usersub';
 
 @Injectable()
 export class AppServiceHackersPulse extends HttpHelpers {
@@ -21,6 +22,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getVotePostUrl = 'User/PostVote';
     private _getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
     private _getModsUrl = 'User/GetMods'; 
+    private _getBecomeModURL = 'User/BecomeMod'; 
 
     //vars
     public static user : User; 
@@ -33,7 +35,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
         this.http = http; 
     }
 
-    GetMods(subverse : string) : Observable<User>
+    GetMods(subverse : string) : Observable<UserSub[]>
     {
         console.log(this._getModsUrl + "/?subverse="+subverse); 
         return this.http.get(this._getModsUrl + "/?subverse="+subverse)
@@ -118,6 +120,22 @@ export class AppServiceHackersPulse extends HttpHelpers {
         a.id = b.id; 
         return a;
     }
+
+    private extractModData(res: Response)
+    {
+        let b = res.json();
+        var u = new UserSub(); 
+        
+        u.id = b.id;
+        u.ismod = b.ismod; 
+        u.subverseName = b.subverseName; 
+        u.userID = b.userID; 
+        u.userName = b.userName; 
+
+        return u;
+    }
+
+
     private extractArticlesData(res: Response) 
     {
         let body = res.json();
@@ -136,15 +154,16 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private extractModsData(res: Response) 
     {
         let body = res.json();
-        var mods : User[] = new Array<User>(); 
+        var mods : UserSub[] = new Array<UserSub>(); 
 
         for (var b in body)
         {
-            var u : User = new User();//(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
+            var u : UserSub = new UserSub();//(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
             u.id = body[b].id; 
-            u.isMod = body[b].isMod; 
-            u.isAuthenticated = body[b].isAuthenticated; 
-            u.name = body[b].name; 
+            u.ismod = body[b].ismod; 
+            u.subverseName = body[b].subversename; 
+            u.userID = body[b].userID ;
+            u.userName = body[b].userName; 
 
             mods.push(u);  
         }
@@ -193,5 +212,11 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     AddComment(comment : Comment) : Observable<Response> {
         return this.postaction(comment, this._getCommentPostUrl); 
+    }
+
+    BecomeMod(uid : string,userName : string, subverse : string){
+        return this.http.get(this._getBecomeModURL + "/?UserID="+uid + "&UserName=" + userName + "&subverse="+subverse)
+            .map(this.extractModData)
+            .catch(this.handleError);
     }
 }
