@@ -66621,6 +66621,17 @@
 	            }
 	        });
 	    }
+	    SubverseComponent.prototype.toggleSubscribe = function (button) {
+	        if (button.innerHTML.trim() == "Subscribe") {
+	            button.className = "unsubscribe ui negative right floated button";
+	            button.innerHTML = "Unsubscribe";
+	        }
+	        else {
+	            button.className = "subscribe ui positive right floated button";
+	            button.innerHTML = "Subscribe";
+	        }
+	        console.log(button);
+	    };
 	    SubverseComponent.prototype.becomeMod = function () {
 	        var _this = this;
 	        this.service.BecomeMod(this.user.id, this.user.name, this.subverseStr).subscribe(function (result) {
