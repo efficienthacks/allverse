@@ -1,8 +1,11 @@
 import {
   Component,
+  ViewChild,
+  AfterViewInit,
   OnInit,
   Input, 
-  Injectable
+  Injectable,
+  ElementRef
 } from '@angular/core';
 import { Article } from '../models/article';
 import { User } from '../models/user'; 
@@ -22,7 +25,8 @@ import {UserSub} from '../models/usersub';
   },
   providers: [AppServiceHackersPulse]
 })
-export class SubverseComponent implements OnInit {
+export class SubverseComponent implements AfterViewInit {
+    @ViewChild('btnSub') btnSub: ElementRef;
     articles : Article[]; 
     subverseStr : string; 
     service : AppServiceHackersPulse; 
@@ -31,6 +35,7 @@ export class SubverseComponent implements OnInit {
     isModButtonVisible : boolean;  
     noMods : boolean; 
     mods : UserSub[]; 
+    isSubscribed : number; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
@@ -38,6 +43,7 @@ export class SubverseComponent implements OnInit {
       this.service = hpService; 
       this.isFormVisible = false; 
       this.subverseStr = location.path().split('/')[2]; 
+    
       this.service.GetMods(this.subverseStr).subscribe((modsResult) =>
       {
         this.mods = modsResult;   
@@ -50,16 +56,20 @@ export class SubverseComponent implements OnInit {
 
   toggleSubscribe(button : HTMLElement)
   {
-    if (button.innerHTML.trim() == "Subscribe")
-    {
-      button.className="unsubscribe ui negative right floated button"; 
-      button.innerHTML = "Unsubscribe";
-    }
-    else
-    {
-      button.className="subscribe ui positive right floated button"; 
-      button.innerHTML = "Subscribe";
-    }
+    this.service.ToggleSubscribe(this.user.id,this.user.name,this.subverseStr).subscribe((result)=>{
+
+      if (button.innerHTML.trim() == "Subscribe")
+      {
+        button.className="unsubscribe ui negative right floated button"; 
+        button.innerHTML = "Unsubscribe";
+      }
+      else
+      {
+        button.className="subscribe ui positive right floated button"; 
+        button.innerHTML = "Subscribe";
+      }
+
+    });
 
     console.log(button); 
   }
@@ -74,15 +84,30 @@ export class SubverseComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
       console.log("Subverse is: " + this.subverseStr); 
 
-      this.service.GetUser().subscribe( (data) => {
+     this.service.GetUser().subscribe( (data) => {
         this.user = data; 
 
         this.service.GetArticles(this.subverseStr, this.user.id).subscribe( (data)=>{
           this.articles = data; 
         });
+
+        this.service.IsUserSubscribed(this.user.id,this.subverseStr).subscribe((isSubbed) =>{
+
+          if (isSubbed == 1)
+          {
+            //set button to look like saying "unsubscribe" 
+            this.btnSub.nativeElement.className="unsubscribe ui negative right floated button"; 
+            this.btnSub.nativeElement.innerHTML = "Unsubscribe";
+            console.log("set button to unsubscribe"); 
+          }
+
+          console.log("subbed: " + isSubbed);
+
+        }); 
+
       }); 
 
   }

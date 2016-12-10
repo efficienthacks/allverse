@@ -49415,13 +49415,21 @@
 	        _this._getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
 	        _this._getModsUrl = 'User/GetMods';
 	        _this._getBecomeModURL = 'User/BecomeMod';
+	        _this._toggleSubscribeURL = 'User/ToggleSubscribe';
+	        _this._getIsUserSubscribed = 'User/IsSubscribed';
 	        _this.http = http;
 	        return _this;
 	    }
+	    AppServiceHackersPulse.prototype.IsUserSubscribed = function (uid, subverse) {
+	        console.log(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse=" + subverse);
+	        return this.http.get(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse=" + subverse)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
 	    AppServiceHackersPulse.prototype.GetMods = function (subverse) {
 	        console.log(this._getModsUrl + "/?subverse=" + subverse);
 	        return this.http.get(this._getModsUrl + "/?subverse=" + subverse)
-	            .map(this.extractModsData)
+	            .map(this.extractUserSubsData)
 	            .catch(this.handleError);
 	    };
 	    AppServiceHackersPulse.prototype.GetUser = function () {
@@ -49496,19 +49504,31 @@
 	        }
 	        return articles;
 	    };
-	    AppServiceHackersPulse.prototype.extractModsData = function (res) {
+	    AppServiceHackersPulse.prototype.extractUserSubsData = function (res) {
 	        var body = res.json();
 	        var mods = new Array();
 	        for (var b in body) {
-	            var u = new usersub_1.UserSub(); //(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
+	            var u = new usersub_1.UserSub();
 	            u.id = body[b].id;
 	            u.ismod = body[b].ismod;
 	            u.subverseName = body[b].subversename;
 	            u.userID = body[b].userID;
 	            u.userName = body[b].userName;
+	            u.isSubscribed = body[b].isSubscribed;
 	            mods.push(u);
 	        }
 	        return mods;
+	    };
+	    AppServiceHackersPulse.prototype.extractUserSubData = function (res) {
+	        var body = res.json();
+	        var u = new usersub_1.UserSub();
+	        u.id = body.id;
+	        u.ismod = body.ismod;
+	        u.subverseName = body.subversename;
+	        u.userID = body.userID;
+	        u.userName = body.userName;
+	        u.isSubscribed = body.isSubscribed;
+	        return u;
 	    };
 	    AppServiceHackersPulse.prototype.extractCommentsData = function (res) {
 	        var body = res.json();
@@ -49549,7 +49569,12 @@
 	    };
 	    AppServiceHackersPulse.prototype.BecomeMod = function (uid, userName, subverse) {
 	        return this.http.get(this._getBecomeModURL + "/?UserID=" + uid + "&UserName=" + userName + "&subverse=" + subverse)
-	            .map(this.extractModData)
+	            .map(this.extractUserSubData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.ToggleSubscribe = function (uid, userName, subverse) {
+	        return this.http.get(this._toggleSubscribeURL + "/?UserID=" + uid + "&UserName=" + userName + "&subverse=" + subverse)
+	            .map(this.extractUserSubData)
 	            .catch(this.handleError);
 	    };
 	    return AppServiceHackersPulse;
@@ -66622,14 +66647,16 @@
 	        });
 	    }
 	    SubverseComponent.prototype.toggleSubscribe = function (button) {
-	        if (button.innerHTML.trim() == "Subscribe") {
-	            button.className = "unsubscribe ui negative right floated button";
-	            button.innerHTML = "Unsubscribe";
-	        }
-	        else {
-	            button.className = "subscribe ui positive right floated button";
-	            button.innerHTML = "Subscribe";
-	        }
+	        this.service.ToggleSubscribe(this.user.id, this.user.name, this.subverseStr).subscribe(function (result) {
+	            if (button.innerHTML.trim() == "Subscribe") {
+	                button.className = "unsubscribe ui negative right floated button";
+	                button.innerHTML = "Unsubscribe";
+	            }
+	            else {
+	                button.className = "subscribe ui positive right floated button";
+	                button.innerHTML = "Subscribe";
+	            }
+	        });
 	        console.log(button);
 	    };
 	    SubverseComponent.prototype.becomeMod = function () {
@@ -66640,13 +66667,22 @@
 	            _this.mods.push(result);
 	        });
 	    };
-	    SubverseComponent.prototype.ngOnInit = function () {
+	    SubverseComponent.prototype.ngAfterViewInit = function () {
 	        var _this = this;
 	        console.log("Subverse is: " + this.subverseStr);
 	        this.service.GetUser().subscribe(function (data) {
 	            _this.user = data;
 	            _this.service.GetArticles(_this.subverseStr, _this.user.id).subscribe(function (data) {
 	                _this.articles = data;
+	            });
+	            _this.service.IsUserSubscribed(_this.user.id, _this.subverseStr).subscribe(function (isSubbed) {
+	                if (isSubbed == 1) {
+	                    //set button to look like saying "unsubscribe" 
+	                    _this.btnSub.nativeElement.className = "unsubscribe ui negative right floated button";
+	                    _this.btnSub.nativeElement.innerHTML = "Unsubscribe";
+	                    console.log("set button to unsubscribe");
+	                }
+	                console.log("subbed: " + isSubbed);
 	            });
 	        });
 	    };
@@ -66676,6 +66712,10 @@
 	    };
 	    return SubverseComponent;
 	}());
+	__decorate([
+	    core_1.ViewChild('btnSub'),
+	    __metadata("design:type", core_1.ElementRef)
+	], SubverseComponent.prototype, "btnSub", void 0);
 	SubverseComponent = __decorate([
 	    core_1.Component({
 	        selector: 'app-subverse',

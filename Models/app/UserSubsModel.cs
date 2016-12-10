@@ -18,6 +18,8 @@ namespace WebApplication.Models.app
         public string subverseName;
         [Column] 
         public int ismod=0; 
+        [Column] 
+        public int isSubscribed=0; 
         [Column]
         public string userName; 
     }

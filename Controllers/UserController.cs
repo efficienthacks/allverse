@@ -72,7 +72,7 @@ namespace WebApplication.Controllers
             return Json(user); 
         }
 
-                [HttpGet]
+        [HttpGet]
         public JsonResult BecomeMod(string UserID,string UserName, string subverse)
         {
             UserSubsModel u = null; 
@@ -98,6 +98,8 @@ namespace WebApplication.Controllers
                 {
                     u = new UserSubsModel(); 
                     u.ismod = 1; 
+                    //auto subscribe if is mod
+                    u.isSubscribed = 1; 
                     u.userID = UserID; 
                     u.subverseName = subverse; 
                     u.userName = UserName; 
@@ -110,6 +112,88 @@ namespace WebApplication.Controllers
                     {
                         string m = ex.Message; 
 
+                    }
+                    
+                }
+            }
+            return Json(u); 
+        }
+
+        [HttpGet]
+        public JsonResult IsSubscribed(string UserID, string subverse)
+        {
+            int isSubscribed=0; 
+
+            UserSubsModel u = null; 
+            using(IDatabase db = GetDB())
+            {
+                string query = String.Format("select * from usersubs where \"userID\"='{0}' and \"subverseName\"='{1}'", UserID, subverse); 
+                
+                try
+                {
+                    u=db.Single<UserSubsModel>(query);               
+                }            
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+
+                if (u != null)
+                {
+                    isSubscribed = u.isSubscribed;
+                }
+                //else 0 is already implied 
+            }
+
+            return Json(isSubscribed); 
+        }
+
+        [HttpGet]
+        public JsonResult ToggleSubscribe(string UserID,string UserName, string subverse)
+        {
+            UserSubsModel u = null; 
+            using(IDatabase db = GetDB())
+            {
+                string query = String.Format("select * from usersubs where \"userID\"='{0}'", UserID); 
+                
+                try
+                {
+                    u=db.Single<UserSubsModel>(query);               
+                } 
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+
+                if (u!=null)
+                {
+                    // if it exists, toggle it (users sub)
+                    if (u.isSubscribed == 0)
+                    {
+                        u.isSubscribed = 1; 
+                    }
+                    else
+                    {
+                        u.isSubscribed = 0; 
+                    }
+                    db.Update(u); 
+                }
+                else // doesn't exist in the DB, add it as subscribed
+                {
+                    u = new UserSubsModel(); 
+                    u.ismod = 0; 
+                    u.isSubscribed = 1; 
+                    u.userID = UserID; 
+                    u.subverseName = subverse; 
+                    u.userName = UserName; 
+                    Int64 result=0;
+                    try
+                    {
+                        result = (Int64)db.Insert(u); 
+                    }
+                    catch(Exception ex)
+                    {
+                        string m = ex.Message; 
                     }
                     
                 }

@@ -23,6 +23,8 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
     private _getModsUrl = 'User/GetMods'; 
     private _getBecomeModURL = 'User/BecomeMod'; 
+    private _toggleSubscribeURL = 'User/ToggleSubscribe';
+    private _getIsUserSubscribed = 'User/IsSubscribed';
 
     //vars
     public static user : User; 
@@ -35,11 +37,19 @@ export class AppServiceHackersPulse extends HttpHelpers {
         this.http = http; 
     }
 
+    IsUserSubscribed(uid: string, subverse: string)
+    {
+        console.log(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse="+subverse); 
+        return this.http.get(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse="+subverse)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+    }
+
     GetMods(subverse : string) : Observable<UserSub[]>
     {
         console.log(this._getModsUrl + "/?subverse="+subverse); 
         return this.http.get(this._getModsUrl + "/?subverse="+subverse)
-                    .map(this.extractModsData)
+                    .map(this.extractUserSubsData)
                     .catch(this.handleError);
     }
 
@@ -151,25 +161,42 @@ export class AppServiceHackersPulse extends HttpHelpers {
         return articles;
     }
 
-    private extractModsData(res: Response) 
+    private extractUserSubsData(res: Response) 
     {
         let body = res.json();
         var mods : UserSub[] = new Array<UserSub>(); 
 
         for (var b in body)
         {
-            var u : UserSub = new UserSub();//(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
+            var u : UserSub = new UserSub();
             u.id = body[b].id; 
             u.ismod = body[b].ismod; 
             u.subverseName = body[b].subversename; 
             u.userID = body[b].userID ;
             u.userName = body[b].userName; 
+            u.isSubscribed = body[b].isSubscribed;
 
             mods.push(u);  
         }
 
         return mods;
     }
+
+    private extractUserSubData(res: Response) 
+    {
+        let body = res.json();
+
+        var u : UserSub = new UserSub();
+        u.id = body.id; 
+        u.ismod = body.ismod; 
+        u.subverseName = body.subversename; 
+        u.userID = body.userID ;
+        u.userName = body.userName; 
+        u.isSubscribed = body.isSubscribed;
+
+        return u;
+    }
+
 
     private extractCommentsData(res: Response) 
     {
@@ -216,7 +243,14 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     BecomeMod(uid : string,userName : string, subverse : string){
         return this.http.get(this._getBecomeModURL + "/?UserID="+uid + "&UserName=" + userName + "&subverse="+subverse)
-            .map(this.extractModData)
+            .map(this.extractUserSubData)
+            .catch(this.handleError);
+    }
+
+    ToggleSubscribe(uid : string,userName:string, subverse : string)
+    {
+         return this.http.get(this._toggleSubscribeURL + "/?UserID="+uid + "&UserName=" + userName + "&subverse="+subverse)
+            .map(this.extractUserSubData)
             .catch(this.handleError);
     }
 }

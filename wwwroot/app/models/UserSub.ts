@@ -6,4 +6,5 @@ export class UserSub
     userName : string; 
     subverseName : string; 
     ismod : number;
+    isSubscribed : number; 
 }
