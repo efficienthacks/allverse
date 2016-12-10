@@ -12,7 +12,7 @@ import {Location} from '@angular/common';
 import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
-
+import {UserSub} from '../models/usersub';
 @Component({
   selector: 'app-subverse',
   templateUrl: './app/subverse/subverse.component.html',
@@ -27,12 +27,51 @@ export class SubverseComponent implements OnInit {
     subverseStr : string; 
     service : AppServiceHackersPulse; 
     user : User; 
+    isFormVisible : boolean;
+    isModButtonVisible : boolean;  
+    noMods : boolean; 
+    mods : UserSub[]; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
+      this.isModButtonVisible = true; 
       this.service = hpService; 
-
+      this.isFormVisible = false; 
       this.subverseStr = location.path().split('/')[2]; 
+      this.service.GetMods(this.subverseStr).subscribe((modsResult) =>
+      {
+        this.mods = modsResult;   
+        if (this.mods.length > 0)
+        {
+          this.isModButtonVisible = false; 
+        }     
+      });
+  }
+
+  toggleSubscribe(button : HTMLElement)
+  {
+    if (button.innerHTML.trim() == "Subscribe")
+    {
+      button.className="unsubscribe ui negative right floated button"; 
+      button.innerHTML = "Unsubscribe";
+    }
+    else
+    {
+      button.className="subscribe ui positive right floated button"; 
+      button.innerHTML = "Subscribe";
+    }
+
+    console.log(button); 
+  }
+
+  becomeMod()
+  {
+    this.service.BecomeMod(this.user.id,this.user.name, this.subverseStr).subscribe((result)=>{
+       this.isModButtonVisible = false; 
+       console.log("Set mod visible: " + this.isModButtonVisible); 
+       this.mods.push(result); 
+    });
+
   }
 
   ngOnInit() {
@@ -46,6 +85,11 @@ export class SubverseComponent implements OnInit {
         });
       }); 
 
+  }
+
+  toggleForm() 
+  {
+    this.isFormVisible = !this.isFormVisible; 
   }
 
   addArticle(title: HTMLInputElement, link: HTMLInputElement, text: HTMLInputElement): boolean {

@@ -6,7 +6,7 @@ namespace WebApplication.Models.app
 {
     [JsonObject(MemberSerialization.OptOut)]
     [TableName("subverse")]
-    [PrimaryKey("id")]   
+    [PrimaryKey("id" , AutoIncrement=true)]   
     [ExplicitColumns]  
     public class SubverseModel
     {

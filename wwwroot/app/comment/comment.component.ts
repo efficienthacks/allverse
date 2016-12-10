@@ -84,6 +84,8 @@ export class CommentComponent implements OnInit {
 
   showReplyForm(form : HTMLFormElement)
   {
+    console.log("reply form: " + form); 
+    
     if (form.style.cssText.trim()=="")
     {
         form.style.cssText = "display:none"; 
@@ -92,8 +94,6 @@ export class CommentComponent implements OnInit {
     {
         form.style.cssText = ""; 
     }
-    
-    return false; 
   }
 
   addReply(form : HTMLFormElement, elem : HTMLInputElement)

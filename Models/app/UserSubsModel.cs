@@ -6,7 +6,7 @@ namespace WebApplication.Models.app
 {
     [JsonObject(MemberSerialization.OptOut)]
     [TableName("usersubs")]
-    [PrimaryKey("id")]   
+    [PrimaryKey("id" , AutoIncrement=true)]     
     [ExplicitColumns]  
     public class UserSubsModel
     {
@@ -15,9 +15,10 @@ namespace WebApplication.Models.app
         [Column]  
         public string userID;
         [Column]  
-        public string subverseID;
+        public string subverseName;
         [Column] 
-        public bool ismod=false; 
-
+        public int ismod=0; 
+        [Column]
+        public string userName; 
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic; 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,26 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
+        public JsonResult GetMods(string subverse)
+        {
+            List<UserSubsModel> mods = null; 
+            string query = String.Format("select * from usersubs where \"ismod\"=1 and \"subverseName\"='{0}'", subverse);
+            using(IDatabase db = GetDB())
+            {
+                try
+                {
+                    mods = db.Fetch<UserSubsModel>(query);
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message;
+                }
+                
+            } 
+            return Json(mods); 
+        }
+
+        [HttpGet]
         public JsonResult GetUser()
         {
             var user = new UserModel(); 
@@ -49,6 +70,51 @@ namespace WebApplication.Controllers
             user.ID = _userManager.GetUserId(HttpContext.User); 
             user.Name = User.Identity.Name; 
             return Json(user); 
+        }
+
+                [HttpGet]
+        public JsonResult BecomeMod(string UserID,string UserName, string subverse)
+        {
+            UserSubsModel u = null; 
+            using(IDatabase db = GetDB())
+            {
+                string query = String.Format("select * from usersubs where \"userID\"='{0}'", UserID); 
+                
+                try
+                {
+                    u=db.Single<UserSubsModel>(query);               
+                } 
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+
+                if (u!=null)
+                {
+                    u.ismod = 1; 
+                    db.Update(u); 
+                }
+                else // doesn't exist in the DB 
+                {
+                    u = new UserSubsModel(); 
+                    u.ismod = 1; 
+                    u.userID = UserID; 
+                    u.subverseName = subverse; 
+                    u.userName = UserName; 
+                    Int64 result=0;
+                    try
+                    {
+                        result = (Int64)db.Insert(u); 
+                    }
+                    catch(Exception ex)
+                    {
+                        string m = ex.Message; 
+
+                    }
+                    
+                }
+            }
+            return Json(u); 
         }
 
         [HttpGet]

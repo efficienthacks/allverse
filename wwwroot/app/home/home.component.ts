@@ -4,6 +4,7 @@ import {
   Input
 } from '@angular/core';
 import { Article } from '../models/article';
+import {User} from '../models/user';
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
 import {Observable} from 'rxjs/Observable';
 @Component({
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit {
     articles : Article[]; 
     subverseStr : string; 
     service : AppServiceHackersPulse; 
+    user : User; 
 
 constructor(private hpService: AppServiceHackersPulse)
 {
@@ -34,10 +36,16 @@ constructor(private hpService: AppServiceHackersPulse)
       var RouteStr : string; 
 
       console.log("Subverse is: " + this.subverseStr);
-    
-      this.service.GetArticles(this.subverseStr,AppServiceHackersPulse.user.id).subscribe( (data)=>{
+
+      this.service.GetUser().subscribe( (data) => {
+        this.user = data; 
+
+        this.service.GetArticles(this.subverseStr,this.user.id).subscribe( (data)=>{
         this.articles = data; 
       }); 
+      }); 
+
+
   }
 
   sortedArticles(): Article[] {

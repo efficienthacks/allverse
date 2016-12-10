@@ -4,6 +4,7 @@ export class User
     isAuthenticated : boolean; 
     id : string; 
     name : string; 
+    isMod : boolean; 
 
     log()
     {
