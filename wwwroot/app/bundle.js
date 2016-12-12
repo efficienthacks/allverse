@@ -83380,16 +83380,33 @@
 	var vote_1 = __webpack_require__(614);
 	var ArticleFullPageComponent = (function () {
 	    function ArticleFullPageComponent(location, hpService) {
-	        var _this = this;
 	        this.location = location;
 	        this.hpService = hpService;
 	        this.service = hpService;
 	        this.Id = location.path().split('/')[2];
-	        this.service.GetUser().subscribe(function (data) {
-	            _this.user = data;
-	        });
+	        this.isRun = false;
 	    }
-	    ArticleFullPageComponent.prototype.ngOnInit = function () {
+	    ArticleFullPageComponent.prototype.ngAfterViewChecked = function () {
+	        var _this = this;
+	        if (this.isRun == false) {
+	            if (this.article != null) {
+	                this.isRun = true; // ensures it will run only once 
+	                console.log("Article fullpage ngAfterViewChecked");
+	                console.log('article', this.article);
+	                this.service.GetMods(this.article.subverse).subscribe(function (modsResult) {
+	                    _this.mods = modsResult;
+	                    _this.service.GetUser().subscribe(function (user) {
+	                        _this.user = user;
+	                        _this.mods.forEach(function (elem) {
+	                            if (elem.userID == user.id) {
+	                                app_service_hackerspulse_1.AppServiceHackersPulse.isMod = true;
+	                                console.log("Is mod true");
+	                            }
+	                        });
+	                    });
+	                });
+	            }
+	        }
 	    };
 	    ArticleFullPageComponent.prototype.getArticle = function () {
 	        return this.article;
@@ -87661,6 +87678,8 @@
 	    };
 	    CommentComponent.prototype.ngOnInit = function () {
 	        this.collapse = false;
+	        this.isMod = app_service_hackerspulse_1.AppServiceHackersPulse.isMod;
+	        console.log("comment is mod: " + this.isMod);
 	    };
 	    return CommentComponent;
 	}());

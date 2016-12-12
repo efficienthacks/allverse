@@ -68,7 +68,15 @@ namespace WebApplication.Controllers
             VoteModel v = null; 
             using (IDatabase db = GetDB())
             {
-                a = db.SingleById<ArticleModel>(id); 
+                try
+                {
+                    a = db.SingleById<ArticleModel>(id); 
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+                
 
                 if (userID != null)
                 {

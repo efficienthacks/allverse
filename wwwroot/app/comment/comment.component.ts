@@ -19,6 +19,7 @@ export class CommentComponent implements OnInit {
   service : AppServiceHackersPulse; 
   user : User; 
   Id : string; 
+  isMod : boolean; 
 
   constructor(private location : Location, hpService : AppServiceHackersPulse) {
     this.service = hpService; 
@@ -109,6 +110,8 @@ export class CommentComponent implements OnInit {
 
   ngOnInit() {
     this.collapse = false;
+    this.isMod = AppServiceHackersPulse.isMod; 
+    console.log("comment is mod: " + this.isMod);
   }
 
 

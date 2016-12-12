@@ -1,7 +1,8 @@
 import {
   Component,
   OnInit,
-  Input
+  Input,
+  AfterViewChecked
 } from '@angular/core';
 //angular imports 
 import {Location} from '@angular/common'; 
@@ -12,6 +13,7 @@ import {AppServiceHackersPulse} from '../services/app.service.hackerspulse';
 import {User} from '../models/user';
 import {Comment} from '../models/comment';
 import {Vote} from '../models/vote';
+import {UserSub} from '../models/usersub';
 
 @Component({
   selector: 'app-articlefullpage',
@@ -22,25 +24,53 @@ import {Vote} from '../models/vote';
   },
   providers: [AppServiceHackersPulse]
 })
-export class ArticleFullPageComponent implements OnInit {
+export class ArticleFullPageComponent implements AfterViewChecked {
   @Input() article : Article; 
   service : AppServiceHackersPulse; 
   user : User; 
   Id : string; 
+  mods : UserSub[]; 
+  isRun : boolean; 
 
   constructor(private location : Location, private hpService: AppServiceHackersPulse)
   {
     this.service = hpService; 
-    this.Id = location.path().split('/')[2]; 
-
-    this.service.GetUser().subscribe( (data) => {
-      this.user = data; 
-    }); 
+    this.Id = location.path().split('/')[2];
+    this.isRun = false;  
   }
 
-  ngOnInit() {
+  ngAfterViewChecked() {
 
+    if (this.isRun == false)
+    {
+      if (this.article != null)
+      {
+        this.isRun = true; // ensures it will run only once 
+        console.log("Article fullpage ngAfterViewChecked"); 
+        console.log('article', this.article);
+        this.service.GetMods(this.article.subverse).subscribe((modsResult) =>
+        {
+          this.mods = modsResult; 
 
+          this.service.GetUser().subscribe((user) => {
+
+            this.user = user; 
+
+            this.mods.forEach(function(elem){
+              if (elem.userID == user.id)
+              {
+                AppServiceHackersPulse.isMod = true; 
+                console.log("Is mod true"); 
+              }
+            });
+            
+          });
+        });
+    }
+    
+  
+    }
+    
   }
 
   getArticle() : Article
