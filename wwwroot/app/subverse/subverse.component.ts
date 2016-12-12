@@ -10,12 +10,12 @@ import {
 import { Article } from '../models/article';
 import { User } from '../models/user'; 
 
-
 import {Location} from '@angular/common'; 
 import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse'; 
 import {UserSub} from '../models/usersub';
+
 @Component({
   selector: 'app-subverse',
   templateUrl: './app/subverse/subverse.component.html',
@@ -36,9 +36,11 @@ export class SubverseComponent implements AfterViewInit {
     noMods : boolean; 
     mods : UserSub[]; 
     isSubscribed : number; 
+    showModSettings : boolean; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
+      this.showModSettings = false; 
       this.isModButtonVisible = true; 
       this.service = hpService; 
       this.isFormVisible = false; 
@@ -52,6 +54,31 @@ export class SubverseComponent implements AfterViewInit {
           this.isModButtonVisible = false; 
         }     
       });
+  }
+
+  toggleModSettings()
+  {
+    this.showModSettings = !this.showModSettings; 
+    console.log(this.showModSettings); 
+  }
+
+  addModUser(input : HTMLInputElement)
+  {
+    console.log("Add user: " + input.value)
+    
+    this.service.AddMod(input.value, this.subverseStr).subscribe((result) => {
+
+      if(result.id != 0)
+      {
+        this.mods.push(result); 
+      }
+
+      this.showModSettings = false; 
+
+    }); 
+    
+    
+
   }
 
   toggleSubscribe(button : HTMLElement)

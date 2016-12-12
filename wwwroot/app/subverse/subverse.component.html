@@ -16,6 +16,17 @@
   <ul>
       <li *ngFor="let mod of mods">
         {{mod.userName}}
+        <div *ngIf="mod.userName==user.name">
+            <button (click)="toggleModSettings()">Mod Settings</button>
+            <div *ngIf="showModSettings">
+              
+                Invite User <input type="text" #inputAddUser/>
+                <button (click)="addModUser(inputAddUser) ">Add Mod</button> 
+
+             
+            </div>
+        </div>
+
       </li> 
   </ul>
 </div>

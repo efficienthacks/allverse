@@ -49417,9 +49417,16 @@
 	        _this._getBecomeModURL = 'User/BecomeMod';
 	        _this._toggleSubscribeURL = 'User/ToggleSubscribe';
 	        _this._getIsUserSubscribed = 'User/IsSubscribed';
+	        _this._getAddModURL = 'User/AddMod';
 	        _this.http = http;
 	        return _this;
 	    }
+	    AppServiceHackersPulse.prototype.AddMod = function (userName, subverse) {
+	        console.log(this._getAddModURL + "/?userName=" + userName + "&subverse=" + subverse);
+	        return this.http.get(this._getAddModURL + "/?userName=" + userName + "&subverse=" + subverse)
+	            .map(this.extractUserSubData)
+	            .catch(this.handleError);
+	    };
 	    AppServiceHackersPulse.prototype.IsUserSubscribed = function (uid, subverse) {
 	        console.log(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse=" + subverse);
 	        return this.http.get(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse=" + subverse)
@@ -66635,6 +66642,7 @@
 	        var _this = this;
 	        this.location = location;
 	        this.hpService = hpService;
+	        this.showModSettings = false;
 	        this.isModButtonVisible = true;
 	        this.service = hpService;
 	        this.isFormVisible = false;
@@ -66646,6 +66654,19 @@
 	            }
 	        });
 	    }
+	    SubverseComponent.prototype.toggleModSettings = function () {
+	        this.showModSettings = !this.showModSettings;
+	        console.log(this.showModSettings);
+	    };
+	    SubverseComponent.prototype.addModUser = function (input) {
+	        var _this = this;
+	        console.log("Add user: " + input.value);
+	        this.service.AddMod(input.value, this.subverseStr).subscribe(function (result) {
+	            if (result.id != 0) {
+	                _this.mods.push(result);
+	            }
+	        });
+	    };
 	    SubverseComponent.prototype.toggleSubscribe = function (button) {
 	        this.service.ToggleSubscribe(this.user.id, this.user.name, this.subverseStr).subscribe(function (result) {
 	            if (button.innerHTML.trim() == "Subscribe") {

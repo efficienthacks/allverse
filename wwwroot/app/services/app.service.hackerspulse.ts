@@ -25,6 +25,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getBecomeModURL = 'User/BecomeMod'; 
     private _toggleSubscribeURL = 'User/ToggleSubscribe';
     private _getIsUserSubscribed = 'User/IsSubscribed';
+    private _getAddModURL = 'User/AddMod'; 
 
     //vars
     public static user : User; 
@@ -35,6 +36,14 @@ export class AppServiceHackersPulse extends HttpHelpers {
     constructor(http: Http) {
         super(http);
         this.http = http; 
+    }
+
+    AddMod(userName : string, subverse : string)
+    {
+        console.log(this._getAddModURL + "/?userName=" + userName + "&subverse=" + subverse); 
+        return this.http.get(this._getAddModURL + "/?userName=" + userName+ "&subverse=" + subverse)
+                    .map(this.extractUserSubData)
+                    .catch(this.handleError);        
     }
 
     IsUserSubscribed(uid: string, subverse: string)

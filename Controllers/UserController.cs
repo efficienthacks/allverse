@@ -73,6 +73,29 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
+        public JsonResult AddMod(string userName, string subverse)
+        {
+            
+            string query = String.Format(@"select ""Id"" from public.""AspNetUsers"" where ""UserName""='{0}'",userName.Replace("@","@@")); 
+            string uid = null;
+
+            using (IDatabase db = GetDB())
+            {
+                try
+                {
+                    uid = db.ExecuteScalar<string>(query); 
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+                
+            }
+
+            return BecomeMod(uid,userName,subverse); 
+        }
+
+        [HttpGet]
         public JsonResult BecomeMod(string UserID,string UserName, string subverse)
         {
             UserSubsModel u = null; 
