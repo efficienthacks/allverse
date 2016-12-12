@@ -1,7 +1,8 @@
 import {
   Component,
   OnInit,
-  Input
+  Input,
+  AfterViewInit
 } from '@angular/core';
 import { Article } from '../models/article';
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse';
@@ -17,15 +18,17 @@ import {Vote} from '../models/vote';
   },
   providers: [AppServiceHackersPulse]
 })
-export class ArticleComponent implements OnInit {
+export class ArticleComponent implements AfterViewInit {
   @Input() article: Article;
   service : AppServiceHackersPulse; 
   user : User; 
+  isMod : boolean; 
 
   constructor(hpService : AppServiceHackersPulse)
   {
     this.service = hpService; 
     this.user = AppServiceHackersPulse.user; 
+    this.isMod = AppServiceHackersPulse.isMod;  
   }
 
   voteUp(voteElement : HTMLElement): boolean {
@@ -80,7 +83,22 @@ export class ArticleComponent implements OnInit {
     return false;
   }
 
-  ngOnInit() {
+  DeleteArticle()
+  {
+    this.service.DeleteArticle(this.article.id).subscribe((result)=>{
+
+      var index = AppServiceHackersPulse.articles.indexOf(this.article); 
+      if (index >= 0){
+        AppServiceHackersPulse.articles.splice(index,1); 
+        console.log("article splice"); 
+      }
+
+    });
+  }
+
+  ngAfterViewInit() {
+    this.isMod = AppServiceHackersPulse.isMod; 
+    console.log("Article ismod: " + this.isMod); 
   }
 
 }

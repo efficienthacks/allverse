@@ -37,6 +37,7 @@ export class SubverseComponent implements AfterViewInit {
     mods : UserSub[]; 
     isSubscribed : number; 
     showModSettings : boolean; 
+    isMod : boolean; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
@@ -48,11 +49,29 @@ export class SubverseComponent implements AfterViewInit {
     
       this.service.GetMods(this.subverseStr).subscribe((modsResult) =>
       {
-        this.mods = modsResult;   
+        this.mods = modsResult; 
+
         if (this.mods.length > 0)
         {
           this.isModButtonVisible = false; 
         }     
+
+        this.service.GetUser().subscribe((user) => {
+
+          this.user = user; 
+
+          this.mods.forEach(function(elem){
+            if (elem.userID == user.id)
+            {
+              AppServiceHackersPulse.isMod = true; 
+              console.log("Is mod true"); 
+            }
+          });
+          
+        });
+
+
+
       });
   }
 
@@ -118,7 +137,8 @@ export class SubverseComponent implements AfterViewInit {
         this.user = data; 
 
         this.service.GetArticles(this.subverseStr, this.user.id).subscribe( (data)=>{
-          this.articles = data; 
+          this.articles = data;
+          AppServiceHackersPulse.articles = data;  
         });
 
         this.service.IsUserSubscribed(this.user.id,this.subverseStr).subscribe((isSubbed) =>{
@@ -128,10 +148,7 @@ export class SubverseComponent implements AfterViewInit {
             //set button to look like saying "unsubscribe" 
             this.btnSub.nativeElement.className="unsubscribe ui negative right floated button"; 
             this.btnSub.nativeElement.innerHTML = "Unsubscribe";
-            console.log("set button to unsubscribe"); 
           }
-
-          console.log("subbed: " + isSubbed);
 
         }); 
 
@@ -167,7 +184,7 @@ export class SubverseComponent implements AfterViewInit {
   }
   
   sortedArticles(): Article[] {
-    return this.articles; 
+    return AppServiceHackersPulse.articles; 
     //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
   }
 

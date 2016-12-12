@@ -128,6 +128,26 @@ namespace WebApplication.Controllers
             //return Json(""); 
         }
 
+        [HttpGet]
+        public JsonResult DeleteArticle(Int64 articleID)
+        {
+            using (IDatabase db = GetDB())
+            {
+                try
+                {
+                    ArticleModel a = db.SingleById<ArticleModel>(articleID); 
+                    db.Delete(a); 
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+
+                return Json(true); 
+            }
+            return Json(false); 
+        }
+
         [HttpGet] 
         public JsonResult GetComments(Int64 ArticleID, string userID)
         {

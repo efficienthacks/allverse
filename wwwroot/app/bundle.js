@@ -49267,6 +49267,7 @@
 	    function ArticleComponent(hpService) {
 	        this.service = hpService;
 	        this.user = app_service_hackerspulse_1.AppServiceHackersPulse.user;
+	        this.isMod = app_service_hackerspulse_1.AppServiceHackersPulse.isMod;
 	    }
 	    ArticleComponent.prototype.voteUp = function (voteElement) {
 	        var _this = this;
@@ -49312,7 +49313,19 @@
 	        }
 	        return false;
 	    };
-	    ArticleComponent.prototype.ngOnInit = function () {
+	    ArticleComponent.prototype.DeleteArticle = function () {
+	        var _this = this;
+	        this.service.DeleteArticle(this.article.id).subscribe(function (result) {
+	            var index = app_service_hackerspulse_1.AppServiceHackersPulse.articles.indexOf(_this.article);
+	            if (index >= 0) {
+	                app_service_hackerspulse_1.AppServiceHackersPulse.articles.splice(index, 1);
+	                console.log("article splice");
+	            }
+	        });
+	    };
+	    ArticleComponent.prototype.ngAfterViewInit = function () {
+	        this.isMod = app_service_hackerspulse_1.AppServiceHackersPulse.isMod;
+	        console.log("Article ismod: " + this.isMod);
 	    };
 	    return ArticleComponent;
 	}());
@@ -49418,9 +49431,16 @@
 	        _this._toggleSubscribeURL = 'User/ToggleSubscribe';
 	        _this._getIsUserSubscribed = 'User/IsSubscribed';
 	        _this._getAddModURL = 'User/AddMod';
+	        _this._getDeleteArticleURL = 'Article/DeleteArticle';
 	        _this.http = http;
 	        return _this;
 	    }
+	    AppServiceHackersPulse.prototype.DeleteArticle = function (articleid) {
+	        console.log(this._getDeleteArticleURL + "/?articleID=" + articleid);
+	        return this.http.get(this._getDeleteArticleURL + "/?articleID=" + articleid)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
 	    AppServiceHackersPulse.prototype.AddMod = function (userName, subverse) {
 	        console.log(this._getAddModURL + "/?userName=" + userName + "&subverse=" + subverse);
 	        return this.http.get(this._getAddModURL + "/?userName=" + userName + "&subverse=" + subverse)
@@ -66652,6 +66672,15 @@
 	            if (_this.mods.length > 0) {
 	                _this.isModButtonVisible = false;
 	            }
+	            _this.service.GetUser().subscribe(function (user) {
+	                _this.user = user;
+	                _this.mods.forEach(function (elem) {
+	                    if (elem.userID == user.id) {
+	                        app_service_hackerspulse_1.AppServiceHackersPulse.isMod = true;
+	                        console.log("Is mod true");
+	                    }
+	                });
+	            });
 	        });
 	    }
 	    SubverseComponent.prototype.toggleModSettings = function () {
@@ -66665,6 +66694,7 @@
 	            if (result.id != 0) {
 	                _this.mods.push(result);
 	            }
+	            _this.showModSettings = false;
 	        });
 	    };
 	    SubverseComponent.prototype.toggleSubscribe = function (button) {
@@ -66695,15 +66725,14 @@
 	            _this.user = data;
 	            _this.service.GetArticles(_this.subverseStr, _this.user.id).subscribe(function (data) {
 	                _this.articles = data;
+	                app_service_hackerspulse_1.AppServiceHackersPulse.articles = data;
 	            });
 	            _this.service.IsUserSubscribed(_this.user.id, _this.subverseStr).subscribe(function (isSubbed) {
 	                if (isSubbed == 1) {
 	                    //set button to look like saying "unsubscribe" 
 	                    _this.btnSub.nativeElement.className = "unsubscribe ui negative right floated button";
 	                    _this.btnSub.nativeElement.innerHTML = "Unsubscribe";
-	                    console.log("set button to unsubscribe");
 	                }
-	                console.log("subbed: " + isSubbed);
 	            });
 	        });
 	    };
@@ -66728,7 +66757,7 @@
 	        return false;
 	    };
 	    SubverseComponent.prototype.sortedArticles = function () {
-	        return this.articles;
+	        return app_service_hackerspulse_1.AppServiceHackersPulse.articles;
 	        //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
 	    };
 	    return SubverseComponent;

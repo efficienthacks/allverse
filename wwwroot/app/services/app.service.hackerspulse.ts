@@ -25,10 +25,15 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getBecomeModURL = 'User/BecomeMod'; 
     private _toggleSubscribeURL = 'User/ToggleSubscribe';
     private _getIsUserSubscribed = 'User/IsSubscribed';
-    private _getAddModURL = 'User/AddMod'; 
+    private _getAddModURL = 'User/AddMod';
+    private _getDeleteArticleURL = 'Article/DeleteArticle';  
 
     //vars
     public static user : User; 
+    // is current user a mod? 
+    public static isMod : boolean; 
+    // articles
+    public static articles : Article[]; 
 
     //private _todolist: Models.List[]; 
     private http : Http; 
@@ -36,6 +41,14 @@ export class AppServiceHackersPulse extends HttpHelpers {
     constructor(http: Http) {
         super(http);
         this.http = http; 
+    }
+
+    DeleteArticle(articleid : number)
+    {
+        console.log(this._getDeleteArticleURL + "/?articleID=" + articleid); 
+        return this.http.get(this._getDeleteArticleURL + "/?articleID=" + articleid)
+                    .map(this.extractData)
+                    .catch(this.handleError);  
     }
 
     AddMod(userName : string, subverse : string)

@@ -31,6 +31,9 @@
       <li class="item">
         <a href="/a/{{article.id}}">Comments</a> 
       </li> 
+      <li class="item" *ngIf="isMod">
+        <button (click)="DeleteArticle()" >Delete</button> 
+      </li>
     </ul>
   </div>
 
