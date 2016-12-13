@@ -65666,6 +65666,15 @@
 	        var _this = this;
 	        // vote not yet cast 
 	        if (voteElement.className.indexOf("circle") == -1) {
+	            //if downvote highlighted... delete comment vote
+	            if (this.downVote.nativeElement.className.indexOf("circle") != -1) {
+	                console.log("downVote was selected");
+	                this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
+	                    _this.article.votes += 1;
+	                    _this.downVote.nativeElement.className = "arrow down icon";
+	                    console.log("removed comment downvote");
+	                });
+	            }
 	            var v = new vote_1.Vote();
 	            v.articleid = this.article.id;
 	            v.vote = 1;
@@ -65689,6 +65698,15 @@
 	        var _this = this;
 	        // vote not yet cast 
 	        if (voteElement.className.indexOf("circle") == -1) {
+	            //if upvote highlighted... delete comment vote
+	            if (this.upVote.nativeElement.className.indexOf("circle") != -1) {
+	                console.log("downVote was selected");
+	                this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
+	                    _this.article.votes -= 1;
+	                    _this.upVote.nativeElement.className = "arrow up icon";
+	                    console.log("removed comment downvote");
+	                });
+	            }
 	            var v = new vote_1.Vote();
 	            v.articleid = this.article.id;
 	            v.vote = -1;
@@ -65726,6 +65744,14 @@
 	    core_1.Input(),
 	    __metadata("design:type", article_1.Article)
 	], ArticleComponent.prototype, "article", void 0);
+	__decorate([
+	    core_1.ViewChild('upvote'),
+	    __metadata("design:type", core_1.ElementRef)
+	], ArticleComponent.prototype, "upVote", void 0);
+	__decorate([
+	    core_1.ViewChild('downvote'),
+	    __metadata("design:type", core_1.ElementRef)
+	], ArticleComponent.prototype, "downVote", void 0);
 	ArticleComponent = __decorate([
 	    core_1.Component({
 	        selector: 'app-article',
