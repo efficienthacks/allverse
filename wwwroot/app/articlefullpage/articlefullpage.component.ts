@@ -2,7 +2,9 @@ import {
   Component,
   OnInit,
   Input,
-  AfterViewChecked
+  AfterViewChecked,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 //angular imports 
 import {Location} from '@angular/common'; 
@@ -26,6 +28,8 @@ import {UserSub} from '../models/usersub';
 })
 export class ArticleFullPageComponent implements AfterViewChecked {
   @Input() article : Article; 
+  @ViewChild('upvote') upVote: ElementRef;
+  @ViewChild('downvote') downVote: ElementRef;
   service : AppServiceHackersPulse; 
   user : User; 
   Id : string; 
@@ -122,6 +126,17 @@ export class ArticleFullPageComponent implements AfterViewChecked {
     // vote not yet cast 
     if (voteElement.className.indexOf("circle") == -1)
     {
+        //if downvote highlighted... delete comment vote
+        if (this.downVote.nativeElement.className.indexOf("circle") != -1)
+        {
+          console.log("downVote was selected"); 
+          this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
+            this.article.votes+=1;
+            this.downVote.nativeElement.className = "arrow down icon"; 
+            console.log("removed comment downvote"); 
+          });
+        }
+
         var v : Vote = new Vote(); 
         v.articleid = this.article.id; 
         v.vote = 1; 
@@ -149,6 +164,17 @@ export class ArticleFullPageComponent implements AfterViewChecked {
     // vote not yet cast 
     if (voteElement.className.indexOf("circle") == -1)
     {
+        //if downvote highlighted... delete comment vote
+        if (this.upVote.nativeElement.className.indexOf("circle") != -1)
+        {
+          console.log("downVote was selected"); 
+          this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
+            this.article.votes-=1;
+            this.upVote.nativeElement.className = "arrow down icon"; 
+            console.log("removed comment downvote"); 
+          });
+        }
+
       var v : Vote = new Vote(); 
       v.articleid = this.article.id; 
       v.vote = -1; 
