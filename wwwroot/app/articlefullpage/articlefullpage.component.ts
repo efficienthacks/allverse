@@ -45,7 +45,7 @@ export class ArticleFullPageComponent implements AfterViewChecked {
     {
       if (this.article != null)
       {
-        this.isRun = true; // ensures it will run only once 
+        this.isRun = true; 
         console.log("Article fullpage ngAfterViewChecked"); 
         console.log('article', this.article);
         this.service.GetMods(this.article.subverse).subscribe((modsResult) =>

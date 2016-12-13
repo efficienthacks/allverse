@@ -21,6 +21,9 @@
           <i class="arrow down icon" #downvote [ngClass]="{'circle' : comment.userVote < 0}"></i>
         </a>
       </li>
+      <li *ngIf="isMod">
+        <button (click)="DeleteComment()" >Delete</button>
+      </li>
     </ul>
 
       <p class="comment-text" [innerHTML]="comment.content"></p>

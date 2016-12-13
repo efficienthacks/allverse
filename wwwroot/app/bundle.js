@@ -65825,6 +65825,7 @@
 	        _this._getIsUserSubscribed = 'User/IsSubscribed';
 	        _this._getAddModURL = 'User/AddMod';
 	        _this._getDeleteArticleURL = 'Article/DeleteArticle';
+	        _this._getUpdateCommentPostUrl = 'Article/UpdateComment';
 	        _this.http = http;
 	        return _this;
 	    }
@@ -65986,6 +65987,9 @@
 	    };
 	    AppServiceHackersPulse.prototype.AddComment = function (comment) {
 	        return this.postaction(comment, this._getCommentPostUrl);
+	    };
+	    AppServiceHackersPulse.prototype.UpdateComment = function (comment) {
+	        return this.postaction(comment, this._getUpdateCommentPostUrl);
 	    };
 	    AppServiceHackersPulse.prototype.BecomeMod = function (uid, userName, subverse) {
 	        return this.http.get(this._getBecomeModURL + "/?UserID=" + uid + "&UserName=" + userName + "&subverse=" + subverse)
@@ -83390,7 +83394,7 @@
 	        var _this = this;
 	        if (this.isRun == false) {
 	            if (this.article != null) {
-	                this.isRun = true; // ensures it will run only once 
+	                this.isRun = true;
 	                console.log("Article fullpage ngAfterViewChecked");
 	                console.log('article', this.article);
 	                this.service.GetMods(this.article.subverse).subscribe(function (modsResult) {
@@ -87618,6 +87622,15 @@
 	        var _this = this;
 	        // vote not yet cast 
 	        if (voteElement.className.indexOf("circle") == -1) {
+	            //if downvote highlighted... delete comment vote
+	            if (this.downVote.nativeElement.className.indexOf("circle") != -1) {
+	                console.log("downVote was selected");
+	                this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe(function (voteResult) {
+	                    _this.comment.votes += 1;
+	                    _this.downVote.nativeElement.className = "arrow down icon";
+	                    console.log("removed comment downvote");
+	                });
+	            }
 	            var v = new vote_1.Vote();
 	            v.commentid = this.comment.id;
 	            v.vote = 1;
@@ -87641,6 +87654,15 @@
 	        var _this = this;
 	        // vote not yet cast 
 	        if (voteElement.className.indexOf("circle") == -1) {
+	            //if downvote highlighted... delete comment vote
+	            if (this.upVote.nativeElement.className.indexOf("circle") != -1) {
+	                console.log("upVote was selected");
+	                this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe(function (voteResult) {
+	                    _this.comment.votes -= 1;
+	                    _this.upVote.nativeElement.className = "arrow up icon";
+	                    console.log("removed comment upvote");
+	                });
+	            }
 	            var v = new vote_1.Vote();
 	            v.commentid = this.comment.id;
 	            v.vote = -1;
@@ -87657,6 +87679,11 @@
 	            });
 	        }
 	        return false;
+	    };
+	    CommentComponent.prototype.DeleteComment = function () {
+	        this.comment.content = "[Deleted]";
+	        this.service.UpdateComment(this.comment).subscribe(function (result) {
+	        });
 	    };
 	    CommentComponent.prototype.showReplyForm = function (form) {
 	        console.log("reply form: " + form);
@@ -87679,7 +87706,6 @@
 	    CommentComponent.prototype.ngOnInit = function () {
 	        this.collapse = false;
 	        this.isMod = app_service_hackerspulse_1.AppServiceHackersPulse.isMod;
-	        console.log("comment is mod: " + this.isMod);
 	    };
 	    return CommentComponent;
 	}());
@@ -87687,6 +87713,14 @@
 	    core_1.Input(),
 	    __metadata("design:type", comment_1.Comment)
 	], CommentComponent.prototype, "comment", void 0);
+	__decorate([
+	    core_1.ViewChild('upvote'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CommentComponent.prototype, "upVote", void 0);
+	__decorate([
+	    core_1.ViewChild('downvote'),
+	    __metadata("design:type", core_1.ElementRef)
+	], CommentComponent.prototype, "downVote", void 0);
 	CommentComponent = __decorate([
 	    core_1.Component({
 	        selector: 'app-comment',

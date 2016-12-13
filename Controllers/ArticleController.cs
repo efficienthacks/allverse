@@ -44,6 +44,24 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
+        public JsonResult UpdateComment([FromBody] CommentModel comment)
+        {
+            using(IDatabase db = GetDB())
+            {
+                try
+                {
+                    db.Update(comment); 
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message;
+                    string im = ex.InnerException.ToString(); 
+                }
+            }
+            return Json(comment); 
+        }
+
+        [HttpPost]
         public JsonResult PostComment([FromBody] CommentModel comment)
         {
             using(IDatabase db = GetDB())

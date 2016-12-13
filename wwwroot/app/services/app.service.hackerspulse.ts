@@ -27,6 +27,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getIsUserSubscribed = 'User/IsSubscribed';
     private _getAddModURL = 'User/AddMod';
     private _getDeleteArticleURL = 'Article/DeleteArticle';  
+    private _getUpdateCommentPostUrl = 'Article/UpdateComment'; 
 
     //vars
     public static user : User; 
@@ -261,6 +262,10 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     AddComment(comment : Comment) : Observable<Response> {
         return this.postaction(comment, this._getCommentPostUrl); 
+    }
+
+    UpdateComment(comment : Comment) : Observable<Response> {
+        return this.postaction(comment, this._getUpdateCommentPostUrl); 
     }
 
     BecomeMod(uid : string,userName : string, subverse : string){

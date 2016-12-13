@@ -1,4 +1,4 @@
-import { Component, Input,Output,EventEmitter, OnInit } from '@angular/core';
+import { Component, Input,Output,EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {AppServiceHackersPulse} from '../services/app.service.hackerspulse';
 import {Location} from '@angular/common'; 
 
@@ -14,6 +14,8 @@ import {Vote} from '../models/vote';
 })
 export class CommentComponent implements OnInit {
   @Input() comment : Comment;
+  @ViewChild('upvote') upVote: ElementRef;
+  @ViewChild('downvote') downVote: ElementRef;
 
   collapse: boolean;
   service : AppServiceHackersPulse; 
@@ -35,24 +37,35 @@ export class CommentComponent implements OnInit {
     // vote not yet cast 
     if (voteElement.className.indexOf("circle") == -1)
     {
+        //if downvote highlighted... delete comment vote
+        if (this.downVote.nativeElement.className.indexOf("circle") != -1)
+        {
+          console.log("downVote was selected"); 
+          this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe((voteResult) => {
+            this.comment.votes+=1;
+            this.downVote.nativeElement.className = "arrow down icon"; 
+            console.log("removed comment downvote"); 
+          });
+        }
+
         var v : Vote = new Vote(); 
         v.commentid = this.comment.id; 
         v.vote = 1; 
         v.userid = this.user.id; 
 
-      this.service.PostVote(v).subscribe((voteResult) => {
-        this.comment.votes+=1;
-        voteElement.className += " circle"; 
-        console.log("Posted comment vote"); 
-      }); 
+        this.service.PostVote(v).subscribe((voteResult) => {
+          this.comment.votes+=1;
+          voteElement.className += " circle"; 
+          console.log("Posted comment vote"); 
+        }); 
     }
     else
     {
-      this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe((voteResult) => {
-        this.comment.votes-=1;
-        voteElement.className = "arrow up icon"; 
-        console.log("removed comment vote"); 
-      });
+        this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe((voteResult) => {
+          this.comment.votes-=1;
+          voteElement.className = "arrow up icon"; 
+          console.log("removed comment vote"); 
+        });
     }
 
     return false;
@@ -62,6 +75,17 @@ export class CommentComponent implements OnInit {
     // vote not yet cast 
     if (voteElement.className.indexOf("circle") == -1)
     {
+      //if downvote highlighted... delete comment vote
+      if (this.upVote.nativeElement.className.indexOf("circle") != -1)
+      {
+        console.log("upVote was selected"); 
+        this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe((voteResult) => {
+          this.comment.votes-=1;
+          this.upVote.nativeElement.className = "arrow up icon"; 
+          console.log("removed comment upvote"); 
+        });
+      }
+
       var v : Vote = new Vote(); 
       v.commentid = this.comment.id; 
       v.vote = -1; 
@@ -82,6 +106,13 @@ export class CommentComponent implements OnInit {
     return false;
   }
 
+  DeleteComment()
+  {
+    this.comment.content = "[Deleted]";
+    this.service.UpdateComment(this.comment).subscribe((result)=>{
+
+    }); 
+  }
 
   showReplyForm(form : HTMLFormElement)
   {
@@ -111,7 +142,6 @@ export class CommentComponent implements OnInit {
   ngOnInit() {
     this.collapse = false;
     this.isMod = AppServiceHackersPulse.isMod; 
-    console.log("comment is mod: " + this.isMod);
   }
 
 

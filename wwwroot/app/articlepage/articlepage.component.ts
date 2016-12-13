@@ -35,9 +35,11 @@ export class ArticlePageComponent implements OnInit {
 
         this.service.GetArticle(this.Id,AppServiceHackersPulse.user.id).subscribe((data) =>{
               this.article = data; 
+              
               console.log("Get Article Comments"); 
               this.service.GetComments(this.article.id,this.user.id).subscribe((data) => {
                   this.article.comments = data; 
+                  
               }); 
               console.log(this.article.title); 
             });
