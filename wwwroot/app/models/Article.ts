@@ -9,6 +9,9 @@ export class Article {
   subverse : string;
   userID : string;  
   votes: number;
+  islocked : number; 
+  isstickied : number; 
+
   comments : Comment[];
   userVote : number;  
 
@@ -21,6 +24,8 @@ export class Article {
     this.votes = votes || 0;
     this.userVote = userVote;
     this.comments = new Array<Comment>();
+    this.islocked=0;
+    this.isstickied=0; 
   }
 
   log() : void{

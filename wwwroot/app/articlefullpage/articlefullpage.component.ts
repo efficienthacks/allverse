@@ -31,6 +31,7 @@ export class ArticleFullPageComponent implements AfterViewChecked {
   Id : string; 
   mods : UserSub[]; 
   isRun : boolean; 
+  isMod : boolean; 
 
   constructor(private location : Location, private hpService: AppServiceHackersPulse)
   {
@@ -48,6 +49,7 @@ export class ArticleFullPageComponent implements AfterViewChecked {
         this.isRun = true; 
         console.log("Article fullpage ngAfterViewChecked"); 
         console.log('article', this.article);
+        console.log("islocked: " + this.article.islocked); 
         this.service.GetMods(this.article.subverse).subscribe((modsResult) =>
         {
           this.mods = modsResult; 
@@ -60,9 +62,12 @@ export class ArticleFullPageComponent implements AfterViewChecked {
               if (elem.userID == user.id)
               {
                 AppServiceHackersPulse.isMod = true; 
+                
                 console.log("Is mod true"); 
               }
             });
+
+            this.isMod = AppServiceHackersPulse.isMod; 
             
           });
         });
@@ -71,6 +76,40 @@ export class ArticleFullPageComponent implements AfterViewChecked {
   
     }
     
+  }
+
+  //mod wants to lock thread 
+  LockThread()
+  {
+    this.article.islocked=1; 
+    this.service.UpdateArticle(this.article).subscribe((result)=>{
+
+    }); 
+  }
+
+  UnlockThread()
+  {
+    this.article.islocked=0; 
+    this.service.UpdateArticle(this.article).subscribe((result)=>{
+ 
+    }); 
+  }
+
+  //mod wants to lock thread 
+  StickyThread()
+  {
+    this.article.isstickied=1; 
+    this.service.UpdateArticle(this.article).subscribe((result)=>{
+
+    }); 
+  }
+
+  UnstickyThread()
+  {
+    this.article.isstickied=0; 
+    this.service.UpdateArticle(this.article).subscribe((result)=>{
+ 
+    }); 
   }
 
   getArticle() : Article

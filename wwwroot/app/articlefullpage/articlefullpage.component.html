@@ -35,7 +35,22 @@
 </div> 
 <br/><br/> 
 
-<div class="ui large segment" *ngIf="user && user.isAuthenticated">
+<div *ngIf="isMod && article && article.islocked==0">
+  <button (click)="LockThread()">Lock Thread</button>
+</div> 
+<div *ngIf="isMod && article && article.islocked==1">
+  <button (click)="UnlockThread()">Unlock Thread</button>
+</div> 
+
+<div *ngIf="isMod && article && article.isstickied==0">
+  <button (click)="StickyThread()">Sticky Thread</button>
+</div> 
+<div *ngIf="isMod && article && article.isstickied==1">
+  <button (click)="UnstickyThread()">Unsticky Thread</button>
+</div> 
+
+
+<div class="ui large segment" *ngIf="user && article && user.isAuthenticated && article.islocked==0">
 Add comment 
 <form class="form ui large segment" >
   <textarea rows="10" cols="10" #comment>

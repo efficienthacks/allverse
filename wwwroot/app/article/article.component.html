@@ -1,6 +1,10 @@
 <div  *ngIf="article">
 
-  <div class="four wide column center aligned votes">
+  <div class="four wide column center aligned votes" [ngClass]="{'ui sticky' : article.isstickied==1}" >
+    <div *ngIf="article.isstickied==1">
+      Stickied!
+    </div> 
+    
     <div class="ui statistic">
       <div class="value">
         {{ article.votes }}

@@ -28,6 +28,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getAddModURL = 'User/AddMod';
     private _getDeleteArticleURL = 'Article/DeleteArticle';  
     private _getUpdateCommentPostUrl = 'Article/UpdateComment'; 
+    private _getUpdateArticlePostURL = 'Article/Update'; 
 
     //vars
     public static user : User; 
@@ -149,8 +150,10 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private extractArticleData(res: Response) 
     {
         let b = res.json();
-        var a : Article = new Article(b.title,b.link,b.subverse,b.text,b.userID,b.userVote,b.votes); 
+        var a : Article = new Article(b.title,b.link,b.subverse,b.text,b.userID,b.userVote,b.votes);
         a.id = b.id; 
+        a.islocked=b.islocked;
+        a.isstickied=b.isstickied; 
         return a;
     }
 
@@ -178,6 +181,8 @@ export class AppServiceHackersPulse extends HttpHelpers {
         {
             var a : Article = new Article(body[b].title,body[b].link,body[b].subverse,body[b].text,body[b].userID,body[b].userVote,body[b].votes);
             a.id = body[b].id; 
+            a.islocked=body[b].islocked;
+            a.isstickied=body[b].isstickied; 
             articles.push(a);  
         }
 
@@ -266,6 +271,10 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     UpdateComment(comment : Comment) : Observable<Response> {
         return this.postaction(comment, this._getUpdateCommentPostUrl); 
+    }
+
+    UpdateArticle(article : Article) : Observable<Response>{
+        return this.postaction(article, this._getUpdateArticlePostURL); 
     }
 
     BecomeMod(uid : string,userName : string, subverse : string){

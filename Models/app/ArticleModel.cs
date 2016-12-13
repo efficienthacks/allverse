@@ -25,8 +25,11 @@ namespace WebApplication.Models.app
         [Column]
         public int votes; 
         [Column] 
-        public int isanon=0; 
+        public int islocked=0; 
+        [Column]
+        public int isstickied=0; 
 
+        //will either be 1 or -1 
         public int userVote=0; 
     }
 }

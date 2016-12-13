@@ -184,7 +184,29 @@ export class SubverseComponent implements AfterViewInit {
   }
   
   sortedArticles(): Article[] {
-    return AppServiceHackersPulse.articles; 
+    var arts : Article[] = new Array<Article>(); 
+    //arts = AppServiceHackersPulse.articles;
+    
+    if (this.articles != undefined)
+    {
+      this.articles.forEach(function(a){
+        if (a.isstickied == 1)
+        {
+          arts.push(a); 
+        }
+      }); 
+      
+      this.articles.sort((a: Article, b: Article) => b.votes - a.votes).forEach(function(a){
+        if (a.isstickied == 0)
+        {
+          arts.push(a); 
+        }
+      });
+    }
+
+    return arts; 
+    
+    //.sort((a: Article, b: Article) => b.votes - a.votes); 
     //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
   }
 

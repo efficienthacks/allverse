@@ -65756,6 +65756,8 @@
 	        this.votes = votes || 0;
 	        this.userVote = userVote;
 	        this.comments = new Array();
+	        this.islocked = 0;
+	        this.isstickied = 0;
 	    }
 	    Article.prototype.log = function () {
 	        console.log("Title: " + this.title + " Link: " + this.link + " subverse: " + this.subverse);
@@ -65826,6 +65828,7 @@
 	        _this._getAddModURL = 'User/AddMod';
 	        _this._getDeleteArticleURL = 'Article/DeleteArticle';
 	        _this._getUpdateCommentPostUrl = 'Article/UpdateComment';
+	        _this._getUpdateArticlePostURL = 'Article/Update';
 	        _this.http = http;
 	        return _this;
 	    }
@@ -65903,6 +65906,8 @@
 	        var b = res.json();
 	        var a = new article_1.Article(b.title, b.link, b.subverse, b.text, b.userID, b.userVote, b.votes);
 	        a.id = b.id;
+	        a.islocked = b.islocked;
+	        a.isstickied = b.isstickied;
 	        return a;
 	    };
 	    AppServiceHackersPulse.prototype.extractModData = function (res) {
@@ -65921,6 +65926,8 @@
 	        for (var b in body) {
 	            var a = new article_1.Article(body[b].title, body[b].link, body[b].subverse, body[b].text, body[b].userID, body[b].userVote, body[b].votes);
 	            a.id = body[b].id;
+	            a.islocked = body[b].islocked;
+	            a.isstickied = body[b].isstickied;
 	            articles.push(a);
 	        }
 	        return articles;
@@ -65990,6 +65997,9 @@
 	    };
 	    AppServiceHackersPulse.prototype.UpdateComment = function (comment) {
 	        return this.postaction(comment, this._getUpdateCommentPostUrl);
+	    };
+	    AppServiceHackersPulse.prototype.UpdateArticle = function (article) {
+	        return this.postaction(article, this._getUpdateArticlePostURL);
 	    };
 	    AppServiceHackersPulse.prototype.BecomeMod = function (uid, userName, subverse) {
 	        return this.http.get(this._getBecomeModURL + "/?UserID=" + uid + "&UserName=" + userName + "&subverse=" + subverse)
@@ -83222,7 +83232,22 @@
 	        return false;
 	    };
 	    SubverseComponent.prototype.sortedArticles = function () {
-	        return app_service_hackerspulse_1.AppServiceHackersPulse.articles;
+	        var arts = new Array();
+	        //arts = AppServiceHackersPulse.articles;
+	        if (this.articles != undefined) {
+	            this.articles.forEach(function (a) {
+	                if (a.isstickied == 1) {
+	                    arts.push(a);
+	                }
+	            });
+	            this.articles.sort(function (a, b) { return b.votes - a.votes; }).forEach(function (a) {
+	                if (a.isstickied == 0) {
+	                    arts.push(a);
+	                }
+	            });
+	        }
+	        return arts;
+	        //.sort((a: Article, b: Article) => b.votes - a.votes); 
 	        //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
 	    };
 	    return SubverseComponent;
@@ -83397,6 +83422,7 @@
 	                this.isRun = true;
 	                console.log("Article fullpage ngAfterViewChecked");
 	                console.log('article', this.article);
+	                console.log("islocked: " + this.article.islocked);
 	                this.service.GetMods(this.article.subverse).subscribe(function (modsResult) {
 	                    _this.mods = modsResult;
 	                    _this.service.GetUser().subscribe(function (user) {
@@ -83407,10 +83433,33 @@
 	                                console.log("Is mod true");
 	                            }
 	                        });
+	                        _this.isMod = app_service_hackerspulse_1.AppServiceHackersPulse.isMod;
 	                    });
 	                });
 	            }
 	        }
+	    };
+	    //mod wants to lock thread 
+	    ArticleFullPageComponent.prototype.LockThread = function () {
+	        this.article.islocked = 1;
+	        this.service.UpdateArticle(this.article).subscribe(function (result) {
+	        });
+	    };
+	    ArticleFullPageComponent.prototype.UnlockThread = function () {
+	        this.article.islocked = 0;
+	        this.service.UpdateArticle(this.article).subscribe(function (result) {
+	        });
+	    };
+	    //mod wants to lock thread 
+	    ArticleFullPageComponent.prototype.StickyThread = function () {
+	        this.article.isstickied = 1;
+	        this.service.UpdateArticle(this.article).subscribe(function (result) {
+	        });
+	    };
+	    ArticleFullPageComponent.prototype.UnstickyThread = function () {
+	        this.article.isstickied = 0;
+	        this.service.UpdateArticle(this.article).subscribe(function (result) {
+	        });
 	    };
 	    ArticleFullPageComponent.prototype.getArticle = function () {
 	        return this.article;

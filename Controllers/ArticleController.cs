@@ -62,6 +62,26 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
+        public JsonResult Update([FromBody] ArticleModel article)
+        {
+            bool failed = false; 
+            using(IDatabase db = GetDB())
+            {
+                try
+                {
+                    db.Update(article); 
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message;
+                    string im = ex.InnerException.ToString();
+                    failed = true;  
+                }
+            }
+            return Json(failed); 
+        }
+
+        [HttpPost]
         public JsonResult PostComment([FromBody] CommentModel comment)
         {
             using(IDatabase db = GetDB())
