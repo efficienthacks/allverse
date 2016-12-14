@@ -83276,6 +83276,11 @@
 	        var moreArticles;
 	        this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe(function (data) {
 	            moreArticles = data;
+	            //hide button if no more articles 
+	            if (moreArticles.length == 0 || moreArticles.length < _this.numArticlesPerPage) {
+	                _this.btnLoadMore.nativeElement.style.visibility = 'hidden';
+	                console.log("hide load more button");
+	            }
 	            // add more articles to articles 
 	            for (var i = 0; i < moreArticles.length; i++) {
 	                _this.articles.push(moreArticles[i]);
@@ -83346,6 +83351,10 @@
 	    core_1.ViewChild('btnSub'),
 	    __metadata("design:type", core_1.ElementRef)
 	], SubverseComponent.prototype, "btnSub", void 0);
+	__decorate([
+	    core_1.ViewChild('loadmorearticles'),
+	    __metadata("design:type", core_1.ElementRef)
+	], SubverseComponent.prototype, "btnLoadMore", void 0);
 	SubverseComponent = __decorate([
 	    core_1.Component({
 	        selector: 'app-subverse',

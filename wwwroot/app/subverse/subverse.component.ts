@@ -27,6 +27,8 @@ import {UserSub} from '../models/usersub';
 })
 export class SubverseComponent implements AfterViewInit {
     @ViewChild('btnSub') btnSub: ElementRef;
+    @ViewChild('loadmorearticles') btnLoadMore : ElementRef; 
+
     articles : Article[]; 
     subverseStr : string; 
     service : AppServiceHackersPulse; 
@@ -147,6 +149,13 @@ export class SubverseComponent implements AfterViewInit {
     this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe( (data)=>{
           
       moreArticles = data;
+
+      //hide button if no more articles 
+      if (moreArticles.length == 0 || moreArticles.length < this.numArticlesPerPage)
+      {
+        this.btnLoadMore.nativeElement.style.visibility = 'hidden';
+        console.log("hide load more button"); 
+      }
 
       // add more articles to articles 
       for (var i = 0; i < moreArticles.length; i++)
