@@ -1,4 +1,4 @@
-<div *ngIf="!comment.deleted" style="border-left: 1px dotted gray">
+<div *ngIf="comment.deleted==0" style="border-left: 1px dotted gray">
   <div>
     <span (click)="collapse = !collapse">[{{collapse ? '+' : '-'}}]</span> 
     {{comment.userName}}
