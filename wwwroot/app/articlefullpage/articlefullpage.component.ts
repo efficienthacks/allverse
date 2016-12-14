@@ -170,7 +170,7 @@ export class ArticleFullPageComponent implements AfterViewChecked {
           console.log("downVote was selected"); 
           this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
             this.article.votes-=1;
-            this.upVote.nativeElement.className = "arrow down icon"; 
+            this.upVote.nativeElement.className = "arrow up icon"; 
             console.log("removed comment downvote"); 
           });
         }

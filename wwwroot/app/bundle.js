@@ -83604,7 +83604,7 @@
 	                console.log("downVote was selected");
 	                this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
 	                    _this.article.votes -= 1;
-	                    _this.upVote.nativeElement.className = "arrow down icon";
+	                    _this.upVote.nativeElement.className = "arrow up icon";
 	                    console.log("removed comment downvote");
 	                });
 	            }
