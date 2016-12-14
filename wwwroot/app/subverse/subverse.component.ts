@@ -38,6 +38,8 @@ export class SubverseComponent implements AfterViewInit {
     isSubscribed : number; 
     showModSettings : boolean; 
     isMod : boolean; 
+    numArticlesPerPage : number;
+    loadedMoreArticles : number; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
@@ -46,7 +48,13 @@ export class SubverseComponent implements AfterViewInit {
       this.service = hpService; 
       this.isFormVisible = false; 
       this.subverseStr = location.path().split('/')[2]; 
-    
+      this.loadedMoreArticles = 0; 
+      
+      this.service.GetArticlesPerPage().subscribe((result)=>{
+        this.numArticlesPerPage = result; 
+        console.log("articles per page is: " + result); 
+      });
+
       this.service.GetMods(this.subverseStr).subscribe((modsResult) =>
       {
         this.mods = modsResult; 
@@ -130,13 +138,34 @@ export class SubverseComponent implements AfterViewInit {
 
   }
 
+  LoadMoreArticles()
+  {
+    this.loadedMoreArticles += 1;
+
+    var moreArticles : Article[]; 
+
+    this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe( (data)=>{
+          
+      moreArticles = data;
+
+      // add more articles to articles 
+      for (var i = 0; i < moreArticles.length; i++)
+      {
+        this.articles.push(moreArticles[i]); 
+      }
+
+      AppServiceHackersPulse.articles = this.articles; 
+    });
+
+  }
+
   ngAfterViewInit() {
       console.log("Subverse is: " + this.subverseStr); 
 
      this.service.GetUser().subscribe( (data) => {
         this.user = data; 
 
-        this.service.GetArticles(this.subverseStr, this.user.id).subscribe( (data)=>{
+        this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe( (data)=>{
           this.articles = data;
           AppServiceHackersPulse.articles = data;  
         });

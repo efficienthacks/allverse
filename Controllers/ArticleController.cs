@@ -25,6 +25,20 @@ namespace WebApplication.Controllers
             return db; 
         }
 
+        [HttpGet]
+        public JsonResult NumberOfArticlesPerPage()
+        {
+            return Json(Startup.Configuration["numArticlesPerPage"]); 
+        }
+
+        [HttpGet]
+        public JsonResult NumberOfCommentsPerArticle()
+        {
+            return Json(Startup.Configuration["numCommentsPerArticle"]); 
+        }
+
+
+
         [HttpPost]
         public JsonResult Post([FromBody] ArticleModel article)
         {
@@ -109,6 +123,7 @@ namespace WebApplication.Controllers
                 try
                 {
                     a = db.SingleById<ArticleModel>(id); 
+                    a.time_ago = timeSince(a.time); 
                 }
                 catch(Exception ex)
                 {
@@ -134,16 +149,43 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet] 
-        public JsonResult GetArticles(string subverse, string userID)
+        public JsonResult GetArticles(string subverse, string userID,int numArticlesPerPage, int numLoaded)
         {
             try
             {
-                List<ArticleModel> articles = null; 
+                List<ArticleModel> articles = new List<ArticleModel>(); 
+                int start = numLoaded*numArticlesPerPage; 
                 
                 using(IDatabase db = GetDB())
                 {
-                    string sqlCommand=@"SELECT * FROM public.article where subverse='"+subverse+"'";
-                    articles = db.Fetch<ArticleModel>(sqlCommand); 
+                    string stickiedSQL = "select * from public.article where subverse='"+subverse+"' and isstickied=1 limit " + numArticlesPerPage; 
+                    string sqlCommand=@"SELECT * FROM public.article where subverse='"+subverse+"' and isstickied=0 order by time ASC limit " + numArticlesPerPage + " offset " + start;
+                    
+                    //1) get stickied content if we are loading first few articles 
+                    //note: hope # of stickies is less than numArticlesPerPage !
+                    if (start==0)
+                    {
+                        articles = db.Fetch<ArticleModel>(stickiedSQL); 
+                    }
+
+                    //2) Get rest of the articles 
+                    if (articles.Count < numArticlesPerPage)
+                    {
+                        foreach(var a in db.Fetch<ArticleModel>(sqlCommand))
+                        {
+                            if (articles.Count < numArticlesPerPage)
+                            {
+                                articles.Add(a); 
+                            }
+                        }
+                    }
+
+                    //articles = db.Fetch<ArticleModel>(sqlCommand); 
+
+                    foreach(var a in articles)
+                    {
+                        a.time_ago = timeSince(a.time); 
+                    }
 
                     if (userID != null)
                     {

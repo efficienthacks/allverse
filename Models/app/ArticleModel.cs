@@ -28,6 +28,10 @@ namespace WebApplication.Models.app
         public int islocked=0; 
         [Column]
         public int isstickied=0; 
+        [Column]
+        public Int64 time; 
+
+        public string time_ago; 
 
         //will either be 1 or -1 
         public int userVote=0; 

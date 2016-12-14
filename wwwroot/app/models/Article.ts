@@ -14,6 +14,8 @@ export class Article {
 
   comments : Comment[];
   userVote : number;  
+  time : number; 
+  time_ago : string; 
 
   constructor(title: string, link: string, subverse : string, text : string, userID : string,userVote:number,votes: number) {
     this.title = title;
@@ -26,6 +28,8 @@ export class Article {
     this.comments = new Array<Comment>();
     this.islocked=0;
     this.isstickied=0; 
+    this.time = Date.now(); 
+    this.time_ago = this.timeSince(this.time); 
   }
 
   log() : void{
@@ -33,8 +37,16 @@ export class Article {
   }
 
   domain(): string {
+
+    var link = this.link; 
+
+    if (link.indexOf("http") == -1)
+    {
+      link = "http://" + link; 
+    }
+
     try {
-      return this.link; 
+      return link; 
     } catch (err) {
       return null;
     }
@@ -48,5 +60,33 @@ export class Article {
     this.votes -= 1;
   }
 
+//crs 11/29/16 - support function to get time since this comment
+    timeSince(date : number) : string 
+    {
+        var seconds = Math.floor((Date.now() - date) / 1000);
+
+        var interval = Math.floor(seconds / 31536000);
+
+        if (interval > 1) {
+            return interval + " years";
+        }
+        interval = Math.floor(seconds / 2592000);
+        if (interval > 1) {
+            return interval + " months";
+        }
+        interval = Math.floor(seconds / 86400);
+        if (interval > 1) {
+            return interval + " days";
+        }
+        interval = Math.floor(seconds / 3600);
+        if (interval > 1) {
+            return interval + " hours";
+        }
+        interval = Math.floor(seconds / 60);
+        if (interval > 1) {
+            return interval + " minutes";
+        }
+        return Math.floor(seconds) + " seconds";
+    }
 
 }

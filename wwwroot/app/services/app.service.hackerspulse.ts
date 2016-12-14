@@ -29,6 +29,8 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getDeleteArticleURL = 'Article/DeleteArticle';  
     private _getUpdateCommentPostUrl = 'Article/UpdateComment'; 
     private _getUpdateArticlePostURL = 'Article/Update'; 
+    private _getNumberOfArticlesPerPageUrl = 'Article/NumberOfArticlesPerPage'; 
+    private _getNumberOfCommentsPerArticleUrl = 'Article/NumberOfCommentsPerArticle'; 
 
     //vars
     public static user : User; 
@@ -92,11 +94,11 @@ export class AppServiceHackersPulse extends HttpHelpers {
                     .catch(this.handleError);        
     }
 
-    GetArticles(subverse : string, userID : string) : Observable<Article[]>
+    GetArticles(subverse : string, userID : string, numArtsPerPage : number, numLoaded : number) : Observable<Article[]>
     {
-        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse + "&userID="+userID);
+        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse="+subverse + "&userID="+userID + "&numArticlesPerPage="+numArtsPerPage+"&numLoaded="+numLoaded);
 
-        return this.http.get(this._getArticlesUrl + "/?subverse="+subverse+ "&userID="+userID)
+        return this.http.get(this._getArticlesUrl + "/?subverse="+subverse+ "&userID="+userID+ "&numArticlesPerPage="+numArtsPerPage+"&numLoaded="+numLoaded)
                     .map(this.extractArticlesData)
                     .catch(this.handleError);
 
@@ -154,6 +156,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
         a.id = b.id; 
         a.islocked=b.islocked;
         a.isstickied=b.isstickied; 
+        a.time_ago = b.time_ago; 
         return a;
     }
 
@@ -183,6 +186,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
             a.id = body[b].id; 
             a.islocked=body[b].islocked;
             a.isstickied=body[b].isstickied; 
+            a.time_ago = body[b].time_ago; 
             articles.push(a);  
         }
 
@@ -289,4 +293,20 @@ export class AppServiceHackersPulse extends HttpHelpers {
             .map(this.extractUserSubData)
             .catch(this.handleError);
     }
+
+
+    GetArticlesPerPage()
+    {
+         return this.http.get(this._getNumberOfArticlesPerPageUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    GetCommentsPerArticle()
+    {
+         return this.http.get(this._getNumberOfCommentsPerArticleUrl)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

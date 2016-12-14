@@ -40,9 +40,9 @@ constructor(private hpService: AppServiceHackersPulse)
       this.service.GetUser().subscribe( (data) => {
         this.user = data; 
 
-        this.service.GetArticles(this.subverseStr,this.user.id).subscribe( (data)=>{
-        this.articles = data; 
-      }); 
+      //  this.service.GetArticles(this.subverseStr,this.user.id).subscribe( (data)=>{
+      //  this.articles = data; 
+      //  }); 
       }); 
 
 

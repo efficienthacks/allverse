@@ -65784,13 +65784,19 @@
 	        this.comments = new Array();
 	        this.islocked = 0;
 	        this.isstickied = 0;
+	        this.time = Date.now();
+	        this.time_ago = this.timeSince(this.time);
 	    }
 	    Article.prototype.log = function () {
 	        console.log("Title: " + this.title + " Link: " + this.link + " subverse: " + this.subverse);
 	    };
 	    Article.prototype.domain = function () {
+	        var link = this.link;
+	        if (link.indexOf("http") == -1) {
+	            link = "http://" + link;
+	        }
 	        try {
-	            return this.link;
+	            return link;
 	        }
 	        catch (err) {
 	            return null;
@@ -65801,6 +65807,31 @@
 	    };
 	    Article.prototype.voteDown = function () {
 	        this.votes -= 1;
+	    };
+	    //crs 11/29/16 - support function to get time since this comment
+	    Article.prototype.timeSince = function (date) {
+	        var seconds = Math.floor((Date.now() - date) / 1000);
+	        var interval = Math.floor(seconds / 31536000);
+	        if (interval > 1) {
+	            return interval + " years";
+	        }
+	        interval = Math.floor(seconds / 2592000);
+	        if (interval > 1) {
+	            return interval + " months";
+	        }
+	        interval = Math.floor(seconds / 86400);
+	        if (interval > 1) {
+	            return interval + " days";
+	        }
+	        interval = Math.floor(seconds / 3600);
+	        if (interval > 1) {
+	            return interval + " hours";
+	        }
+	        interval = Math.floor(seconds / 60);
+	        if (interval > 1) {
+	            return interval + " minutes";
+	        }
+	        return Math.floor(seconds) + " seconds";
 	    };
 	    return Article;
 	}());
@@ -65855,6 +65886,8 @@
 	        _this._getDeleteArticleURL = 'Article/DeleteArticle';
 	        _this._getUpdateCommentPostUrl = 'Article/UpdateComment';
 	        _this._getUpdateArticlePostURL = 'Article/Update';
+	        _this._getNumberOfArticlesPerPageUrl = 'Article/NumberOfArticlesPerPage';
+	        _this._getNumberOfCommentsPerArticleUrl = 'Article/NumberOfCommentsPerArticle';
 	        _this.http = http;
 	        return _this;
 	    }
@@ -65893,9 +65926,9 @@
 	            .map(this.extractArticleData)
 	            .catch(this.handleError);
 	    };
-	    AppServiceHackersPulse.prototype.GetArticles = function (subverse, userID) {
-	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse + "&userID=" + userID);
-	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse + "&userID=" + userID)
+	    AppServiceHackersPulse.prototype.GetArticles = function (subverse, userID, numArtsPerPage, numLoaded) {
+	        console.log("GetArticles URL: " + this._getArticlesUrl + "/?subverse=" + subverse + "&userID=" + userID + "&numArticlesPerPage=" + numArtsPerPage + "&numLoaded=" + numLoaded);
+	        return this.http.get(this._getArticlesUrl + "/?subverse=" + subverse + "&userID=" + userID + "&numArticlesPerPage=" + numArtsPerPage + "&numLoaded=" + numLoaded)
 	            .map(this.extractArticlesData)
 	            .catch(this.handleError);
 	    };
@@ -65934,6 +65967,7 @@
 	        a.id = b.id;
 	        a.islocked = b.islocked;
 	        a.isstickied = b.isstickied;
+	        a.time_ago = b.time_ago;
 	        return a;
 	    };
 	    AppServiceHackersPulse.prototype.extractModData = function (res) {
@@ -65954,6 +65988,7 @@
 	            a.id = body[b].id;
 	            a.islocked = body[b].islocked;
 	            a.isstickied = body[b].isstickied;
+	            a.time_ago = body[b].time_ago;
 	            articles.push(a);
 	        }
 	        return articles;
@@ -66035,6 +66070,16 @@
 	    AppServiceHackersPulse.prototype.ToggleSubscribe = function (uid, userName, subverse) {
 	        return this.http.get(this._toggleSubscribeURL + "/?UserID=" + uid + "&UserName=" + userName + "&subverse=" + subverse)
 	            .map(this.extractUserSubData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.GetArticlesPerPage = function () {
+	        return this.http.get(this._getNumberOfArticlesPerPageUrl)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.GetCommentsPerArticle = function () {
+	        return this.http.get(this._getNumberOfCommentsPerArticleUrl)
+	            .map(this.extractData)
 	            .catch(this.handleError);
 	    };
 	    return AppServiceHackersPulse;
@@ -83168,6 +83213,11 @@
 	        this.service = hpService;
 	        this.isFormVisible = false;
 	        this.subverseStr = location.path().split('/')[2];
+	        this.loadedMoreArticles = 0;
+	        this.service.GetArticlesPerPage().subscribe(function (result) {
+	            _this.numArticlesPerPage = result;
+	            console.log("articles per page is: " + result);
+	        });
 	        this.service.GetMods(this.subverseStr).subscribe(function (modsResult) {
 	            _this.mods = modsResult;
 	            if (_this.mods.length > 0) {
@@ -83219,12 +83269,25 @@
 	            _this.mods.push(result);
 	        });
 	    };
+	    SubverseComponent.prototype.LoadMoreArticles = function () {
+	        var _this = this;
+	        this.loadedMoreArticles += 1;
+	        var moreArticles;
+	        this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe(function (data) {
+	            moreArticles = data;
+	            // add more articles to articles 
+	            for (var i = 0; i < moreArticles.length; i++) {
+	                _this.articles.push(moreArticles[i]);
+	            }
+	            app_service_hackerspulse_1.AppServiceHackersPulse.articles = _this.articles;
+	        });
+	    };
 	    SubverseComponent.prototype.ngAfterViewInit = function () {
 	        var _this = this;
 	        console.log("Subverse is: " + this.subverseStr);
 	        this.service.GetUser().subscribe(function (data) {
 	            _this.user = data;
-	            _this.service.GetArticles(_this.subverseStr, _this.user.id).subscribe(function (data) {
+	            _this.service.GetArticles(_this.subverseStr, _this.user.id, _this.numArticlesPerPage, _this.loadedMoreArticles).subscribe(function (data) {
 	                _this.articles = data;
 	                app_service_hackerspulse_1.AppServiceHackersPulse.articles = data;
 	            });
@@ -83327,9 +83390,9 @@
 	        console.log("Subverse is: " + this.subverseStr);
 	        this.service.GetUser().subscribe(function (data) {
 	            _this.user = data;
-	            _this.service.GetArticles(_this.subverseStr, _this.user.id).subscribe(function (data) {
-	                _this.articles = data;
-	            });
+	            //  this.service.GetArticles(this.subverseStr,this.user.id).subscribe( (data)=>{
+	            //  this.articles = data; 
+	            //  }); 
 	        });
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {

@@ -16,10 +16,10 @@
   </div>
   <div class="twelve wide column">
     <a class="ui large header" href="{{ article.link }}">
-      {{ article.title }}
+      {{ article.title }} - Posted {{article.time_ago}}
     </a>
     <div class="subverse">{{ article.subverse }}</div> 
-    <div class="meta">({{article.domain()}})</div>
+    <div class="meta"><a href="{{article.domain()}}">{{article.domain()}}</a></div>
     <ul class="ui big horizontal list voters">
       <li class="item" *ngIf="user">
         <a href (click)="voteUp(upvote)">
