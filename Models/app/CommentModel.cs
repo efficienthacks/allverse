@@ -41,6 +41,9 @@ namespace WebApplication.Models.app
         [Column]
         [JsonPropertyAttribute]
         public Int64 time=0; 
+        [Column]
+        [JsonPropertyAttribute]
+        public int deleted=0; 
         [JsonPropertyAttribute]
         public List<CommentModel> comments; 
         [JsonPropertyAttribute]
