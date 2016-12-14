@@ -109,6 +109,7 @@ export class CommentComponent implements OnInit {
   DeleteComment()
   {
     this.comment.content = "[Deleted]";
+    this.comment.deleted = 1; 
     this.service.UpdateComment(this.comment).subscribe((result)=>{
 
     }); 

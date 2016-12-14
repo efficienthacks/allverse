@@ -83125,9 +83125,10 @@
 	        this.parentCommentID = parentCommentID;
 	        this.time = Date.now();
 	        this.time_ago = this.timeSince(this.time);
-	        this.deleted = false;
+	        this.deleted = 0;
 	        this.votes = 0;
 	        this.userVote = 0;
+	        this.loadMore = false;
 	    }
 	    //crs 11/29/16 - support function to get time since this comment
 	    Comment.prototype.timeSince = function (date) {
@@ -87846,6 +87847,7 @@
 	    };
 	    CommentComponent.prototype.DeleteComment = function () {
 	        this.comment.content = "[Deleted]";
+	        this.comment.deleted = 1;
 	        this.service.UpdateComment(this.comment).subscribe(function (result) {
 	        });
 	    };

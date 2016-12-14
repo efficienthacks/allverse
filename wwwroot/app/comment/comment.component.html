@@ -21,7 +21,7 @@
           <i class="arrow down icon" #downvote [ngClass]="{'circle' : comment.userVote < 0}"></i>
         </a>
       </li>
-      <li *ngIf="isMod">
+      <li *ngIf="isMod || user.name == comment.userName">
         <button (click)="DeleteComment()" >Delete</button>
       </li>
     </ul>
@@ -44,7 +44,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="comment.deleted">
+<div *ngIf="comment.deleted==1">
   <div class="deleted-meta">
     <span class="collapse">[deleted]</span> | Comment Deleted
   </div>

@@ -10,12 +10,13 @@ export class Comment
     time_ago: string;
     content: string; 
     comments : Comment[]; 
-    deleted : boolean; 
+    deleted : number; 
     //ME
     articleID : number; 
     parentCommentID : number; 
     votes : number; 
     userVote : number; 
+    loadMore : boolean; 
 
     constructor(level:number,userID:string,userName:string,content:string,articleID:number,parentCommentID:number)
     {
@@ -29,9 +30,10 @@ export class Comment
         
         this.time = Date.now(); 
         this.time_ago = this.timeSince(this.time); 
-        this.deleted = false; 
+        this.deleted = 0; 
         this.votes = 0;
         this.userVote = 0; 
+        this.loadMore = false; 
     }
 
     //crs 11/29/16 - support function to get time since this comment

@@ -49,6 +49,9 @@ namespace WebApplication.Models.app
         [JsonPropertyAttribute]
         public int userVote=0; 
 
+        [JsonPropertyAttribute]
+        public bool loadMore=false; 
+
         public CommentModel parent; 
     }
 }
