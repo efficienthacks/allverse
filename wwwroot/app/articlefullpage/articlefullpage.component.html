@@ -25,24 +25,15 @@
         </div>
         <div class="field" >
           Posted {{article.time_ago}}
-        </div> 
-        <div class="field">
-        <ul class="ui big horizontal list voters">
-            <li class="item" *ngIf="user">
-              <a href (click)="voteUp(upvote)">
-                <i class="arrow up icon" #upvote [ngClass]="{'circle' : article.userVote > 0}"></i>
-                </a>
-            </li>
-            <li class="item" *ngIf="user"> 
-              <a href (click)="voteDown(downvote)"> 
-                <i class="arrow down icon" #downvote [ngClass]="{'circle' : article.userVote < 0}"></i>
-                
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="field">
-          Votes: {{article.votes}}
+          <a href (click)="voteUp(upvote)" *ngIf="user">
+            <i class="arrow up icon" #upvote [ngClass]="{'circle' : article.userVote > 0}"></i>
+          </a>
+
+          <a href (click)="voteDown(downvote)" *ngIf="user"> 
+            <i class="arrow down icon" #downvote [ngClass]="{'circle' : article.userVote < 0}"></i>
+          </a>
+
+          <i class="trophy icon"></i> {{article.votes}}
         </div> 
         <div class="field">
           Article Link: <a href="{{article.link}}">{{article.link}}</a>

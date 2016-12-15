@@ -21,6 +21,19 @@ namespace WebApplication.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
+        private IDatabase _db; 
+
+        private IDatabase GetDB()
+        {
+            if (_db == null)
+            {
+                string pgsqlConnStr = Startup.Configuration["PostgresConn"];
+               _db = new Database(new NpgsqlConnection(pgsqlConnStr), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
+            }
+
+            return _db; 
+        }
+
         public UserController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
@@ -33,13 +46,6 @@ namespace WebApplication.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
-        }
-
-        private IDatabase GetDB()
-        {
-            string pgsqlConnStr = Startup.Configuration["PostgresConn"];
-            IDatabase db = new Database(new NpgsqlConnection(pgsqlConnStr), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
-            return db; 
         }
 
         [HttpGet]

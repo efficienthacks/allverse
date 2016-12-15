@@ -3,31 +3,23 @@
     <span (click)="collapse = !collapse">[{{collapse ? '+' : '-'}}]</span> 
     {{comment.userName}}
     <span class="time">{{comment.time_ago}}</span>
+    <div class="ui label"><i class="trophy icon"></i> {{comment.votes}} </div>
+
+    <a href (click)="voteUp(upvote)">
+      <i class="arrow up icon" #upvote [ngClass]="{'circle' : comment.userVote > 0}"></i>
+    </a>
+
+    <a href (click)="voteDown(downvote)"> 
+      <i class="arrow down icon" #downvote [ngClass]="{'circle' : comment.userVote < 0}"></i>
+    </a>
+
   </div>
   <div class="comment-tree">
     <div [hidden]="collapse">
 
-    <ul class="ui big horizontal list voters">
-      <li class="item">
-        Votes: {{comment.votes}} 
-      </li>
-      <li class="item" *ngIf="user">
-        <a href (click)="voteUp(upvote)">
-          <i class="arrow up icon" #upvote [ngClass]="{'circle' : comment.userVote > 0}"></i>
-          </a>
-      </li>
-      <li class="item" *ngIf="user"> 
-        <a href (click)="voteDown(downvote)"> 
-          <i class="arrow down icon" #downvote [ngClass]="{'circle' : comment.userVote < 0}"></i>
-        </a>
-      </li>
-      <li *ngIf="isMod || user.name == comment.userName">
-        <button (click)="DeleteComment()" >Delete</button>
-      </li>
-    </ul>
-
       <p class="comment-text" [innerHTML]="comment.content"></p>
       <div class="reply" *ngIf="user && user.isAuthenticated">
+          <button (click)="DeleteComment()" class="ui button negative" *ngIf="isMod || user.name == comment.userName" >Delete</button>
           <button (click)="showReplyForm(replyform)" class="ui button">Reply</button> 
           
           <form #replyform style="display: none">
