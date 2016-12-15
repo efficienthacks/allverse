@@ -1,6 +1,6 @@
-<div  *ngIf="article">
+<div  *ngIf="article" class="card ui" style="width: 500px; height: 300px;">
 
-  <div class="four wide column center aligned votes" [ngClass]="{'ui sticky' : article.isstickied==1}" >
+  <div class="four wide column center aligned votes" [ngClass]="{'ui sticky green' : article.isstickied==1}">
     <div *ngIf="article.isstickied==1">
       Stickied!
     </div> 
@@ -16,9 +16,11 @@
   </div>
   <div class="twelve wide column">
     <a class="ui large header" href="{{ article.link }}">
-      {{ article.title }} - Posted {{article.time_ago}}
+      {{ article.title }} 
     </a>
-    <div class="subverse">{{ article.subverse }}</div> 
+    <div class="item">
+      Posted {{article.time_ago}}
+    </div> 
     <div class="meta"><a href="{{article.domain()}}">{{article.domain()}}</a></div>
     <ul class="ui big horizontal list voters">
       <li class="item" *ngIf="user">
@@ -36,7 +38,7 @@
         <a href="/a/{{article.id}}">Comments</a> 
       </li> 
       <li class="item" *ngIf="isMod">
-        <button (click)="DeleteArticle()" >Delete</button> 
+        <button (click)="DeleteArticle()" class="ui button negative" >Delete</button> 
       </li>
     </ul>
   </div>

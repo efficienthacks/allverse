@@ -263,6 +263,7 @@ namespace WebApplication.Controllers
             }
             catch(Exception ex)
             {
+                string m = ex.Message; 
                 throw ex; 
             }
         }

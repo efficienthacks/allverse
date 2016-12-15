@@ -83335,7 +83335,7 @@
 	                    arts.push(a);
 	                }
 	            });
-	            this.articles.sort(function (a, b) { return b.votes - a.votes; }).forEach(function (a) {
+	            this.articles.forEach(function (a) {
 	                if (a.isstickied == 0) {
 	                    arts.push(a);
 	                }

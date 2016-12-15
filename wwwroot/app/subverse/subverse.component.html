@@ -11,7 +11,7 @@
   Add Article
 </button> 
 
-<div *ngIf="user">
+<div *ngIf="user" class="ui card">
   Sub mods are: 
   <ul>
       <li *ngFor="let mod of mods">
@@ -61,5 +61,6 @@
     [article]="article">
   </app-article>
 </div>
+<br/> 
 
-<button #loadmorearticles (click)="LoadMoreArticles()">Load More Articles</button> 
+<button #loadmorearticles (click)="LoadMoreArticles()" class="ui button positive">Load More Articles</button> 

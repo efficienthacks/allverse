@@ -234,7 +234,7 @@ export class SubverseComponent implements AfterViewInit {
         }
       }); 
       
-      this.articles.sort((a: Article, b: Article) => b.votes - a.votes).forEach(function(a){
+      this.articles.forEach(function(a){
         if (a.isstickied == 0)
         {
           arts.push(a); 
