@@ -21,16 +21,10 @@ namespace WebApplication.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
-        private IDatabase _db; 
+        private IDatabase _db = new Database(new NpgsqlConnection(Startup.Configuration["PostgresConn"]), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
 
         private IDatabase GetDB()
         {
-            if (_db == null)
-            {
-                string pgsqlConnStr = Startup.Configuration["PostgresConn"];
-               _db = new Database(new NpgsqlConnection(pgsqlConnStr), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
-            }
-
             return _db; 
         }
 

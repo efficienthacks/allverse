@@ -13,16 +13,10 @@ namespace WebApplication.Controllers
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true, Duration = -1)]
     public class ArticleController : Controller
     {
-        private IDatabase _db; 
+        private IDatabase _db = new Database(new NpgsqlConnection(Startup.Configuration["PostgresConn"]), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
 
         private IDatabase GetDB()
         {
-            if (_db == null)
-            {
-                string pgsqlConnStr = Startup.Configuration["PostgresConn"];
-               _db = new Database(new NpgsqlConnection(pgsqlConnStr), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
-            }
-
             return _db; 
         }
 
