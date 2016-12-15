@@ -187,6 +187,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
             a.islocked=body[b].islocked;
             a.isstickied=body[b].isstickied; 
             a.time_ago = body[b].time_ago; 
+            a.commentCount = body[b].commentCount;
             articles.push(a);  
         }
 

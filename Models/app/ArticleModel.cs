@@ -31,6 +31,9 @@ namespace WebApplication.Models.app
         [Column]
         public Int64 time; 
 
+        [JsonPropertyAttribute]
+        public int commentCount=0; 
+
         public string time_ago; 
 
         //will either be 1 or -1 

@@ -16,6 +16,7 @@ export class Article {
   userVote : number;  
   time : number; 
   time_ago : string; 
+  commentCount : number; 
 
   constructor(title: string, link: string, subverse : string, text : string, userID : string,userVote:number,votes: number) {
     this.title = title;
@@ -30,6 +31,7 @@ export class Article {
     this.isstickied=0; 
     this.time = Date.now(); 
     this.time_ago = this.timeSince(this.time); 
+    this.commentCount=0; 
   }
 
   log() : void{

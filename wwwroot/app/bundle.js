@@ -65786,6 +65786,7 @@
 	        this.isstickied = 0;
 	        this.time = Date.now();
 	        this.time_ago = this.timeSince(this.time);
+	        this.commentCount = 0;
 	    }
 	    Article.prototype.log = function () {
 	        console.log("Title: " + this.title + " Link: " + this.link + " subverse: " + this.subverse);
@@ -65989,6 +65990,7 @@
 	            a.islocked = body[b].islocked;
 	            a.isstickied = body[b].isstickied;
 	            a.time_ago = body[b].time_ago;
+	            a.commentCount = body[b].commentCount;
 	            articles.push(a);
 	        }
 	        return articles;

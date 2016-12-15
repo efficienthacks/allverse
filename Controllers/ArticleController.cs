@@ -184,7 +184,10 @@ namespace WebApplication.Controllers
 
                     foreach(var a in articles)
                     {
+                        string commentCountSQL = "SELECT count(*)	FROM public.comment where \"articleID\"="+a.id;
+                        a.commentCount = db.ExecuteScalar<int>(commentCountSQL); 
                         a.time_ago = timeSince(a.time); 
+
                     }
 
                     if (userID != null)

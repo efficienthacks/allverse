@@ -2,40 +2,36 @@
 
   <div class="four wide column center aligned votes" [ngClass]="{'ui sticky green' : article.isstickied==1}">
     <div *ngIf="article.isstickied==1">
-      Stickied!
+      <i class="icon star ui large"></i>
     </div> 
     
     <div class="ui statistic">
       <div class="value">
-        {{ article.votes }}
-      </div>
-      <div class="label">
-        Points
+       <i class="trophy icon"></i> {{ article.votes }}
       </div>
     </div>
   </div>
   <div class="twelve wide column">
+    <a href (click)="voteUp(upvote)" *ngIf="user">
+      <i class="arrow up icon" #upvote [ngClass]="{'circle' : article.userVote > 0}"></i>
+    </a>
+      
+    <a href (click)="voteDown(downvote)" *ngIf="user"> 
+      <i class="arrow down icon" #downvote [ngClass]="{'circle' : article.userVote < 0}"></i>
+    </a>
+
     <a class="ui large header" href="{{ article.link }}">
       {{ article.title }} 
     </a>
     <div class="item">
       Posted {{article.time_ago}}
     </div> 
+
     <div class="meta"><a href="{{article.domain()}}">{{article.domain()}}</a></div>
     <ul class="ui big horizontal list voters">
-      <li class="item" *ngIf="user">
-        <a href (click)="voteUp(upvote)">
-          <i class="arrow up icon" #upvote [ngClass]="{'circle' : article.userVote > 0}"></i>
-          </a>
-      </li>
-      <li class="item" *ngIf="user"> 
-        <a href (click)="voteDown(downvote)"> 
-          <i class="arrow down icon" #downvote [ngClass]="{'circle' : article.userVote < 0}"></i>
-          
-        </a>
-      </li>
+   
       <li class="item">
-        <a href="/a/{{article.id}}">Comments</a> 
+        <a href="/a/{{article.id}}">{{article.commentCount}} Comments</a> 
       </li> 
       <li class="item" *ngIf="isMod">
         <button (click)="DeleteArticle()" class="ui button negative" >Delete</button> 
