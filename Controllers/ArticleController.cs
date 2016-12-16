@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common; 
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Models.app; 
 using NPoco; 
 using Npgsql;
-using Newtonsoft.Json; 
 
 namespace WebApplication.Controllers
 {

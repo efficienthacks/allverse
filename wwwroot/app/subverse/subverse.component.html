@@ -3,7 +3,8 @@
   Become Mod! 
 </button> 
 
-{{subscriberCount}} Subbed
+<div class="ui label">{{subscriberCount}} Subbed</div> 
+
 <button #btnSub (click)="toggleSubscribe(btnSub)" class="ui positive right floated button" *ngIf="user">
   Subscribe
 </button> 

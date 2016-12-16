@@ -123,15 +123,18 @@ export class SubverseComponent implements AfterViewInit {
   {
     this.service.ToggleSubscribe(this.user.id,this.user.name,this.subverseStr).subscribe((result)=>{
 
-      if (button.innerHTML.trim() == "Subscribe")
+      if (result != null)
       {
-        button.className="unsubscribe ui negative right floated button"; 
-        button.innerHTML = "Unsubscribe";
-      }
-      else
-      {
-        button.className="subscribe ui positive right floated button"; 
-        button.innerHTML = "Subscribe";
+        if (button.innerHTML.trim() == "Subscribe")
+        {
+          button.className="unsubscribe ui negative right floated button"; 
+          button.innerHTML = "Unsubscribe";
+        }
+        else
+        {
+          button.className="subscribe ui positive right floated button"; 
+          button.innerHTML = "Subscribe";
+        }
       }
 
     });

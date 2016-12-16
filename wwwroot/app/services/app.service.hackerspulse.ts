@@ -33,6 +33,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getNumberOfArticlesPerPageUrl = 'Article/NumberOfArticlesPerPage'; 
     private _getNumberOfCommentsPerArticleUrl = 'Article/NumberOfCommentsPerArticle'; 
     private _getSubscriberCountUrl = 'User/GetSubscriberCount'; 
+    private _getAllSubsUrl = 'Subverse/GetAllSubs';
 
     //vars
     public static user : User; 
@@ -69,6 +70,14 @@ export class AppServiceHackersPulse extends HttpHelpers {
     {
         console.log(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse="+subverse); 
         return this.http.get(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse="+subverse)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+    }
+
+    GetAllSubs()
+    {
+        console.log(this._getAllSubsUrl); 
+        return this.http.get(this._getAllSubsUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
     }

@@ -16,11 +16,13 @@ import {AppServiceHackersPulse} from './services/app.service.hackerspulse';
 
 import {CommentComponent} from './comment/comment.component';
 import {CommentTreeComponent} from './comment-tree/comment-tree.component';
+import {ExploreSubverseComponent} from './exploresubverse/exploresubverse.component';
 
 const routes: Routes = [
     { path: '', component : HomeComponent },
     { path: 's/:id', component : SubverseComponent },
-    { path: 'a/:id', component : ArticlePageComponent }
+    { path: 'a/:id', component : ArticlePageComponent },
+    { path: 'explore', component : ExploreSubverseComponent }
 ];
 
 @NgModule({
@@ -32,7 +34,8 @@ const routes: Routes = [
     HomeComponent,
     ArticleFullPageComponent,
     CommentComponent,
-    CommentTreeComponent
+    CommentTreeComponent,
+    ExploreSubverseComponent
   ],
   imports: [
     BrowserModule,

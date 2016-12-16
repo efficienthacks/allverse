@@ -210,7 +210,7 @@ namespace WebApplication.Controllers
             UserSubsModel u = null; 
             using(IDatabase db = GetDB())
             {
-                string query = String.Format("select * from usersubs where \"userID\"='{0}'", UserID); 
+                string query = String.Format("select * from usersubs where \"userID\"='{0}' and \"subverseName\"='{1}'", UserID, subverse); 
                 
                 try
                 {

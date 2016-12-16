@@ -57659,10 +57659,12 @@
 	var router_1 = __webpack_require__(619);
 	var comment_component_1 = __webpack_require__(620);
 	var comment_tree_component_1 = __webpack_require__(621);
+	var exploresubverse_component_1 = __webpack_require__(622);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 's/:id', component: subverse_component_1.SubverseComponent },
-	    { path: 'a/:id', component: articlepage_component_1.ArticlePageComponent }
+	    { path: 'a/:id', component: articlepage_component_1.ArticlePageComponent },
+	    { path: 'explore', component: exploresubverse_component_1.ExploreSubverseComponent }
 	];
 	var AppModule = (function () {
 	    function AppModule() {
@@ -57679,7 +57681,8 @@
 	            home_component_1.HomeComponent,
 	            articlefullpage_component_1.ArticleFullPageComponent,
 	            comment_component_1.CommentComponent,
-	            comment_tree_component_1.CommentTreeComponent
+	            comment_tree_component_1.CommentTreeComponent,
+	            exploresubverse_component_1.ExploreSubverseComponent
 	        ],
 	        imports: [
 	            platform_browser_1.BrowserModule,
@@ -65875,6 +65878,7 @@
 	        _this._getNumberOfArticlesPerPageUrl = 'Article/NumberOfArticlesPerPage';
 	        _this._getNumberOfCommentsPerArticleUrl = 'Article/NumberOfCommentsPerArticle';
 	        _this._getSubscriberCountUrl = 'User/GetSubscriberCount';
+	        _this._getAllSubsUrl = 'Subverse/GetAllSubs';
 	        _this.http = http;
 	        return _this;
 	    }
@@ -65893,6 +65897,12 @@
 	    AppServiceHackersPulse.prototype.IsUserSubscribed = function (uid, subverse) {
 	        console.log(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse=" + subverse);
 	        return this.http.get(this._getIsUserSubscribed + "/?UserID=" + uid + "&subverse=" + subverse)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.GetAllSubs = function () {
+	        console.log(this._getAllSubsUrl);
+	        return this.http.get(this._getAllSubsUrl)
 	            .map(this.extractData)
 	            .catch(this.handleError);
 	    };
@@ -83309,15 +83319,12 @@
 	        console.log("Subverse is: " + this.subverseStr);
 	        this.service.GetUser().subscribe(function (data) {
 	            _this.user = data;
-	            var userID = null;
-	            if (_this.user != null) {
-	                userID = _this.user.id;
-	            }
-	            _this.service.GetArticles(_this.subverseStr, userID, _this.numArticlesPerPage, _this.loadedMoreArticles).subscribe(function (data) {
+	            _this.service.GetArticles(_this.subverseStr, _this.user.id, _this.numArticlesPerPage, _this.loadedMoreArticles).subscribe(function (data) {
 	                _this.articles = data;
 	                app_service_hackerspulse_1.AppServiceHackersPulse.articles = data;
+	                console.log("Loaded articles");
 	            });
-	            _this.service.IsUserSubscribed(userID, _this.subverseStr).subscribe(function (isSubbed) {
+	            _this.service.IsUserSubscribed(_this.user.id, _this.subverseStr).subscribe(function (isSubbed) {
 	                if (isSubbed == 1) {
 	                    //set button to look like saying "unsubscribe" 
 	                    _this.btnSub.nativeElement.className = "unsubscribe ui negative right floated button";
@@ -83349,13 +83356,13 @@
 	    SubverseComponent.prototype.sortedArticles = function () {
 	        var arts = new Array();
 	        //arts = AppServiceHackersPulse.articles;
-	        if (this.articles != undefined) {
-	            this.articles.forEach(function (a) {
+	        if (app_service_hackerspulse_1.AppServiceHackersPulse.articles != undefined) {
+	            app_service_hackerspulse_1.AppServiceHackersPulse.articles.forEach(function (a) {
 	                if (a.isstickied == 1) {
 	                    arts.push(a);
 	                }
 	            });
-	            this.articles.forEach(function (a) {
+	            app_service_hackerspulse_1.AppServiceHackersPulse.articles.forEach(function (a) {
 	                if (a.isstickied == 0) {
 	                    arts.push(a);
 	                }
@@ -87934,6 +87941,53 @@
 	    __metadata("design:paramtypes", [])
 	], CommentTreeComponent);
 	exports.CommentTreeComponent = CommentTreeComponent;
+
+
+/***/ },
+/* 622 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(259);
+	//angular imports 
+	var common_1 = __webpack_require__(278);
+	var app_service_hackerspulse_1 = __webpack_require__(288);
+	var ExploreSubverseComponent = (function () {
+	    function ExploreSubverseComponent(location, hpService) {
+	        var _this = this;
+	        this.location = location;
+	        this.hpService = hpService;
+	        this.service = hpService;
+	        this.service.GetAllSubs().subscribe(function (result) {
+	            _this.subs = result;
+	        });
+	    }
+	    ExploreSubverseComponent.prototype.ngOnInit = function () {
+	    };
+	    return ExploreSubverseComponent;
+	}());
+	ExploreSubverseComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-exploresubverse',
+	        templateUrl: './app/exploresubverse/exploresubverse.component.html',
+	        styleUrls: ['./app/exploresubverse/exploresubverse.component.css'],
+	        host: {
+	            class: 'row'
+	        },
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
+	], ExploreSubverseComponent);
+	exports.ExploreSubverseComponent = ExploreSubverseComponent;
 
 
 /***/ }
