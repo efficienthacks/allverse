@@ -83277,13 +83277,15 @@
 	    };
 	    SubverseComponent.prototype.toggleSubscribe = function (button) {
 	        this.service.ToggleSubscribe(this.user.id, this.user.name, this.subverseStr).subscribe(function (result) {
-	            if (button.innerHTML.trim() == "Subscribe") {
-	                button.className = "unsubscribe ui negative right floated button";
-	                button.innerHTML = "Unsubscribe";
-	            }
-	            else {
-	                button.className = "subscribe ui positive right floated button";
-	                button.innerHTML = "Subscribe";
+	            if (result != null) {
+	                if (button.innerHTML.trim() == "Subscribe") {
+	                    button.className = "unsubscribe ui negative right floated button";
+	                    button.innerHTML = "Unsubscribe";
+	                }
+	                else {
+	                    button.className = "subscribe ui positive right floated button";
+	                    button.innerHTML = "Subscribe";
+	                }
 	            }
 	        });
 	        console.log(button);
@@ -83415,29 +83417,60 @@
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var HomeComponent = (function () {
 	    function HomeComponent(hpService) {
+	        var _this = this;
 	        this.hpService = hpService;
 	        this.service = hpService;
 	        this.subverseStr = "home";
+	        this.loadedMoreArticles = 0;
 	        //based off of subverse load articles from the DB
+	        this.service.GetArticlesPerPage().subscribe(function (result) {
+	            _this.numArticlesPerPage = result;
+	            console.log("articles per page is: " + result);
+	        });
+	        this.service.GetUser().subscribe(function (data) {
+	            _this.user = data;
+	            app_service_hackerspulse_1.AppServiceHackersPulse.user = data;
+	            if (_this.user.id != null) {
+	                _this.service.GetArticles(_this.subverseStr, _this.user.id, _this.numArticlesPerPage, _this.loadedMoreArticles).subscribe(function (data) {
+	                    _this.articles = data;
+	                    console.log("Loaded articles");
+	                });
+	            }
+	            else {
+	            }
+	        });
 	    }
-	    HomeComponent.prototype.ngOnInit = function () {
+	    HomeComponent.prototype.LoadMoreArticles = function () {
 	        var _this = this;
+	        this.loadedMoreArticles += 1;
+	        var moreArticles;
+	        this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe(function (data) {
+	            moreArticles = data;
+	            //hide button if no more articles 
+	            if (moreArticles.length == 0 || moreArticles.length < _this.numArticlesPerPage) {
+	                _this.btnLoadMore.nativeElement.style.visibility = 'hidden';
+	                console.log("hide load more button");
+	            }
+	            // add more articles to articles 
+	            for (var i = 0; i < moreArticles.length; i++) {
+	                _this.articles.push(moreArticles[i]);
+	            }
+	        });
+	    };
+	    HomeComponent.prototype.ngOnInit = function () {
 	        //load articles based off of subverse 
 	        var RouteStr;
 	        console.log("Subverse is: " + this.subverseStr);
-	        this.service.GetUser().subscribe(function (data) {
-	            _this.user = data;
-	            //  this.service.GetArticles(this.subverseStr,this.user.id).subscribe( (data)=>{
-	            //  this.articles = data; 
-	            //  }); 
-	        });
 	    };
 	    HomeComponent.prototype.sortedArticles = function () {
 	        return this.articles;
-	        //return this.articles.sort((a: Article, b: Article) => b.votes - a.votes);
 	    };
 	    return HomeComponent;
 	}());
+	__decorate([
+	    core_1.ViewChild('loadmorehomearticles'),
+	    __metadata("design:type", core_1.ElementRef)
+	], HomeComponent.prototype, "btnLoadMore", void 0);
 	HomeComponent = __decorate([
 	    core_1.Component({
 	        selector: 'app-home',

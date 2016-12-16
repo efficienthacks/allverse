@@ -1,4 +1,4 @@
-Home! 
+Welcome to your homepage! All your subscriptions appear here (minus stickies) 
 
 <div class="ui grid posts">
   <app-article
@@ -6,3 +6,6 @@ Home!
     [article]="article">
   </app-article>
 </div>
+
+<button #loadmorehomearticles (click)="LoadMoreArticles()" class="ui button positive">Load More Articles</button> 
+ 

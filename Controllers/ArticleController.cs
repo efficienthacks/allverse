@@ -148,6 +148,88 @@ namespace WebApplication.Controllers
         [HttpGet] 
         public JsonResult GetArticles(string subverse, string userID,int numArticlesPerPage, int numLoaded)
         {
+            if (subverse=="home")
+            {
+                return GetHomeArticles(userID, numArticlesPerPage, numLoaded); 
+            }
+            else
+            {
+                return GetSubverseArticles(subverse, userID, numArticlesPerPage, numLoaded); 
+            }
+
+            //return Json(""); 
+        }
+
+        public JsonResult GetHomeArticles(string userID, int numArticlesPerPage, int numLoaded)
+        {
+            try
+            {
+                List<ArticleModel> articles = new List<ArticleModel>(); 
+                int start = numLoaded*numArticlesPerPage; 
+                
+                using(IDatabase db = GetDB())
+                {
+                    string userSubQuery = String.Format("SELECT distinct \"subverseName\" FROM public.usersubs where \"userID\"='{0}'", userID); 
+                    List<string> userSubs = db.Fetch<string>(userSubQuery); 
+                    string userSubsString = "";
+
+                    foreach(string sub in userSubs)
+                    {
+                        userSubsString += "'"+sub+"',"; 
+                    }
+
+                    userSubsString = userSubsString.Substring(0,userSubsString.Length-1); 
+
+                    string sqlCommand=@"SELECT * FROM public.article where subverse in (" + userSubsString +") and isstickied=0 order by time ASC limit " + numArticlesPerPage + " offset " + start;
+                    
+                    // Get the articles 
+                    if (articles.Count < numArticlesPerPage)
+                    {
+                        foreach(var a in db.Fetch<ArticleModel>(sqlCommand))
+                        {
+                            if (articles.Count < numArticlesPerPage)
+                            {
+                                articles.Add(a); 
+                            }
+                        }
+                    }
+
+                    foreach(var a in articles)
+                    {
+                        string commentCountSQL = "SELECT count(*)	FROM public.comment where \"articleID\"="+a.id;
+                        a.commentCount = db.ExecuteScalar<int>(commentCountSQL); 
+                        a.time_ago = timeSince(a.time); 
+                    }
+
+                    if (userID != null)
+                    {
+                        foreach(var a in articles)
+                        {
+                            try
+                            {
+                                VoteModel v = db.First<VoteModel>("select * from uservotes where \"articleid\"=" + a.id + " and \"userid\"='"+userID+"'"); 
+                                a.userVote = v.vote; 
+                            }
+                            catch(Exception ex)
+                            {
+                                string m = ex.Message; 
+                            }
+
+                        }
+                    }
+
+                }
+
+                return Json(articles); 
+            }
+            catch(Exception ex)
+            {
+                throw ex; 
+            }
+        }
+
+        public JsonResult GetSubverseArticles(string subverse, string userID, int numArticlesPerPage, int numLoaded)
+        {
             try
             {
                 List<ArticleModel> articles = new List<ArticleModel>(); 
@@ -211,8 +293,6 @@ namespace WebApplication.Controllers
             {
                 throw ex; 
             }
-
-            //return Json(""); 
         }
 
         [HttpGet]

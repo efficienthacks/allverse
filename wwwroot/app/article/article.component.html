@@ -21,11 +21,11 @@
       <i class="arrow down icon" #downvote [ngClass]="{'circle' : article.userVote < 0}"></i>
     </a>
 
-    <a class="ui large header" href="{{ article.link }}">
+    <a class="ui large header item" href="{{ article.link }}">
       {{ article.title }} 
     </a>
     <div class="item">
-      Posted {{article.time_ago}}
+      Posted {{article.time_ago}} in <a href="http://allverse.co/s/{{article.subverse}}">{{article.subverse}}</a>
     </div> 
 
     <div class="meta"><a href="{{article.domain()}}">{{article.domain()}}</a></div>
