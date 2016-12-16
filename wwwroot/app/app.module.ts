@@ -17,12 +17,14 @@ import {AppServiceHackersPulse} from './services/app.service.hackerspulse';
 import {CommentComponent} from './comment/comment.component';
 import {CommentTreeComponent} from './comment-tree/comment-tree.component';
 import {ExploreSubverseComponent} from './exploresubverse/exploresubverse.component';
+import {BugOrFeatureComponent} from './bugorfeature/bugorfeature.component';
 
 const routes: Routes = [
     { path: '', component : HomeComponent },
     { path: 's/:id', component : SubverseComponent },
     { path: 'a/:id', component : ArticlePageComponent },
-    { path: 'explore', component : ExploreSubverseComponent }
+    { path: 'explore', component : ExploreSubverseComponent },
+    { path: 'bugorfeature', component : BugOrFeatureComponent }
 ];
 
 @NgModule({
@@ -35,7 +37,8 @@ const routes: Routes = [
     ArticleFullPageComponent,
     CommentComponent,
     CommentTreeComponent,
-    ExploreSubverseComponent
+    ExploreSubverseComponent,
+    BugOrFeatureComponent
   ],
   imports: [
     BrowserModule,

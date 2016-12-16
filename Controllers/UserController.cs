@@ -362,6 +362,17 @@ namespace WebApplication.Controllers
             return Json(result); 
         }
 
+        [HttpPost]
+        public JsonResult BugOrFeature([FromBody] BugOrFeature bugorfeature)
+        {
+            using (IDatabase db = GetDB())
+            {
+                bugorfeature.ID=(int)db.Insert(bugorfeature); 
+            }
+
+            return Json(bugorfeature); 
+        }
+
         
         // vote up or down article or comment 
         [HttpPost]

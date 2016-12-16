@@ -9,6 +9,7 @@ import {Comment} from '../models/comment';
 import {Vote} from '../models/vote';
 import { Article } from '../models/article';
 import {UserSub} from '../models/usersub';
+import {BugOrFeature} from '../models/BugOrFeature';
 
 @Injectable()
 export class AppServiceHackersPulse extends HttpHelpers {
@@ -34,6 +35,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getNumberOfCommentsPerArticleUrl = 'Article/NumberOfCommentsPerArticle'; 
     private _getSubscriberCountUrl = 'User/GetSubscriberCount'; 
     private _getAllSubsUrl = 'Subverse/GetAllSubs';
+    private _getBugOrFeatureUrl = 'User/BugOrFeature'; 
 
     //vars
     public static user : User; 
@@ -303,6 +305,12 @@ export class AppServiceHackersPulse extends HttpHelpers {
         }
         console.error(errMsg);
         return Observable.throw(errMsg);
+    }
+
+    BugOrFeature(isbug : number,isfeature : number,text : string)
+    {   
+        var bugorfeature : BugOrFeature = new BugOrFeature(isbug,isfeature,text);
+        return this.postaction(bugorfeature, this._getBugOrFeatureUrl);  
     }
 
     AddArticle(article: Article) : Observable<Response> {

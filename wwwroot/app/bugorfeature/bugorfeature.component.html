@@ -1,0 +1,22 @@
+Submit bug or feature request
+
+<form #bugorfeature class="ui large form segment">
+  <h3 class="ui header">Request for bug or feature</h3>
+
+  <div class="field">
+    <input #bug type="radio" name="bugorfeature" value="bug"> Bug <br/>
+    <input #feature type="radio" name="bugorfeature" value="feature"> Feature <br/>
+  </div>
+  <div class="field">
+    <label for="text">Text:</label>
+    <textarea name="text" cols="10" rows="5" #newtext></textarea> <!-- changed -->
+  </div>
+
+  <!-- added this button -->
+  <button (click)="addBugOrFeature(bug,feature,newtext)"  
+          class="ui positive right floated button">  
+    Submit link  
+  </button>  
+
+  <label #output style="color:red"></label>
+</form>

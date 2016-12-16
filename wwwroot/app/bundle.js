@@ -57652,19 +57652,21 @@
 	var http_1 = __webpack_require__(284);
 	var app_component_1 = __webpack_require__(285);
 	var article_component_1 = __webpack_require__(286);
-	var subverse_component_1 = __webpack_require__(615);
-	var home_component_1 = __webpack_require__(616);
-	var articlepage_component_1 = __webpack_require__(617);
-	var articlefullpage_component_1 = __webpack_require__(618);
-	var router_1 = __webpack_require__(619);
-	var comment_component_1 = __webpack_require__(620);
-	var comment_tree_component_1 = __webpack_require__(621);
-	var exploresubverse_component_1 = __webpack_require__(622);
+	var subverse_component_1 = __webpack_require__(616);
+	var home_component_1 = __webpack_require__(617);
+	var articlepage_component_1 = __webpack_require__(618);
+	var articlefullpage_component_1 = __webpack_require__(619);
+	var router_1 = __webpack_require__(620);
+	var comment_component_1 = __webpack_require__(621);
+	var comment_tree_component_1 = __webpack_require__(622);
+	var exploresubverse_component_1 = __webpack_require__(623);
+	var bugorfeature_component_1 = __webpack_require__(624);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 's/:id', component: subverse_component_1.SubverseComponent },
 	    { path: 'a/:id', component: articlepage_component_1.ArticlePageComponent },
-	    { path: 'explore', component: exploresubverse_component_1.ExploreSubverseComponent }
+	    { path: 'explore', component: exploresubverse_component_1.ExploreSubverseComponent },
+	    { path: 'bugorfeature', component: bugorfeature_component_1.BugOrFeatureComponent }
 	];
 	var AppModule = (function () {
 	    function AppModule() {
@@ -57682,7 +57684,8 @@
 	            articlefullpage_component_1.ArticleFullPageComponent,
 	            comment_component_1.CommentComponent,
 	            comment_tree_component_1.CommentTreeComponent,
-	            exploresubverse_component_1.ExploreSubverseComponent
+	            exploresubverse_component_1.ExploreSubverseComponent,
+	            bugorfeature_component_1.BugOrFeatureComponent
 	        ],
 	        imports: [
 	            platform_browser_1.BrowserModule,
@@ -65853,6 +65856,7 @@
 	var vote_1 = __webpack_require__(613);
 	var article_1 = __webpack_require__(287);
 	var usersub_1 = __webpack_require__(614);
+	var BugOrFeature_1 = __webpack_require__(615);
 	var AppServiceHackersPulse = AppServiceHackersPulse_1 = (function (_super) {
 	    __extends(AppServiceHackersPulse, _super);
 	    function AppServiceHackersPulse(http) {
@@ -65879,6 +65883,7 @@
 	        _this._getNumberOfCommentsPerArticleUrl = 'Article/NumberOfCommentsPerArticle';
 	        _this._getSubscriberCountUrl = 'User/GetSubscriberCount';
 	        _this._getAllSubsUrl = 'Subverse/GetAllSubs';
+	        _this._getBugOrFeatureUrl = 'User/BugOrFeature';
 	        _this.http = http;
 	        return _this;
 	    }
@@ -66069,6 +66074,10 @@
 	        }
 	        console.error(errMsg);
 	        return Observable_1.Observable.throw(errMsg);
+	    };
+	    AppServiceHackersPulse.prototype.BugOrFeature = function (isbug, isfeature, text) {
+	        var bugorfeature = new BugOrFeature_1.BugOrFeature(isbug, isfeature, text);
+	        return this.postaction(bugorfeature, this._getBugOrFeatureUrl);
 	    };
 	    AppServiceHackersPulse.prototype.AddArticle = function (article) {
 	        return this.postaction(article, this._getArticlePostUrl);
@@ -83208,6 +83217,22 @@
 
 /***/ },
 /* 615 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var BugOrFeature = (function () {
+	    function BugOrFeature(isbug, isfeature, text) {
+	        this.isbug = isbug;
+	        this.isfeature = isfeature;
+	        this.text = text;
+	    }
+	    return BugOrFeature;
+	}());
+	exports.BugOrFeature = BugOrFeature;
+
+
+/***/ },
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83400,7 +83425,7 @@
 
 
 /***/ },
-/* 616 */
+/* 617 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83487,7 +83512,7 @@
 
 
 /***/ },
-/* 617 */
+/* 618 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83545,7 +83570,7 @@
 
 
 /***/ },
-/* 618 */
+/* 619 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -83710,7 +83735,7 @@
 
 
 /***/ },
-/* 619 */
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -87810,7 +87835,7 @@
 	}));
 
 /***/ },
-/* 620 */
+/* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -87939,7 +87964,7 @@
 
 
 /***/ },
-/* 621 */
+/* 622 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -87977,7 +88002,7 @@
 
 
 /***/ },
-/* 622 */
+/* 623 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -88021,6 +88046,80 @@
 	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
 	], ExploreSubverseComponent);
 	exports.ExploreSubverseComponent = ExploreSubverseComponent;
+
+
+/***/ },
+/* 624 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(259);
+	var common_1 = __webpack_require__(278);
+	var app_service_hackerspulse_1 = __webpack_require__(288);
+	var BugOrFeatureComponent = (function () {
+	    function BugOrFeatureComponent(location, hpService) {
+	        this.hpService = hpService;
+	        this.service = hpService;
+	        this.Id = location.path().split('/')[2];
+	        console.log("Article: " + this.Id);
+	    }
+	    BugOrFeatureComponent.prototype.addBugOrFeature = function (bug, feature, newText) {
+	        var _this = this;
+	        var isbug = bug.checked;
+	        var isfeature = feature.checked;
+	        var isbugnum = 0;
+	        if (isbug) {
+	            isbugnum = 1;
+	        }
+	        var isfeaturenum = 0;
+	        if (isfeature) {
+	            isfeaturenum = 1;
+	        }
+	        var text = newText.value;
+	        this.service.BugOrFeature(isbugnum, isfeaturenum, text).subscribe(function (result) {
+	            if (result != null) {
+	                //this.form.nativeElement.visibility = 'hidden'; 
+	                _this.label.nativeElement.innerHTML = 'Success!';
+	            }
+	            else {
+	                _this.label.nativeElement.innerHTML = 'Failed! Try again later';
+	            }
+	        });
+	    };
+	    BugOrFeatureComponent.prototype.ngOnInit = function () {
+	    };
+	    return BugOrFeatureComponent;
+	}());
+	__decorate([
+	    core_1.ViewChild('bugorfeature'),
+	    __metadata("design:type", core_1.ElementRef)
+	], BugOrFeatureComponent.prototype, "form", void 0);
+	__decorate([
+	    core_1.ViewChild('output'),
+	    __metadata("design:type", core_1.ElementRef)
+	], BugOrFeatureComponent.prototype, "label", void 0);
+	BugOrFeatureComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-bugorfeature',
+	        templateUrl: './app/bugorfeature/bugorfeature.component.html',
+	        styleUrls: ['./app/bugorfeature/bugorfeature.component.css'],
+	        host: {
+	            class: 'row'
+	        },
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
+	], BugOrFeatureComponent);
+	exports.BugOrFeatureComponent = BugOrFeatureComponent;
 
 
 /***/ }
