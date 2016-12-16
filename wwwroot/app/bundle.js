@@ -65655,7 +65655,6 @@
 	var core_1 = __webpack_require__(259);
 	var article_1 = __webpack_require__(287);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
-	var vote_1 = __webpack_require__(613);
 	var ArticleComponent = (function () {
 	    function ArticleComponent(hpService) {
 	        this.service = hpService;
@@ -65668,18 +65667,10 @@
 	        if (voteElement.className.indexOf("circle") == -1) {
 	            //if downvote highlighted... delete comment vote
 	            if (this.downVote.nativeElement.className.indexOf("circle") != -1) {
-	                console.log("downVote was selected");
-	                this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
-	                    _this.article.votes += 1;
-	                    _this.downVote.nativeElement.className = "arrow down icon";
-	                    console.log("removed comment downvote");
-	                });
+	                this.article.votes += 1;
+	                this.downVote.nativeElement.className = "arrow down icon";
 	            }
-	            var v = new vote_1.Vote();
-	            v.articleid = this.article.id;
-	            v.vote = 1;
-	            v.userid = this.user.id;
-	            this.service.PostVote(v).subscribe(function (voteResult) {
+	            this.service.VoteArticle(this.article.id, this.user.id, 1).subscribe(function (voteResult) {
 	                _this.article.votes += 1;
 	                voteElement.className += " circle";
 	                console.log("Posted vote");
@@ -65700,18 +65691,10 @@
 	        if (voteElement.className.indexOf("circle") == -1) {
 	            //if upvote highlighted... delete comment vote
 	            if (this.upVote.nativeElement.className.indexOf("circle") != -1) {
-	                console.log("downVote was selected");
-	                this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
-	                    _this.article.votes -= 1;
-	                    _this.upVote.nativeElement.className = "arrow up icon";
-	                    console.log("removed comment downvote");
-	                });
+	                this.article.votes -= 1;
+	                this.upVote.nativeElement.className = "arrow up icon";
 	            }
-	            var v = new vote_1.Vote();
-	            v.articleid = this.article.id;
-	            v.vote = -1;
-	            v.userid = this.user.id;
-	            this.service.PostVote(v).subscribe(function (voteResult) {
+	            this.service.VoteArticle(this.article.id, this.user.id, -1).subscribe(function (voteResult) {
 	                _this.article.votes -= 1;
 	                voteElement.className += " circle";
 	            });
@@ -65879,6 +65862,8 @@
 	        _this._getCommentPostUrl = 'Article/PostComment';
 	        _this._getVoteArticleUrl = 'User/VoteArticle';
 	        _this._getVoteCommentUrl = 'User/VoteComment';
+	        _this._getDeleteCommentVoteURL = 'User/DeleteCommentVote';
+	        _this._getDelteArticleVoteURL = 'User/DeleteVote';
 	        _this._getModsUrl = 'User/GetMods';
 	        _this._getBecomeModURL = 'User/BecomeMod';
 	        _this._toggleSubscribeURL = 'User/ToggleSubscribe';
@@ -65948,6 +65933,16 @@
 	    AppServiceHackersPulse.prototype.VoteComment = function (CommentID, userID, vote) {
 	        return this.http.get(this._getVoteCommentUrl + "/?CommentID=" + CommentID + "&userID=" + userID + "&vote=" + vote)
 	            .map(this.extractVoteData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.DeleteVote = function (ArticleID, userID) {
+	        return this.http.get(this._getDeleteArticleURL + "/?ArticleID=" + ArticleID + "&userID=" + userID)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.DeleteCommentVote = function (CommentID, userID) {
+	        return this.http.get(this._getDeleteArticleURL + "/?CommentID=" + CommentID + "&userID=" + userID)
+	            .map(this.extractData)
 	            .catch(this.handleError);
 	    };
 	    AppServiceHackersPulse.prototype.GetSubscriberCount = function (subverse) {
@@ -83530,7 +83525,6 @@
 	var article_1 = __webpack_require__(287);
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var comment_1 = __webpack_require__(612);
-	var vote_1 = __webpack_require__(613);
 	var ArticleFullPageComponent = (function () {
 	    function ArticleFullPageComponent(location, hpService) {
 	        this.location = location;
@@ -83594,18 +83588,11 @@
 	        if (voteElement.className.indexOf("circle") == -1) {
 	            //if downvote highlighted... delete comment vote
 	            if (this.downVote.nativeElement.className.indexOf("circle") != -1) {
-	                console.log("downVote was selected");
-	                this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
-	                    _this.article.votes += 1;
-	                    _this.downVote.nativeElement.className = "arrow down icon";
-	                    console.log("removed comment downvote");
-	                });
+	                this.article.votes += 1;
+	                this.downVote.nativeElement.className = "arrow down icon";
+	                console.log("removed comment downvote");
 	            }
-	            var v = new vote_1.Vote();
-	            v.articleid = this.article.id;
-	            v.vote = 1;
-	            v.userid = this.user.id;
-	            this.service.PostVote(v).subscribe(function (voteResult) {
+	            this.service.VoteArticle(this.article.id, this.user.id, 1).subscribe(function (voteResult) {
 	                _this.article.votes += 1;
 	                voteElement.className += " circle";
 	                console.log("Posted vote");
@@ -83626,18 +83613,11 @@
 	        if (voteElement.className.indexOf("circle") == -1) {
 	            //if downvote highlighted... delete comment vote
 	            if (this.upVote.nativeElement.className.indexOf("circle") != -1) {
-	                console.log("downVote was selected");
-	                this.service.DeleteVote(this.article.id, this.user.id).subscribe(function (voteResult) {
-	                    _this.article.votes -= 1;
-	                    _this.upVote.nativeElement.className = "arrow up icon";
-	                    console.log("removed comment downvote");
-	                });
+	                this.article.votes -= 1;
+	                this.upVote.nativeElement.className = "arrow up icon";
+	                console.log("removed comment downvote");
 	            }
-	            var v = new vote_1.Vote();
-	            v.articleid = this.article.id;
-	            v.vote = -1;
-	            v.userid = this.user.id;
-	            this.service.PostVote(v).subscribe(function (voteResult) {
+	            this.service.VoteArticle(this.article.id, this.user.id, -1).subscribe(function (voteResult) {
 	                _this.article.votes -= 1;
 	                voteElement.className += " circle";
 	            });
@@ -87807,7 +87787,6 @@
 	var app_service_hackerspulse_1 = __webpack_require__(288);
 	var common_1 = __webpack_require__(278);
 	var comment_1 = __webpack_require__(612);
-	var vote_1 = __webpack_require__(613);
 	var CommentComponent = (function () {
 	    function CommentComponent(location, hpService) {
 	        this.location = location;
@@ -87823,18 +87802,11 @@
 	        if (voteElement.className.indexOf("circle") == -1) {
 	            //if downvote highlighted... delete comment vote
 	            if (this.downVote.nativeElement.className.indexOf("circle") != -1) {
-	                console.log("downVote was selected");
-	                this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe(function (voteResult) {
-	                    _this.comment.votes += 1;
-	                    _this.downVote.nativeElement.className = "arrow down icon";
-	                    console.log("removed comment downvote");
-	                });
+	                this.comment.votes += 1;
+	                this.downVote.nativeElement.className = "arrow down icon";
+	                console.log("removed comment downvote");
 	            }
-	            var v = new vote_1.Vote();
-	            v.commentid = this.comment.id;
-	            v.vote = 1;
-	            v.userid = this.user.id;
-	            this.service.PostVote(v).subscribe(function (voteResult) {
+	            this.service.VoteComment(this.comment.id, this.user.id, 1).subscribe(function (voteResult) {
 	                _this.comment.votes += 1;
 	                voteElement.className += " circle";
 	                console.log("Posted comment vote");
@@ -87855,18 +87827,11 @@
 	        if (voteElement.className.indexOf("circle") == -1) {
 	            //if downvote highlighted... delete comment vote
 	            if (this.upVote.nativeElement.className.indexOf("circle") != -1) {
-	                console.log("upVote was selected");
-	                this.service.DeleteCommentVote(this.comment.id, this.user.id).subscribe(function (voteResult) {
-	                    _this.comment.votes -= 1;
-	                    _this.upVote.nativeElement.className = "arrow up icon";
-	                    console.log("removed comment upvote");
-	                });
+	                this.comment.votes -= 1;
+	                this.upVote.nativeElement.className = "arrow up icon";
+	                console.log("removed comment upvote");
 	            }
-	            var v = new vote_1.Vote();
-	            v.commentid = this.comment.id;
-	            v.vote = -1;
-	            v.userid = this.user.id;
-	            this.service.PostVote(v).subscribe(function (voteResult) {
+	            this.service.VoteComment(this.comment.id, this.user.id, -1).subscribe(function (voteResult) {
 	                _this.comment.votes -= 1;
 	                voteElement.className += " circle";
 	            });

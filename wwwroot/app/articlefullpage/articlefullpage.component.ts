@@ -126,23 +126,15 @@ export class ArticleFullPageComponent implements AfterViewChecked {
     // vote not yet cast 
     if (voteElement.className.indexOf("circle") == -1)
     {
-        //if downvote highlighted... delete comment vote
-        if (this.downVote.nativeElement.className.indexOf("circle") != -1)
-        {
-          console.log("downVote was selected"); 
-          this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
-            this.article.votes+=1;
-            this.downVote.nativeElement.className = "arrow down icon"; 
-            console.log("removed comment downvote"); 
-          });
-        }
+      //if downvote highlighted... delete comment vote
+      if (this.downVote.nativeElement.className.indexOf("circle") != -1)
+      {
+        this.article.votes+=1;
+        this.downVote.nativeElement.className = "arrow down icon"; 
+        console.log("removed comment downvote"); 
+      }
 
-        var v : Vote = new Vote(); 
-        v.articleid = this.article.id; 
-        v.vote = 1; 
-        v.userid = this.user.id; 
-
-      this.service.PostVote(v).subscribe((voteResult) => {
+      this.service.VoteArticle(this.article.id, this.user.id,1).subscribe((voteResult) => {
         this.article.votes+=1;
         voteElement.className += " circle"; 
         console.log("Posted vote"); 
@@ -164,23 +156,15 @@ export class ArticleFullPageComponent implements AfterViewChecked {
     // vote not yet cast 
     if (voteElement.className.indexOf("circle") == -1)
     {
-        //if downvote highlighted... delete comment vote
-        if (this.upVote.nativeElement.className.indexOf("circle") != -1)
-        {
-          console.log("downVote was selected"); 
-          this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
-            this.article.votes-=1;
-            this.upVote.nativeElement.className = "arrow up icon"; 
-            console.log("removed comment downvote"); 
-          });
-        }
+      //if downvote highlighted... delete comment vote
+      if (this.upVote.nativeElement.className.indexOf("circle") != -1)
+      {
+        this.article.votes-=1;
+        this.upVote.nativeElement.className = "arrow up icon"; 
+        console.log("removed comment downvote"); 
+      }
 
-      var v : Vote = new Vote(); 
-      v.articleid = this.article.id; 
-      v.vote = -1; 
-      v.userid = this.user.id; 
-
-      this.service.PostVote(v).subscribe((voteResult) => {
+      this.service.VoteArticle(this.article.id,this.user.id,-1).subscribe((voteResult) => {
         this.article.votes-=1;
         voteElement.className += " circle"; 
       }); 
