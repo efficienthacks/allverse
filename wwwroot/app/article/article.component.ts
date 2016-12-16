@@ -43,20 +43,11 @@ export class ArticleComponent implements AfterViewInit {
         //if downvote highlighted... delete comment vote
         if (this.downVote.nativeElement.className.indexOf("circle") != -1)
         {
-          console.log("downVote was selected"); 
-          this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
-            this.article.votes+=1;
-            this.downVote.nativeElement.className = "arrow down icon"; 
-            console.log("removed comment downvote"); 
-          });
+          this.article.votes+=1;
+          this.downVote.nativeElement.className = "arrow down icon"; 
         }
 
-        var v : Vote = new Vote(); 
-        v.articleid = this.article.id; 
-        v.vote = 1; 
-        v.userid = this.user.id; 
-
-        this.service.PostVote(v).subscribe((voteResult) => {
+        this.service.VoteArticle(this.article.id,this.user.id,1).subscribe((voteResult) => {
           this.article.votes+=1;
           voteElement.className += " circle"; 
           console.log("Posted vote"); 
@@ -78,23 +69,14 @@ export class ArticleComponent implements AfterViewInit {
     // vote not yet cast 
     if (voteElement.className.indexOf("circle") == -1)
     {
-        //if upvote highlighted... delete comment vote
-        if (this.upVote.nativeElement.className.indexOf("circle") != -1)
-        {
-          console.log("downVote was selected"); 
-          this.service.DeleteVote(this.article.id, this.user.id).subscribe((voteResult) => {
-            this.article.votes-=1;
-            this.upVote.nativeElement.className = "arrow up icon"; 
-            console.log("removed comment downvote"); 
-          });
-        }
+      //if upvote highlighted... delete comment vote
+      if (this.upVote.nativeElement.className.indexOf("circle") != -1)
+      {
+        this.article.votes-=1;
+        this.upVote.nativeElement.className = "arrow up icon"; 
+      }
 
-      var v : Vote = new Vote(); 
-      v.articleid = this.article.id; 
-      v.vote = -1; 
-      v.userid = this.user.id; 
-
-      this.service.PostVote(v).subscribe((voteResult) => {
+      this.service.VoteArticle(this.article.id,this.user.id,-1).subscribe((voteResult) => {
         this.article.votes-=1;
         voteElement.className += " circle"; 
       }); 

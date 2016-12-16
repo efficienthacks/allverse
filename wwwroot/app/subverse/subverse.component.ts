@@ -42,6 +42,7 @@ export class SubverseComponent implements AfterViewInit {
     isMod : boolean; 
     numArticlesPerPage : number;
     loadedMoreArticles : number; 
+    subscriberCount : number; 
 
   constructor(private location:Location, private hpService: AppServiceHackersPulse)
   {
@@ -51,6 +52,10 @@ export class SubverseComponent implements AfterViewInit {
       this.isFormVisible = false; 
       this.subverseStr = location.path().split('/')[2]; 
       this.loadedMoreArticles = 0; 
+
+      this.service.GetSubscriberCount(this.subverseStr).subscribe((result)=>{
+        this.subscriberCount = result; 
+      }); 
       
       this.service.GetArticlesPerPage().subscribe((result)=>{
         this.numArticlesPerPage = result; 

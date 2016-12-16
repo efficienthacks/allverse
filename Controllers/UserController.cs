@@ -74,8 +74,8 @@ namespace WebApplication.Controllers
             catch(Exception ex)
             {
                 user.isAuthenticated=false;
-                user.ID="";
-                user.Name=""; 
+                user.ID=null;
+                user.Name=null; 
             }
 
             return Json(user); 
@@ -103,6 +103,30 @@ namespace WebApplication.Controllers
 
             return BecomeMod(uid,userName,subverse); 
         }
+
+        [HttpGet]
+        public JsonResult GetSubscriberCount(string subverse)
+        {
+            
+            string query = String.Format("SELECT count(*)	FROM public.usersubs where \"subverseName\"='{0}'", subverse); 
+            int count = 0; 
+
+            using (IDatabase db = GetDB())
+            {
+                try
+                {
+                    count = db.ExecuteScalar<int>(query); 
+                }
+                catch(Exception ex)
+                {
+                    string m = ex.Message; 
+                }
+                
+            }
+
+            return Json(count); 
+        }
+
 
         [HttpGet]
         public JsonResult BecomeMod(string UserID,string UserName, string subverse)
@@ -233,6 +257,71 @@ namespace WebApplication.Controllers
             return Json(u); 
         }
 
+        /*vote should either be -1 or 1*/
+        [HttpGet]
+        public JsonResult VoteArticle(long ArticleID, string userID, int vote)
+        {
+            VoteModel v = new VoteModel();
+
+            try
+            {
+                DeleteVote(ArticleID, userID); 
+            }
+            catch(Exception ex)
+            {
+                string m = ex.Message; 
+            }
+
+            try
+            {
+                v.articleid = ArticleID; 
+                v.userid = userID; 
+                v.commentid = 0;
+                v.vote = vote; 
+
+                PostVote(ref v); 
+            }
+            catch(Exception ex)
+            {
+                string m = ex.Message; 
+            }
+
+            return Json(v); 
+        }
+
+        /*vote should either be -1 or 1*/
+        [HttpGet]
+        public JsonResult VoteComment(long CommentID, string userID, int vote)
+        {
+            VoteModel v = new VoteModel();
+
+            try
+            {
+                DeleteCommentVote(CommentID, userID); 
+            }
+            catch(Exception ex)
+            {
+                string m = ex.Message; 
+            }
+
+            try
+            {
+                v.articleid = 0; 
+                v.userid = userID; 
+                v.commentid = CommentID;
+                v.vote = vote; 
+
+                PostVote(ref v); 
+            }
+            catch(Exception ex)
+            {
+                string m = ex.Message; 
+            }
+
+            return Json(v); 
+        }
+
+        
         [HttpGet]
         public JsonResult DeleteVote(long ArticleID, string userID)
         {
@@ -271,12 +360,12 @@ namespace WebApplication.Controllers
                  
             }
             return Json(result); 
-            
         }
 
+        
         // vote up or down article or comment 
         [HttpPost]
-        public JsonResult PostVote([FromBody] VoteModel v)
+        private void PostVote(ref VoteModel v)
         {
             // insert vote 
             using(IDatabase db = GetDB())
@@ -292,8 +381,7 @@ namespace WebApplication.Controllers
                 }
 
                 //apply to comment or article 
-                //commentid==0 mean article 
-                if (v.commentid == 0 && v.articleid > 0)
+                if (v.articleid > 0)
                 {
                     ArticleModel a = db.Single<ArticleModel>(@"select * from article where id="+v.articleid);
                     a.votes += v.vote; 
@@ -307,8 +395,6 @@ namespace WebApplication.Controllers
                     db.Update(c); 
                 }
             }
-
-            return Json(v); 
         }
     }
 }

@@ -18,9 +18,10 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getArticleCommentsUrl = 'Article/GetComments';
     private _getUserUrl = 'User/GetUser';
     private _getCommentPostUrl = 'Article/PostComment'; 
-    private _getVoteDeleteUrl = 'User/DeleteVote';
-    private _getVotePostUrl = 'User/PostVote';
-    private _getCommentVoteDeleteUrl = 'User/DeleteCommentVote';
+    private _getVoteArticleUrl = 'User/VoteArticle';
+    private _getVoteCommentUrl = 'User/VoteComment';
+    private _getDeleteCommentVoteURL = 'User/DeleteCommentVote';
+    private _getDelteArticleVoteURL = 'User/DeleteVote'; 
     private _getModsUrl = 'User/GetMods'; 
     private _getBecomeModURL = 'User/BecomeMod'; 
     private _toggleSubscribeURL = 'User/ToggleSubscribe';
@@ -31,6 +32,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getUpdateArticlePostURL = 'Article/Update'; 
     private _getNumberOfArticlesPerPageUrl = 'Article/NumberOfArticlesPerPage'; 
     private _getNumberOfCommentsPerArticleUrl = 'Article/NumberOfCommentsPerArticle'; 
+    private _getSubscriberCountUrl = 'User/GetSubscriberCount'; 
 
     //vars
     public static user : User; 
@@ -115,26 +117,40 @@ export class AppServiceHackersPulse extends HttpHelpers {
 
     }
 
+    VoteArticle(ArticleID : number, userID : string, vote : number)
+    {
+        return this.http.get(this._getVoteArticleUrl + "/?ArticleID="+ArticleID + "&userID="+userID+"&vote="+vote)
+                    .map(this.extractVoteData)
+                    .catch(this.handleError);
+    }
+
+    VoteComment(CommentID : number, userID : string, vote : number)
+    {
+        return this.http.get(this._getVoteCommentUrl + "/?CommentID="+CommentID + "&userID="+userID+"&vote="+vote)
+                    .map(this.extractVoteData)
+                    .catch(this.handleError);
+    }
+
     DeleteVote(ArticleID : number, userID : string)
     {
-        return this.http.get(this._getVoteDeleteUrl + "/?ArticleID="+ArticleID + "&userID="+userID)
+        return this.http.get(this._getDeleteArticleURL + "/?ArticleID="+ArticleID + "&userID="+userID)
                     .map(this.extractData)
                     .catch(this.handleError);
     }
 
     DeleteCommentVote(CommentID : number, userID : string)
     {
-        return this.http.get(this._getCommentVoteDeleteUrl + "/?CommentID="+CommentID + "&userID="+userID)
+        return this.http.get(this._getDeleteArticleURL + "/?CommentID="+CommentID + "&userID="+userID)
                     .map(this.extractData)
                     .catch(this.handleError);
     }
 
-    PostVote(v : Vote)
+    GetSubscriberCount(subverse : string)
     {
-        return this.postaction(v, this._getVotePostUrl);
+        return this.http.get(this._getSubscriberCountUrl + "/?subverse="+subverse)
+                    .map(this.extractData)
+                    .catch(this.handleError);
     }
-
-
 
     private extractUserData(res: Response) 
     {
@@ -172,6 +188,20 @@ export class AppServiceHackersPulse extends HttpHelpers {
         u.userName = b.userName; 
 
         return u;
+    }
+
+    private extractVoteData(res : Response)
+    {
+        let b = res.json();
+        var v = new Vote(); 
+        
+        v.id = b.id;
+        v.articleid = b.articleid; 
+        v.commentid = b.commentid; 
+        v.userid = b.userid; 
+        v.vote = b.vote; 
+
+        return v;        
     }
 
 
