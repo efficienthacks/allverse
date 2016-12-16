@@ -235,16 +235,16 @@ export class SubverseComponent implements AfterViewInit {
     var arts : Article[] = new Array<Article>(); 
     //arts = AppServiceHackersPulse.articles;
     
-    if (this.articles != undefined)
+    if (AppServiceHackersPulse.articles != undefined)
     {
-      this.articles.forEach(function(a){
+      AppServiceHackersPulse.articles.forEach(function(a){
         if (a.isstickied == 1)
         {
           arts.push(a); 
         }
       }); 
       
-      this.articles.forEach(function(a){
+      AppServiceHackersPulse.articles.forEach(function(a){
         if (a.isstickied == 0)
         {
           arts.push(a); 
