@@ -62,7 +62,7 @@ namespace WebApplication.Controllers
             return View(model);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public JsonResult GetUser()
         {
             var user = new UserModel(); 
@@ -70,7 +70,7 @@ namespace WebApplication.Controllers
             user.ID = _userManager.GetUserId(HttpContext.User); 
             user.Name = User.Identity.Name; 
             return Json(user); 
-        }
+        }*/
 
         //
         // POST: /Manage/RemoveLogin

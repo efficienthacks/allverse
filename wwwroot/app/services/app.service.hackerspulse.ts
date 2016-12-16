@@ -16,7 +16,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getArticlesUrl = 'Article/GetArticles'; 
     private _getArticleUrl = 'Article/GetArticle'; 
     private _getArticleCommentsUrl = 'Article/GetComments';
-    private _getUserUrl = 'Manage/GetUser';
+    private _getUserUrl = 'User/GetUser';
     private _getCommentPostUrl = 'Article/PostComment'; 
     private _getVoteDeleteUrl = 'User/DeleteVote';
     private _getVotePostUrl = 'User/PostVote';

@@ -12,7 +12,6 @@ using Npgsql;
 
 namespace WebApplication.Controllers
 {
-    [Authorize]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -66,9 +65,19 @@ namespace WebApplication.Controllers
         public JsonResult GetUser()
         {
             var user = new UserModel(); 
-            user.isAuthenticated = User.Identity.IsAuthenticated;
-            user.ID = _userManager.GetUserId(HttpContext.User); 
-            user.Name = User.Identity.Name; 
+            try
+            {
+                user.isAuthenticated = User.Identity.IsAuthenticated;
+                user.ID = _userManager.GetUserId(HttpContext.User); 
+                user.Name = User.Identity.Name; 
+            }
+            catch(Exception ex)
+            {
+                user.isAuthenticated=false;
+                user.ID="";
+                user.Name=""; 
+            }
+
             return Json(user); 
         }
 

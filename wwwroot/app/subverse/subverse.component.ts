@@ -69,6 +69,7 @@ export class SubverseComponent implements AfterViewInit {
         this.service.GetUser().subscribe((user) => {
 
           this.user = user; 
+          console.log("User is: " + this.user); 
 
           this.mods.forEach(function(elem){
             if (elem.userID == user.id)
@@ -78,6 +79,9 @@ export class SubverseComponent implements AfterViewInit {
             }
           });
           
+        }, err => {
+          console.log("Load user error");
+
         });
 
 
@@ -174,12 +178,18 @@ export class SubverseComponent implements AfterViewInit {
      this.service.GetUser().subscribe( (data) => {
         this.user = data; 
 
-        this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe( (data)=>{
+        var userID=null; 
+        if (this.user!=null)
+        {
+          userID=this.user.id;
+        }
+
+        this.service.GetArticles(this.subverseStr, userID, this.numArticlesPerPage, this.loadedMoreArticles).subscribe( (data)=>{
           this.articles = data;
           AppServiceHackersPulse.articles = data;  
         });
 
-        this.service.IsUserSubscribed(this.user.id,this.subverseStr).subscribe((isSubbed) =>{
+        this.service.IsUserSubscribed(userID,this.subverseStr).subscribe((isSubbed) =>{
 
           if (isSubbed == 1)
           {
