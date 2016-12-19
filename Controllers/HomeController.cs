@@ -60,7 +60,7 @@ namespace WebApplication.Controllers
             {
                 var idRole = new Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole();
                 idRole.Name = RoleName; 
-                idRole.NormalizedName = RoleName; 
+                idRole.NormalizedName = RoleName.ToUpper(); 
 
                 _context.Roles.Add(idRole); 
                 _context.SaveChanges(); 
