@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic; 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +8,10 @@ using WebApplication.Models.app;
 using WebApplication.Services;
 using NPoco; 
 using Npgsql; 
+using WebApplication.Data; 
+
+///////////
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication.Controllers
 {
@@ -19,6 +22,8 @@ namespace WebApplication.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private ApplicationDbContext _context; 
+        private System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole> _siteAdminRole;
 
         private IDatabase _db = new Database(new NpgsqlConnection(Startup.Configuration["PostgresConn"]), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
 
@@ -27,18 +32,31 @@ namespace WebApplication.Controllers
             return _db; 
         }
 
+        
+
+        public async System.Threading.Tasks.Task<ApplicationUser> GetApplicationUser()
+        {
+            return await _userManager.GetUserAsync(HttpContext.User); 
+        }
+
         public UserController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IEmailSender emailSender,
         ISmsSender smsSender,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory,
+        ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _context = context; 
+
+            
+
+            
         }
 
         [HttpGet]
