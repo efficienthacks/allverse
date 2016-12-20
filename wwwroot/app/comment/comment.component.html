@@ -5,11 +5,11 @@
     <span class="time">{{comment.time_ago}}</span>
     <div class="ui label"><i class="trophy icon"></i> {{comment.votes}} </div>
 
-    <a href (click)="voteUp(upvote)">
+    <a href (click)="voteUp(upvote)" *ngIf="user?.isAuthenticated">
       <i class="arrow up icon" #upvote [ngClass]="{'circle' : comment.userVote > 0}"></i>
     </a>
 
-    <a href (click)="voteDown(downvote)"> 
+    <a href (click)="voteDown(downvote)" *ngIf="user?.isAuthenticated"> 
       <i class="arrow down icon" #downvote [ngClass]="{'circle' : comment.userVote < 0}"></i>
     </a>
 

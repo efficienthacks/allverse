@@ -7,5 +7,5 @@ Welcome to your homepage! All your subscriptions appear here (minus stickies)
   </app-article>
 </div>
 
-<button #loadmorehomearticles (click)="LoadMoreArticles()" class="ui button positive">Load More Articles</button> 
+<button #loadmorehomearticles (click)="LoadMoreArticles()" *ngIf="user?.isAuthenticated" class="ui button positive">Load More Articles</button> 
  

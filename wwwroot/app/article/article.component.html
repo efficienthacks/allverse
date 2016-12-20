@@ -13,11 +13,11 @@
   </div>
   <div class="twelve wide column">
 
-    <a href="#" (click)="voteUp(upvote)" *ngIf="user">
+    <a href="#" (click)="voteUp(upvote)" *ngIf="user?.isAuthenticated">
       <i class="arrow up icon" #upvote [ngClass]="{'circle' : article.userVote > 0}"></i>
     </a>
 
-    <a href="#" (click)="voteDown(downvote)" *ngIf="user"> 
+    <a href="#" (click)="voteDown(downvote)" *ngIf="user?.isAuthenticated"> 
       <i class="arrow down icon" #downvote [ngClass]="{'circle' : article.userVote < 0}"></i>
     </a>
 
