@@ -5,7 +5,7 @@
 
 <div class="ui label">{{subscriberCount}} Subbed</div> 
 
-<button #btnSub (click)="toggleSubscribe(btnSub)" class="ui positive right floated button" *ngIf="user">
+<button #btnSub (click)="toggleSubscribe(btnSub)" class="ui positive right floated button" *ngIf="user?.isAuthenticated">
   Subscribe
 </button> 
 
