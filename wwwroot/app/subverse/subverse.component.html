@@ -9,11 +9,11 @@
   Subscribe
 </button> 
 
-<button (click)="toggleForm()" class="ui positive right floated button" *ngIf="user">
+<button (click)="toggleForm()" class="ui positive right floated button" *ngIf="user?.isAuthenticated">
   Add Article
 </button> 
 
-<div *ngIf="user" class="ui card">
+<div class="ui card">
   Sub mods are: 
   <ul>
       <li *ngFor="let mod of mods">

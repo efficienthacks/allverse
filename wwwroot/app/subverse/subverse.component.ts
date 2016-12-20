@@ -50,7 +50,7 @@ export class SubverseComponent implements AfterViewInit {
       this.isModButtonVisible = true; 
       this.service = hpService; 
       this.isFormVisible = false; 
-      this.subverseStr = location.path().split('/')[2]; 
+      this.subverseStr = location.path().split('/')[2].toLowerCase(); 
       this.loadedMoreArticles = 0; 
 
       this.service.GetSubscriberCount(this.subverseStr).subscribe((result)=>{
@@ -148,6 +148,7 @@ export class SubverseComponent implements AfterViewInit {
        this.isModButtonVisible = false; 
        console.log("Set mod visible: " + this.isModButtonVisible); 
        this.mods.push(result); 
+       this.subscriberCount += 1; 
     });
 
   }

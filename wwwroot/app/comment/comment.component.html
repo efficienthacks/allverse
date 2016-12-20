@@ -18,8 +18,8 @@
     <div [hidden]="collapse">
 
       <p class="comment-text" [innerHTML]="comment.content"></p>
-      <div class="reply" *ngIf="user && user.isAuthenticated">
-          <button (click)="DeleteComment()" class="ui button negative" *ngIf="isMod || user.name == comment.userName" >Delete</button>
+      <div class="reply" *ngIf="user?.isAuthenticated">
+          <button (click)="DeleteComment()" class="ui button negative" *ngIf="isMod || user?.name == comment.userName" >Delete</button>
           <button (click)="showReplyForm(replyform)" class="ui button">Reply</button> 
           
           <form #replyform style="display: none">

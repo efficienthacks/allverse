@@ -57661,10 +57661,12 @@
 	var comment_tree_component_1 = __webpack_require__(622);
 	var exploresubverse_component_1 = __webpack_require__(623);
 	var bugorfeature_component_1 = __webpack_require__(624);
+	var user_component_1 = __webpack_require__(625);
 	var routes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 's/:id', component: subverse_component_1.SubverseComponent },
 	    { path: 'a/:id', component: articlepage_component_1.ArticlePageComponent },
+	    { path: 'user/:id', component: user_component_1.UserPageComponent },
 	    { path: 'explore', component: exploresubverse_component_1.ExploreSubverseComponent },
 	    { path: 'bugorfeature', component: bugorfeature_component_1.BugOrFeatureComponent }
 	];
@@ -57685,7 +57687,8 @@
 	            comment_component_1.CommentComponent,
 	            comment_tree_component_1.CommentTreeComponent,
 	            exploresubverse_component_1.ExploreSubverseComponent,
-	            bugorfeature_component_1.BugOrFeatureComponent
+	            bugorfeature_component_1.BugOrFeatureComponent,
+	            user_component_1.UserPageComponent
 	        ],
 	        imports: [
 	            platform_browser_1.BrowserModule,
@@ -65884,6 +65887,8 @@
 	        _this._getSubscriberCountUrl = 'User/GetSubscriberCount';
 	        _this._getAllSubsUrl = 'Subverse/GetAllSubs';
 	        _this._getBugOrFeatureUrl = 'User/BugOrFeature';
+	        _this._getCommentsPerUserPage = 'User/NumCommentsPerUserPage';
+	        _this._getUserPageCommentsUrl = 'Article/GetUserPageComments';
 	        _this.http = http;
 	        return _this;
 	    }
@@ -65937,6 +65942,12 @@
 	    AppServiceHackersPulse.prototype.GetComments = function (ArticleID, userID) {
 	        console.log("GetArticles URL: " + this._getArticleCommentsUrl + "/?ArticleID=" + ArticleID + "&userID=" + userID);
 	        return this.http.get(this._getArticleCommentsUrl + "/?ArticleID=" + ArticleID + "&userID=" + userID)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
+	    AppServiceHackersPulse.prototype.GetUserPageComments = function (userName, numLoaded, numCommentsPerUserPage) {
+	        console.log("GetUserPageComments URL: " + this._getUserPageCommentsUrl + "/?userName=" + userName + "&numPerPage=" + numCommentsPerUserPage + "&numLoaded=" + numLoaded);
+	        return this.http.get(this._getUserPageCommentsUrl + "/?userName=" + userName + "&numPerPage=" + numCommentsPerUserPage + "&numLoaded=" + numLoaded)
 	            .map(this.extractData)
 	            .catch(this.handleError);
 	    };
@@ -66106,8 +66117,15 @@
 	            .map(this.extractData)
 	            .catch(this.handleError);
 	    };
+	    //num
 	    AppServiceHackersPulse.prototype.GetCommentsPerArticle = function () {
 	        return this.http.get(this._getNumberOfCommentsPerArticleUrl)
+	            .map(this.extractData)
+	            .catch(this.handleError);
+	    };
+	    //num
+	    AppServiceHackersPulse.prototype.GetCommentsPerUserPage = function () {
+	        return this.http.get(this._getCommentsPerUserPage)
 	            .map(this.extractData)
 	            .catch(this.handleError);
 	    };
@@ -83258,7 +83276,7 @@
 	        this.isModButtonVisible = true;
 	        this.service = hpService;
 	        this.isFormVisible = false;
-	        this.subverseStr = location.path().split('/')[2];
+	        this.subverseStr = location.path().split('/')[2].toLowerCase();
 	        this.loadedMoreArticles = 0;
 	        this.service.GetSubscriberCount(this.subverseStr).subscribe(function (result) {
 	            _this.subscriberCount = result;
@@ -83321,6 +83339,7 @@
 	            _this.isModButtonVisible = false;
 	            console.log("Set mod visible: " + _this.isModButtonVisible);
 	            _this.mods.push(result);
+	            _this.subscriberCount += 1;
 	        });
 	    };
 	    SubverseComponent.prototype.LoadMoreArticles = function () {
@@ -88120,6 +88139,81 @@
 	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
 	], BugOrFeatureComponent);
 	exports.BugOrFeatureComponent = BugOrFeatureComponent;
+
+
+/***/ },
+/* 625 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(259);
+	var common_1 = __webpack_require__(278);
+	var user_1 = __webpack_require__(611);
+	var app_service_hackerspulse_1 = __webpack_require__(288);
+	var UserPageComponent = (function () {
+	    function UserPageComponent(location, hpService) {
+	        var _this = this;
+	        this.location = location;
+	        this.hpService = hpService;
+	        this.numLoaded = 0;
+	        this.service = hpService;
+	        this.userStr = location.path().split('/')[2];
+	        this.user = new user_1.User();
+	        this.user.name = this.userStr;
+	        app_service_hackerspulse_1.AppServiceHackersPulse.user = this.user;
+	        this.service.GetCommentsPerUserPage().subscribe(function (result) {
+	            _this.numCommentsPerPage = result;
+	            _this.service.GetUserPageComments(_this.userStr, _this.numLoaded, _this.numCommentsPerPage).subscribe(function (comments) {
+	                _this.comments = comments;
+	            });
+	        });
+	    }
+	    UserPageComponent.prototype.LoadMoreComments = function () {
+	        var _this = this;
+	        this.numLoaded += 1;
+	        var moreComments;
+	        this.service.GetUserPageComments(this.userStr, this.numLoaded, this.numCommentsPerPage).subscribe(function (comments) {
+	            moreComments = comments;
+	            //hide button if no more articles 
+	            if (moreComments.length == 0 || moreComments.length < _this.numCommentsPerPage) {
+	                _this.btnLoadMore.nativeElement.style.visibility = 'hidden';
+	                console.log("hide load more button");
+	            }
+	            for (var i = 0; i < moreComments.length; i++) {
+	                _this.comments.push(moreComments[i]);
+	            }
+	        });
+	    };
+	    UserPageComponent.prototype.ngOnInit = function () {
+	    };
+	    return UserPageComponent;
+	}());
+	__decorate([
+	    core_1.ViewChild('loadmorecomments'),
+	    __metadata("design:type", core_1.ElementRef)
+	], UserPageComponent.prototype, "btnLoadMore", void 0);
+	UserPageComponent = __decorate([
+	    core_1.Component({
+	        selector: 'app-user',
+	        templateUrl: './app/user/user.component.html',
+	        styleUrls: ['./app/user/user.component.css'],
+	        host: {
+	            class: 'row'
+	        },
+	        providers: [app_service_hackerspulse_1.AppServiceHackersPulse]
+	    }),
+	    __metadata("design:paramtypes", [common_1.Location, app_service_hackerspulse_1.AppServiceHackersPulse])
+	], UserPageComponent);
+	exports.UserPageComponent = UserPageComponent;
 
 
 /***/ }

@@ -36,6 +36,8 @@ export class AppServiceHackersPulse extends HttpHelpers {
     private _getSubscriberCountUrl = 'User/GetSubscriberCount'; 
     private _getAllSubsUrl = 'Subverse/GetAllSubs';
     private _getBugOrFeatureUrl = 'User/BugOrFeature'; 
+    private _getCommentsPerUserPage = 'User/NumCommentsPerUserPage';
+    private _getUserPageCommentsUrl = 'Article/GetUserPageComments'; 
 
     //vars
     public static user : User; 
@@ -126,6 +128,15 @@ export class AppServiceHackersPulse extends HttpHelpers {
                     .map(this.extractData)
                     .catch(this.handleError);
 
+    }
+
+    GetUserPageComments(userName : string, numLoaded : number, numCommentsPerUserPage : number)
+    {
+        console.log("GetUserPageComments URL: " + this._getUserPageCommentsUrl + "/?userName="+userName + "&numPerPage="+numCommentsPerUserPage + "&numLoaded=" + numLoaded);
+
+        return this.http.get(this._getUserPageCommentsUrl + "/?userName="+userName + "&numPerPage="+numCommentsPerUserPage + "&numLoaded=" + numLoaded)
+                    .map(this.extractData)
+                    .catch(this.handleError);
     }
 
     VoteArticle(ArticleID : number, userID : string, vote : number)
@@ -350,6 +361,7 @@ export class AppServiceHackersPulse extends HttpHelpers {
             .catch(this.handleError);
     }
 
+    //num
     GetCommentsPerArticle()
     {
          return this.http.get(this._getNumberOfCommentsPerArticleUrl)
@@ -357,4 +369,11 @@ export class AppServiceHackersPulse extends HttpHelpers {
             .catch(this.handleError);
     }
 
+    //num
+    GetCommentsPerUserPage()
+    {
+         return this.http.get(this._getCommentsPerUserPage)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

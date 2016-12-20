@@ -316,6 +316,55 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet] 
+        public JsonResult GetUserPageComments(string userName, int numPerPage, int numLoaded)
+        {
+            try
+            {
+                List<CommentModel> comments = null; 
+
+                int start = numPerPage*numLoaded; 
+
+                string query = String.Format(@"select ""Id"" from public.""AspNetUsers"" where ""UserName""='{0}'",userName.Replace("@","@@")); 
+                string uid = null;         
+
+                using(IDatabase db = GetDB())
+                {
+                    string sqlCommand=String.Format("SELECT * FROM public.comment where \"userName\"='{0}' limit {1} offset {2}",userName,numPerPage,start); 
+                    // fetch all comments in article 
+                    comments = db.Fetch<CommentModel>(sqlCommand); 
+
+                    try
+                    {
+                        uid = db.ExecuteScalar<string>(query); 
+                    }
+                    catch(Exception ex)
+                    {
+                        string m = ex.Message; 
+                    }
+
+                    // get user vote for each comment 
+                    if (uid != null)
+                    {
+                        comments = fetchUserVotes(comments, uid); 
+                    }
+                    
+                    foreach(var c in comments)
+                    {
+                        c.time_ago = timeSince(c.time);  
+                    }
+                }
+
+                return Json(comments); 
+            }
+            catch(Exception ex)
+            {
+                string m = ex.Message; 
+                throw ex; 
+            }
+        }
+
+
+        [HttpGet] 
         public JsonResult GetComments(Int64 ArticleID, string userID)
         {
             try
@@ -338,7 +387,6 @@ namespace WebApplication.Controllers
                 }
 
                 return Json(rootNodes); 
-                //return JsonConvert.SerializeObject(rootNodes); 
             }
             catch(Exception ex)
             {

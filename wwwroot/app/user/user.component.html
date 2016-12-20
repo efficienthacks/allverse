@@ -1,0 +1,6 @@
+User {{userStr}}
+
+<app-comment-tree *ngIf="comments?.length > 0" [commentTree]="comments"></app-comment-tree>
+
+<button #loadmorecomments (click)="LoadMoreComments()" class="ui button positive">Load More Comments</button> 
+ 

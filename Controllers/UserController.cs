@@ -10,9 +10,6 @@ using NPoco;
 using Npgsql; 
 using WebApplication.Data; 
 
-///////////
-using Microsoft.EntityFrameworkCore;
-
 namespace WebApplication.Controllers
 {
     public class UserController : Controller
@@ -32,7 +29,11 @@ namespace WebApplication.Controllers
             return _db; 
         }
 
-        
+        [HttpGet]
+        public JsonResult NumCommentsPerUserPage()
+        {
+            return Json(Startup.Configuration["numCommentsPerUserPage"]); 
+        }
 
         public async System.Threading.Tasks.Task<ApplicationUser> GetApplicationUser()
         {

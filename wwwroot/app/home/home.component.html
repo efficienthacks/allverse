@@ -1,5 +1,9 @@
 Welcome to your homepage! All your subscriptions appear here (minus stickies) 
 
+<div *ngIf="user?.isAuthenticated">
+    Please <a href="http://www.allverse.co/Account/Login">Login</a> to view home page articles  
+</div> 
+
 <div class="ui grid posts">
   <app-article
     *ngFor="let article of sortedArticles()"

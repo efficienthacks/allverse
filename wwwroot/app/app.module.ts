@@ -18,11 +18,13 @@ import {CommentComponent} from './comment/comment.component';
 import {CommentTreeComponent} from './comment-tree/comment-tree.component';
 import {ExploreSubverseComponent} from './exploresubverse/exploresubverse.component';
 import {BugOrFeatureComponent} from './bugorfeature/bugorfeature.component';
+import {UserPageComponent} from './user/user.component'; 
 
 const routes: Routes = [
     { path: '', component : HomeComponent },
     { path: 's/:id', component : SubverseComponent },
     { path: 'a/:id', component : ArticlePageComponent },
+    { path: 'user/:id', component : UserPageComponent },
     { path: 'explore', component : ExploreSubverseComponent },
     { path: 'bugorfeature', component : BugOrFeatureComponent }
 ];
@@ -38,7 +40,8 @@ const routes: Routes = [
     CommentComponent,
     CommentTreeComponent,
     ExploreSubverseComponent,
-    BugOrFeatureComponent
+    BugOrFeatureComponent,
+    UserPageComponent
   ],
   imports: [
     BrowserModule,
