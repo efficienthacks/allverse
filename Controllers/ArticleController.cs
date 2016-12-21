@@ -169,7 +169,7 @@ namespace WebApplication.Controllers
                 
                 using(IDatabase db = GetDB())
                 {
-                    string userSubQuery = String.Format("SELECT distinct \"subverseName\" FROM public.usersubs where \"userID\"='{0}'", userID); 
+                    string userSubQuery = String.Format("SELECT distinct \"subverseName\" FROM public.usersubs where \"userID\"='{0}' and \"isSubscribed\"=1", userID); 
                     List<string> userSubs = db.Fetch<string>(userSubQuery); 
                     string userSubsString = "";
 
