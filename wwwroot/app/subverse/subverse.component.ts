@@ -74,6 +74,7 @@ export class SubverseComponent implements AfterViewInit {
         this.service.GetUser().subscribe((user) => {
 
           this.user = user; 
+          AppServiceHackersPulse.user = user; 
           console.log("User is: " + this.user); 
 
           this.mods.forEach(function(elem){
