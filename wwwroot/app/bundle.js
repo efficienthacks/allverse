@@ -83292,6 +83292,7 @@
 	            }
 	            _this.service.GetUser().subscribe(function (user) {
 	                _this.user = user;
+	                app_service_hackerspulse_1.AppServiceHackersPulse.user = user;
 	                console.log("User is: " + _this.user);
 	                _this.mods.forEach(function (elem) {
 	                    if (elem.userID == user.id) {
