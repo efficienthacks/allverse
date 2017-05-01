@@ -9,19 +9,21 @@ using Microsoft.Extensions.Logging;
 using WebApplication.Data;
 using WebApplication.Models;
 using WebApplication.Services;
+using NPoco; 
+using Npgsql;
 
 namespace WebApplication
 {
     public class Startup
     {
+        static private IDatabase _db;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-
 
             //if (env.IsDevelopment())
             //{
@@ -31,9 +33,13 @@ namespace WebApplication
             builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
+
+            _db = new Database(new NpgsqlConnection(Configuration["PostgresConn"]), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
         }
 
         public static IConfigurationRoot Configuration { get; set; }
+
+        public static IDatabase GetDB { get{return _db;}}
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

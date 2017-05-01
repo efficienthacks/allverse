@@ -11,11 +11,11 @@ namespace WebApplication.Controllers
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true, Duration = -1)]
     public class SubverseController : Controller
     {
-        private IDatabase _db = new Database(new NpgsqlConnection(Startup.Configuration["PostgresConn"]), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
+        //private IDatabase _db = new Database(new NpgsqlConnection(Startup.Configuration["PostgresConn"]), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
 
         private IDatabase GetDB()
         {
-            return _db; 
+            return Startup.GetDB; 
         }
 
         public SubverseController()

@@ -22,11 +22,11 @@ namespace WebApplication.Controllers
         private ApplicationDbContext _context; 
         private System.Threading.Tasks.Task<Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole> _siteAdminRole;
 
-        private IDatabase _db = new Database(new NpgsqlConnection(Startup.Configuration["PostgresConn"]), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
+        //private IDatabase _db = new Database(new NpgsqlConnection(Startup.Configuration["PostgresConn"]), DatabaseType.PostgreSQL, NpgsqlFactory.Instance); 
 
         private IDatabase GetDB()
         {
-            return _db; 
+            return Startup.GetDB; 
         }
 
         [HttpGet]
