@@ -217,15 +217,15 @@ export class SubverseComponent implements AfterViewInit {
   addArticle(title: HTMLInputElement, link: HTMLInputElement, text: HTMLInputElement): boolean {
   
     var UID : string = this.user.id; 
-    console.log(`Adding article title: ${title.value} and link: ${link.value} and uid ` + UID);
+    //console.log(`Adding article title: ${title.value} and link: ${link.value} and uid ` + UID);
     
     var a : Article = new Article(title.value, link.value,this.subverseStr,text.value,this.user.id,0,0);
     
-    console.log("Service add article"); 
+    //console.log("Service add article"); 
     this.service.AddArticle(a).subscribe( (res) => {
       var r = res.json(); 
       a.id = r.id; 
-      console.log("Article ID: " + a.id); 
+      //console.log("Article ID: " + a.id); 
       this.articles.push(a);
     }); 
     
