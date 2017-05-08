@@ -55,44 +55,46 @@ export class SubverseComponent implements AfterViewInit {
 
       this.service.GetSubscriberCount(this.subverseStr).subscribe((result)=>{
         this.subscriberCount = result; 
-      }); 
-      
-      this.service.GetArticlesPerPage().subscribe((result)=>{
-        this.numArticlesPerPage = result; 
-        console.log("articles per page is: " + result); 
-      });
 
-      this.service.GetMods(this.subverseStr).subscribe((modsResult) =>
-      {
-        this.mods = modsResult; 
+        this.service.GetArticlesPerPage().subscribe((result)=>{
+          this.numArticlesPerPage = result; 
+          console.log("articles per page is: " + result); 
 
-        if (this.mods.length > 0)
-        {
-          this.isModButtonVisible = false; 
-        }     
-
-        this.service.GetUser().subscribe((user) => {
-
-          this.user = user; 
-          AppServiceHackersPulse.user = user; 
-          console.log("User is: " + this.user); 
-
-          this.mods.forEach(function(elem){
-            if (elem.userID == user.id)
+            this.service.GetMods(this.subverseStr).subscribe((modsResult) =>
             {
-              AppServiceHackersPulse.isMod = true; 
-              console.log("Is mod true"); 
-            }
-          });
-          
-        }, err => {
-          console.log("Load user error");
+              this.mods = modsResult; 
+
+              if (this.mods.length > 0)
+              {
+                this.isModButtonVisible = false; 
+              }     
+
+              this.service.GetUser().subscribe((user) => {
+
+                this.user = user; 
+                AppServiceHackersPulse.user = user; 
+                console.log("User is: " + this.user); 
+
+                this.mods.forEach(function(elem){
+                  if (elem.userID == user.id)
+                  {
+                    AppServiceHackersPulse.isMod = true; 
+                    console.log("Is mod true"); 
+                  }
+                });
+                
+              }, err => {
+                console.log("Load user error");
+
+              });
+
+
+
+            });
 
         });
-
-
-
-      });
+      }); 
+      
   }
 
   toggleModSettings()

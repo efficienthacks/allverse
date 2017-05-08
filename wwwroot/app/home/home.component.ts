@@ -37,24 +37,26 @@ export class HomeComponent implements OnInit {
         this.service.GetArticlesPerPage().subscribe((result)=>{
           this.numArticlesPerPage = result; 
           console.log("articles per page is: " + result); 
+
+          this.service.GetUser().subscribe( (data) => {
+            this.user = data; 
+            AppServiceHackersPulse.user = data; 
+
+            if (this.user.id != null)
+            {
+              this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe( (data)=>{
+                this.articles = data;
+                console.log("Loaded articles"); 
+              });
+            }
+            else
+            {
+              //must be logged in to view articles! 
+            }
+          }); 
         });
 
-        this.service.GetUser().subscribe( (data) => {
-          this.user = data; 
-          AppServiceHackersPulse.user = data; 
-
-          if (this.user.id != null)
-          {
-            this.service.GetArticles(this.subverseStr, this.user.id, this.numArticlesPerPage, this.loadedMoreArticles).subscribe( (data)=>{
-              this.articles = data;
-              console.log("Loaded articles"); 
-            });
-          }
-          else
-          {
-            //must be logged in to view articles! 
-          }
-        }); 
+        
 
     }
 
